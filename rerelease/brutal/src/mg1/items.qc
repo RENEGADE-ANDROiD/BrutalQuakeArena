@@ -1284,12 +1284,17 @@ void() BackpackTouch =
 	local	float	best, old, new;
 	local		entity	stemp;
 	local	float	acount;
-	local	float	old_s, old_n, old_r, old_c;
 	
 	if (other.classname != "player")
 		return;
 	if (other.health <= 0)
 		return;
+
+	if (!CP_AmmoRoom (other.ammo_shells, self.ammo_shells, 100) && !CP_AmmoRoom (other.ammo_nails, self.ammo_nails, 200) && !CP_AmmoRoom (other.ammo_rockets, self.ammo_rockets, 100) && !CP_AmmoRoom (other.ammo_cells, self.ammo_cells, 100))
+	{
+		if (!self.items || (other.items & self.items))
+			return;
+	}
 
 	acount = 0;
 	sprint(other, "$qc_backpack_got");
@@ -1308,10 +1313,6 @@ void() BackpackTouch =
 	self = stemp;
 
 // change weapons
-	old_s = other.ammo_shells;
-	old_n = other.ammo_nails;
-	old_r = other.ammo_rockets;
-	old_c = other.ammo_cells;
 	other.ammo_shells = other.ammo_shells + self.ammo_shells;
 	other.ammo_nails = other.ammo_nails + self.ammo_nails;
 	other.ammo_rockets = other.ammo_rockets + self.ammo_rockets;
@@ -1358,16 +1359,6 @@ void() BackpackTouch =
 // backpack touch sound
 	sound (other, CHAN_ITEM, "weapons/lock4.wav", 1, ATTN_NORM);
 	stuffcmd (other, "bf\n");
-
-	self.ammo_shells = self.ammo_shells - (other.ammo_shells - old_s);
-	self.ammo_nails = self.ammo_nails - (other.ammo_nails - old_n);
-	self.ammo_rockets = self.ammo_rockets - (other.ammo_rockets - old_r);
-	self.ammo_cells = self.ammo_cells - (other.ammo_cells - old_c);
-	if (!deathmatch && (self.ammo_shells + self.ammo_nails + self.ammo_rockets + self.ammo_cells) > 0)
-	{
-		self.items = 0;
-		return;
-	}
 
 // remove the backpack, change self to the player
 	remove(self);

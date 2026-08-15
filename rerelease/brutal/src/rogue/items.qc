@@ -1528,7 +1528,6 @@ void() BackpackTouch =
 	local	float	best, old, new;
 	local		entity	stemp;
 	local	float	acount;
-	local	float	old_s, old_n, old_r, old_c, old_l, old_m, old_p;
 	
 	if (other.classname != "player")
 		return;
@@ -1540,6 +1539,12 @@ void() BackpackTouch =
 	if ((other == self.owner) && ((self.nextthink - time) > 119))
 		return;
 //--ZOID
+
+	if (!CP_AmmoRoom (other.ammo_shells1, self.ammo_shells1, 100) && !CP_AmmoRoom (other.ammo_nails1, self.ammo_nails1, 200) && !CP_AmmoRoom (other.ammo_rockets1, self.ammo_rockets1, 100) && !CP_AmmoRoom (other.ammo_cells1, self.ammo_cells1, 100) && !CP_AmmoRoom (other.ammo_lava_nails, self.ammo_lava_nails, 200) && !CP_AmmoRoom (other.ammo_multi_rockets, self.ammo_multi_rockets, 100) && !CP_AmmoRoom (other.ammo_plasma, self.ammo_plasma, 100))
+	{
+		if (!self.items || (other.items & self.items))
+			return;
+	}
 
 	acount = 0;
  	sprint(other, "$qc_backpack_got");
@@ -1560,13 +1565,6 @@ void() BackpackTouch =
 	self = stemp;
 
 // change weapons
-	old_s = other.ammo_shells1;
-	old_n = other.ammo_nails1;
-	old_r = other.ammo_rockets1;
-	old_c = other.ammo_cells1;
-	old_l = other.ammo_lava_nails;
-	old_m = other.ammo_multi_rockets;
-	old_p = other.ammo_plasma;
 	other.ammo_shells1 = other.ammo_shells1 + self.ammo_shells1;
 	other.ammo_nails1 = other.ammo_nails1 + self.ammo_nails1;
 	other.ammo_rockets1 = other.ammo_rockets1 + self.ammo_rockets1;
@@ -1649,19 +1647,6 @@ void() BackpackTouch =
 // backpack touch sound
 	sound (other, CHAN_ITEM, "weapons/lock4.wav", 1, ATTN_NORM);
 	stuffcmd (other, "bf\n");
-
-	self.ammo_shells1 = self.ammo_shells1 - (other.ammo_shells1 - old_s);
-	self.ammo_nails1 = self.ammo_nails1 - (other.ammo_nails1 - old_n);
-	self.ammo_rockets1 = self.ammo_rockets1 - (other.ammo_rockets1 - old_r);
-	self.ammo_cells1 = self.ammo_cells1 - (other.ammo_cells1 - old_c);
-	self.ammo_lava_nails = self.ammo_lava_nails - (other.ammo_lava_nails - old_l);
-	self.ammo_multi_rockets = self.ammo_multi_rockets - (other.ammo_multi_rockets - old_m);
-	self.ammo_plasma = self.ammo_plasma - (other.ammo_plasma - old_p);
-	if (!deathmatch && (self.ammo_shells1 + self.ammo_nails1 + self.ammo_rockets1 + self.ammo_cells1 + self.ammo_lava_nails + self.ammo_multi_rockets + self.ammo_plasma) > 0)
-	{
-		self.items = 0;
-		return;
-	}
 
 // remove the backpack, change self to the player
 	remove(self);

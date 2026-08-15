@@ -1330,7 +1330,17 @@ void() BackpackTouch =
 
 	if (other.health <= 0)
 		return;
-		
+
+	give_s = CP_AmmoRoom (other.ammo_shells, self.ammo_shells, 100);
+	give_n = CP_AmmoRoom (other.ammo_nails, self.ammo_nails, 200);
+	give_r = CP_AmmoRoom (other.ammo_rockets, self.ammo_rockets, 100);
+	give_c = CP_AmmoRoom (other.ammo_cells, self.ammo_cells, 100);
+	if (!give_s && !give_n && !give_r && !give_c)
+	{
+		if (!self.items || (other.items & self.items))
+			return;
+	}
+
 	acount = 0;
  	sprint(other, "$qc_backpack_got");
 
@@ -1350,16 +1360,12 @@ void() BackpackTouch =
 	self = stemp;
 
 	// change weapons
-	give_s = CP_AmmoRoom (other.ammo_shells, self.ammo_shells, 100);
 	other.ammo_shells = other.ammo_shells + give_s;
 	self.ammo_shells = self.ammo_shells - give_s;
-	give_n = CP_AmmoRoom (other.ammo_nails, self.ammo_nails, 200);
 	other.ammo_nails = other.ammo_nails + give_n;
 	self.ammo_nails = self.ammo_nails - give_n;
-	give_r = CP_AmmoRoom (other.ammo_rockets, self.ammo_rockets, 100);
 	other.ammo_rockets = other.ammo_rockets + give_r;
 	self.ammo_rockets = self.ammo_rockets - give_r;
-	give_c = CP_AmmoRoom (other.ammo_cells, self.ammo_cells, 100);
 	other.ammo_cells = other.ammo_cells + give_c;
 	self.ammo_cells = self.ammo_cells - give_c;
 
@@ -1413,11 +1419,6 @@ void() BackpackTouch =
 	sound (other, CHAN_ITEM, "weapons/lock4.wav", 1, ATTN_NORM);
 	stuffcmd (other, "bf\n");
 
-	if (!deathmatch && (self.ammo_shells + self.ammo_nails + self.ammo_rockets + self.ammo_cells) > 0)
-	{
-		self.items = 0;
-		return;
-	}
 	remove(self);
 	self = other;
 	
