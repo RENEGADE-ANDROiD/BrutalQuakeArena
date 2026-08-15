@@ -1,6 +1,4 @@
-Brutal Quake — melee, meathook, extra gore, and Combat Plus-style extras for Quake 2021 Re-Release.  *Designed to work with Quake 2021 Re-Release.*
-
-
+Brutal Quake — melee, meathook, extra gore, and Combat Plus-style extras for Quake 2021 Re-Release.
 
 Copy contents to your Steam Quake install directory.
 
