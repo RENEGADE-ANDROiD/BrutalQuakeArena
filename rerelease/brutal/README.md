@@ -79,7 +79,9 @@ Turn **Enhanced Models** off under Options > Display so Authentic Models show. A
 
 Final Arena 1.20 maps and sounds are included. Local / listen deathmatch only — remaster matchmaking may ignore custom mods.
 
-* `map arenax` — 46 classic arenas
+Multiplayer → Local Play → Mode Deathmatch → episode Rocket Arena.
+
+* Deathmatch episode **Rocket Arena** — 46 classic arenas
 * Alone: full loadout practice (100 HP, 200 armor, all guns)
 * Two or more: 1v1, 10-second lock, FIGHT, winner stays
 * Impulse 68 stats, 69 line position, 70 break
