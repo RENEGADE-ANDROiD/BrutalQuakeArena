@@ -77,9 +77,11 @@ Turn **Enhanced Models** off under Options > Display so Authentic Models show. A
 
 **Rocket Arena**
 
-Final Arena 1.20 maps and sounds are included. Local / listen deathmatch only — remaster matchmaking may ignore custom mods.
+Final Arena 1.20 maps and sounds are included. Every player needs this mod installed. Custom matches do not appear in Find Match / the public browser — invite friends.
 
-Multiplayer → Local Play → Mode Deathmatch → episode Rocket Arena. Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Add QC bots with **P**.
+* **Local Play:** Multiplayer → Local Play → Deathmatch → episode **Rocket Arena**. Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Add QC bots with **P**.
+* **Online host:** Multiplayer → Start Match → Deathmatch → episode **Rocket Arena** → start → invite. Same bot rule. Joiners need this mod.
+* Console: `game brutal` then `exec arena.cfg` (put `arena.cfg` in `Users\<UserName>\Saved Games\Nightdive Studios\Quake\`).
 
 * Deathmatch episode **Rocket Arena** — 46 classic arenas
 * Alone: full loadout practice (100 HP, 200 armor, all guns)
