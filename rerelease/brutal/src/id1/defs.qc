@@ -571,7 +571,6 @@ float 	CS_MIXED		= 3; // can do ranged or melee equally.
 .float		melee_saw;
 .float		has_mjolnir;
 .float		melee_hammer;
-.float		wounded_next;
 .float		meat_hook_len;
 .float		cp_nailgrunt;
 .float		cp_defender;
@@ -583,7 +582,6 @@ void() CP_GibThink;
 void() CP_FireOffhandProx;
 void() CP_EjectCasing;
 void(float force) CP_Recoil;
-void() CP_WoundedThink;
 void(entity first, float dmg) CP_ChainLightning;
 void() CP_DropChainsaw;
 void() CP_DropMjolnir;

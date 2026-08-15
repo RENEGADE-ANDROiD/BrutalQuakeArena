@@ -49,7 +49,6 @@ Turn **Enhanced Models** off under Options > Display so Authentic Models show. A
 * Shotgun / super shotgun shell casings
 * Weapon recoil on shotguns, grenades, and rockets
 * Explosion screen shake
-* Wounded heartbeat and shaky aim at low health
 * Ammo and health crates stay until you are actually full
 * Unused monster idles: grunt reload, ogre saw-rev, knight kneel
 * Rare Vorelings from a Vore

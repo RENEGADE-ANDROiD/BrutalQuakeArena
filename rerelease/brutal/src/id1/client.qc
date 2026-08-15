@@ -1218,8 +1218,6 @@ void() PlayerPreThink =
 	if (self.deadflag == DEAD_DYING)
 		return;	// dying, so do nothing
 
-	CP_WoundedThink ();
-
 	if (self.button2)
 	{
 		PlayerJump ();

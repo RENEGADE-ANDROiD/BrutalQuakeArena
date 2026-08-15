@@ -346,29 +346,6 @@ void(float force) CP_Recoil =
 	self.flags = self.flags - (self.flags & FL_ONGROUND);
 };
 
-void() CP_WoundedThink =
-{
-	if (self.health > 30)
-		return;
-	if (time < self.wounded_next)
-		return;
-
-	if (self.health <= 15)
-	{
-		self.wounded_next = time + 0.45;
-		self.punchangle_x = self.punchangle_x + (random() - 0.5) * 6;
-		self.punchangle_y = self.punchangle_y + (random() - 0.5) * 4;
-		sound (self, CHAN_VOICE, "player/lburn1.wav", 0.35, ATTN_NORM);
-	}
-	else
-	{
-		self.wounded_next = time + 0.8;
-		self.punchangle_x = self.punchangle_x + (random() - 0.5) * 3;
-		self.punchangle_y = self.punchangle_y + (random() - 0.5) * 2;
-		sound (self, CHAN_VOICE, "player/lburn1.wav", 0.2, ATTN_NORM);
-	}
-};
-
 void(entity first, float dmg) CP_ChainLightning =
 {
 	local entity head;
