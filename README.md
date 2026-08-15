@@ -6,10 +6,7 @@ Add 'game brutal' to Launch Options.  See Options>Input to bind Axe for Quick Me
 
 Turn **Enhanced Models** off under Options > Display so Authentic Models show. Ammo, health, and exploding boxes still replace with Enhanced Models on.
 
-
-
 **Campaigns**
-
 * Original Quake (id1)
 * Scourge of Armagon (hipnotic)
 * Dissolution of Eternity (rogue)
@@ -17,10 +14,7 @@ Turn **Enhanced Models** off under Options > Display so Authentic Models show. A
 * Dimension of the Machine (mg1)
 * CTF (ctf)
 
-
-
 **Controls**
-
 * Axe / F (impulse 1 or 50) — quick melee. Locks on and lunges if a monster or player is in a short forward cone, then swings. Failed lunge still swings.
 * Chainsaw in each campaign, dropped by Ogre's.
 * Grappling Hook / C (impulse 22 or 52) — meathook. Latch onto world or enemies and zip to the point. Tap again to detach.
@@ -32,36 +26,24 @@ Turn **Enhanced Models** off under Options > Display so Authentic Models show. A
 * Impulse 71 / P — add an Arena bot (max 3)
 * Impulse 72 / K — remove Arena bots
 
-
-
 **Melee and hook**
-
 * Quick axe melee with lock-on lunge (128 unit range)
 * Random Chainsaw \& Mjolnir swing on the melee key if you have looted them.
 * Meathook zips you to the latch on world or enemies. Tap again to detach.
 
-
-
 **Visuals**
-
 * Full [Authentic Models](https://github.com/NightFright2k19/quake_authmdl) set (Enhanced Models off): monsters, weapons, player, armor, items, gibs, flames, eyes, teleporter, projectiles
 * Improved ammo, health, and exploding boxes (work with Enhanced Models on)
 * Scourge of Armagon and Dissolution extras (prox, hammer, Rogue guns/boxes)
 
-
-
 **Gore**
-
 * Heavier blood sprays on hits and deaths
 * Extra meat chunks on hard hits
 * More gibs that last longer
 * Blood puddles under corpses
 * Shootable corpses (gib them after they fall)
 
-
-
 **Combat extras**
-
 * Offhand proximity grenade
 * Lightning gun chain lightning to nearby enemies
 * Shotgun / super shotgun shell casings
@@ -73,15 +55,11 @@ Turn **Enhanced Models** off under Options > Display so Authentic Models show. A
 * Rare Vorelings from a Vore
 * Nailgun grunts and defender enforcers
 
-
-
 **Rocket Arena**
 Final Arena 1.20 maps and sounds are included. Every player needs this mod installed. Custom matches do not appear in Find Match / the public browser — invite friends.
-
 * **Local Play:** Multiplayer → Local Play → Deathmatch → episode **Rocket Arena**. Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Add QC bots with **P**.
 * **Online host:** Multiplayer → Start Match → Deathmatch → episode **Rocket Arena** → start → invite. Same bot rule. Joiners need this mod.
 * Console: `game brutal` then `exec arena.cfg` (put `arena.cfg` in `Users\<UserName>\Saved Games\Nightdive Studios\Quake\`).
-
 * Deathmatch episode **Rocket Arena** — 46 classic arenas
 * Alone: full loadout practice (100 HP, 200 armor, all guns)
 * Two or more: 1v1, 10-second lock, FIGHT, winner stays
@@ -89,8 +67,6 @@ Final Arena 1.20 maps and sounds are included. Every player needs this mod insta
 * Impulse 71 / **P** adds a mid-to-hard named bot (Crush, Nailer, Bolt, Hopper, Sawbone, Vault, blunt, GrendelKhan, Godavine, Makavelli, Immortal, Thresh, JohnCarmack, JohnRomero, DrDeath, h0s3r, PiLL). Impulse 72 / **K** removes them. None have perfect aim.
 
 See `farena_readme.txt` for the original map list and authors.
-
-
 
 **Credit**: **RENEGADE ANDROiD**
 
