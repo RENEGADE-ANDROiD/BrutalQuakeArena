@@ -1,4 +1,4 @@
-Brutal Quake Arena — melee, meathook, extra gore, and Combat Plus-style extras for Quake 2021 Re-Release.
+Brutal Quake Arena — melee, meathook, extra gore, and Combat Plus-style extras for Quake 2021 Re-Release, including 1997 Rocket Arena with local and invite play.
 
 Copy contents to your Steam Quake install directory.
 
