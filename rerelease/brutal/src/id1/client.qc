@@ -807,6 +807,7 @@ void() PutClientInServer =
 	spawn_tdeath (self.origin, self);
 	
 	stuffcmd(self, "-attack\n"); // prevent shooting after respawning
+	RA_OnSpawn ();
 };
 
 
@@ -1488,6 +1489,7 @@ called when a player disconnects from a server
 */
 void() ClientDisconnect =
 {
+	RA_ClientDisconnect ();
 	if (gameover)
 		return;
 

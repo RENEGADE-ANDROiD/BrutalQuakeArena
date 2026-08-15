@@ -1026,6 +1026,7 @@ void() PutClientInServer =
 	postSpawn.nextthink = time + 0.05;
     
     stuffcmd(self, "-attack\n"); // prevent shooting after respawning
+	RA_OnSpawn ();
 };
 
 
@@ -1785,6 +1786,7 @@ called when a player disconnects from a server
 */
 void() ClientDisconnect =
 {
+	RA_ClientDisconnect ();
 	// if the level end trigger has been activated, just return
 	// since they aren't *really* leaving
 	if (gameover)

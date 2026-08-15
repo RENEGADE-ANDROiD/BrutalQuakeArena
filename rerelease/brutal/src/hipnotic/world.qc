@@ -413,6 +413,7 @@ void() worldspawn =
       footsteps = 1;
    else
       footsteps = 0;
+	RA_Init ();
    };
 
 void() StartFrame =

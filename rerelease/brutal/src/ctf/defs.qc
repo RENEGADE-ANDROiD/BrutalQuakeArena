@@ -622,6 +622,17 @@ void() CP_DropChainsaw;
 void() CP_DropMjolnir;
 void() CP_TryVorelings;
 
+.float		ra_role;
+.float		ra_wins;
+.float		ra_losses;
+.float		ra_qtime;
+.float		ra_bot;
+void() RA_Init;
+void() RA_OnSpawn;
+void(entity attacker) RA_PlayerDied;
+void() RA_ClientDisconnect;
+float() RA_Impulse;
+
 void() W_QuickMelee;
 void() W_MeleeRestore;
 void(entity ply) W_MeleeHitFeel;

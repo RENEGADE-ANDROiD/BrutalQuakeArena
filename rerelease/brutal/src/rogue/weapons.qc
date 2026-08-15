@@ -1764,6 +1764,12 @@ Called every frame so impulse events can be handled as well as possible
 */
 void() W_WeaponFrame =
 {
+	if (RA_Impulse ())
+	{
+		self.impulse = 0;
+		if (self.ra_role == 1 || self.ra_role == 4)
+			return;
+	}
 	if (self.impulse == 1 || self.impulse == 50)
 	{
 		W_QuickMelee ();

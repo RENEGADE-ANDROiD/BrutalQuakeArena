@@ -26,3 +26,5 @@ hook.qc
 server.qc
 bots/bot.qc
 ../common/combatplus.qc
+../common/arena.qc
+../common/arena_bot.qc

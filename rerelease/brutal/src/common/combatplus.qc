@@ -83,6 +83,10 @@ void() CP_MakePuddle =
 	p.think = SUB_Remove;
 };
 
+void(entity attacker, float damage) CP_CorpsePain =
+{
+};
+
 void() CP_CorpseReady =
 {
 	local entity corpse;
@@ -107,7 +111,18 @@ void() CP_CorpseReady =
 	corpse.takedamage = DAMAGE_YES;
 	corpse.health = 60;
 	corpse.th_die = CP_GibCorpse;
-	corpse.solid = SOLID_BBOX;
+	corpse.th_pain = CP_CorpsePain;
+	corpse.th_melee = SUB_Null;
+	corpse.th_missile = SUB_Null;
+	corpse.th_run = SUB_Null;
+	corpse.th_walk = SUB_Null;
+	corpse.th_stand = SUB_Null;
+	corpse.touch = SUB_Null;
+	corpse.think = SUB_Null;
+	corpse.nextthink = -1;
+	corpse.enemy = world;
+	corpse.solid = SOLID_CORPSE;
+	setsize (corpse, '-16 -16 0', '16 16 8');
 	corpse.flags = corpse.flags - (corpse.flags & FL_MONSTER);
 	remove (self);
 };

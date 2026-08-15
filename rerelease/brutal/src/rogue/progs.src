@@ -70,3 +70,5 @@ timemach.qc
 
 bots/bot.qc				// bot support
 ../common/combatplus.qc
+../common/arena.qc
+../common/arena_bot.qc

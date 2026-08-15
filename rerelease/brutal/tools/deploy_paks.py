@@ -6,6 +6,8 @@ import subprocess
 ROOT = r"E:\SteamLibrary\steamapps\common\Quake\rerelease"
 SRC = os.path.join(ROOT, "brutal", "src")
 VENDOR = os.path.join(ROOT, "brutal", "vendor", "quake_authmdl")
+FARENA = os.path.join(ROOT, "brutal", "vendor", "farena")
+BRUTAL = os.path.join(ROOT, "brutal")
 AUTHMDL_URL = "https://github.com/NightFright2k19/quake_authmdl.git"
 ROGUE_PAK0 = os.path.join(ROOT, "rogue", "pak0.pak")
 HIP_PAK0 = os.path.join(ROOT, "hipnotic", "pak0.pak")
@@ -76,7 +78,31 @@ def add_dir(files, folder, pak_dir):
     return added
 
 
+def ensure_farena_loose():
+    """One copy of Final Arena maps/sounds under game brutal. Do not pack into every campaign."""
+    if not os.path.isdir(FARENA):
+        print("no vendor/farena (extract farena12 pak0.pak there)")
+        return
+    copied = 0
+    for dirpath, _dirs, names in os.walk(FARENA):
+        rel = os.path.relpath(dirpath, FARENA)
+        for name in names:
+            if name.lower() == "readme.txt":
+                continue
+            src = os.path.join(dirpath, name)
+            if rel == ".":
+                dest = os.path.join(BRUTAL, name)
+            else:
+                dest = os.path.join(BRUTAL, rel, name)
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
+            if (not os.path.isfile(dest)) or os.path.getmtime(src) > os.path.getmtime(dest):
+                shutil.copy2(src, dest)
+                copied += 1
+    print("farena loose files copied", copied)
+
+
 ensure_authmdl()
+ensure_farena_loose()
 
 rogue_files = read_pak(ROGUE_PAK0)
 hook = rogue_files.get("progs/hook.mdl")

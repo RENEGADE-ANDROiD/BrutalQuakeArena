@@ -294,6 +294,7 @@ float	SOLID_TRIGGER			= 1;	// touch on edge, but not blocking
 float	SOLID_BBOX				= 2;	// touch on edge, block
 float	SOLID_SLIDEBOX			= 3;	// touch on edge, but not an onground
 float	SOLID_BSP				= 4;	// bsp clip, touch on edge, block
+float	SOLID_CORPSE			= 5;	// reports touch and can shoot it, but not blocking otherwise.
 
 // range values
 float	RANGE_MELEE				= 0;
@@ -599,6 +600,17 @@ void(entity first, float dmg) CP_ChainLightning;
 void() CP_DropChainsaw;
 void() CP_DropMjolnir;
 void() CP_TryVorelings;
+
+.float		ra_role;
+.float		ra_wins;
+.float		ra_losses;
+.float		ra_qtime;
+.float		ra_bot;
+void() RA_Init;
+void() RA_OnSpawn;
+void(entity attacker) RA_PlayerDied;
+void() RA_ClientDisconnect;
+float() RA_Impulse;
 
 void() W_QuickMelee;
 void() W_MeleeRestore;

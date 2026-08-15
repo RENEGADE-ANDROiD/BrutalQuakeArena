@@ -646,6 +646,7 @@ void() PutClientInServer =
   }
 
   spawn_tdeath (self.origin, self);
+  RA_OnSpawn ();
 };
 
 
@@ -1378,6 +1379,7 @@ called when a player disconnects from a server
 */
 void() ClientDisconnect =
 {
+  RA_ClientDisconnect ();
   if (gameover)
     return;
   // if the level end trigger has been activated, just return

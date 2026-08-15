@@ -385,6 +385,7 @@ void() worldspawn =
 
 	// 63 testing
 	lightstyle(63, "a");
+	RA_Init ();
 };
 
 void() StartFrame =

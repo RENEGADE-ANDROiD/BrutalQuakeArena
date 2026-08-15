@@ -137,6 +137,8 @@ void(entity targ, entity attacker) Killed =
 
 	monster_death_use();
 	CP_OnKilledExtra ();
+	if (self.classname == "player")
+		RA_PlayerDied (attacker);
 	self.th_die ();
 	
 	self = oself;

@@ -325,6 +325,7 @@ void() worldspawn =
 	
 	// Moved to lights.qc
 	InitLightStyles();
+	RA_Init ();
 };
 
 void LoadGame();
