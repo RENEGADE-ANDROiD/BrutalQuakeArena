@@ -76,8 +76,6 @@ Turn **Enhanced Models** off under Options > Display so Authentic Models show. A
 
 
 **Rocket Arena**
-<img width="200" height="112" alt="20260815150907_1" src="https://github.com/user-attachments/assets/22802404-6505-40a6-add0-bdbcd806ff21" />
-
 Final Arena 1.20 maps and sounds are included. Every player needs this mod installed. Custom matches do not appear in Find Match / the public browser — invite friends.
 
 * **Local Play:** Multiplayer → Local Play → Deathmatch → episode **Rocket Arena**. Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Add QC bots with **P**.
