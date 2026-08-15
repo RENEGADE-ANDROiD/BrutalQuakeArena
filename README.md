@@ -76,6 +76,7 @@ Turn **Enhanced Models** off under Options > Display so Authentic Models show. A
 
 
 **Rocket Arena**
+<img width="200" height="112" alt="20260815150907_1" src="https://github.com/user-attachments/assets/22802404-6505-40a6-add0-bdbcd806ff21" />
 
 Final Arena 1.20 maps and sounds are included. Every player needs this mod installed. Custom matches do not appear in Find Match / the public browser — invite friends.
 
