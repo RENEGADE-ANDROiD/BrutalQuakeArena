@@ -1,3 +1,4 @@
+import json
 import os
 import shutil
 import struct
@@ -11,6 +12,7 @@ BRUTAL = os.path.join(ROOT, "brutal")
 AUTHMDL_URL = "https://github.com/NightFright2k19/quake_authmdl.git"
 ROGUE_PAK0 = os.path.join(ROOT, "rogue", "pak0.pak")
 HIP_PAK0 = os.path.join(ROOT, "hipnotic", "pak0.pak")
+ID1_PAK0 = os.path.join(ROOT, "id1", "pak0.pak")
 
 
 def read_pak(path):
@@ -78,6 +80,42 @@ def add_dir(files, folder, pak_dir):
     return added
 
 
+def load_json_bytes(raw):
+    if raw.startswith(b"\xef\xbb\xbf"):
+        raw = raw[3:]
+    return json.loads(raw.decode("utf-8"))
+
+
+def merge_id1_mapdb():
+    """Official id1 mapdb plus Rocket Arena. Do not edit vanilla pak0.pak."""
+    official = load_json_bytes(read_pak(ID1_PAK0)["mapdb.json"])
+    brutal_path = os.path.join(BRUTAL, "mapdb.json")
+    with open(brutal_path, "rb") as f:
+        arena = load_json_bytes(f.read())
+    episodes = list(official.get("episodes", []))
+    maps = list(official.get("maps", []))
+    have_ep = {ep.get("dir") for ep in episodes}
+    for ep in arena.get("episodes", []):
+        if ep.get("dir") not in have_ep:
+            episodes.append(ep)
+            have_ep.add(ep.get("dir"))
+    have_bsp = {m.get("bsp") for m in maps}
+    added = 0
+    for m in arena.get("maps", []):
+        if m.get("bsp") in have_bsp:
+            continue
+        maps.append(m)
+        have_bsp.add(m.get("bsp"))
+        added += 1
+    merged = {"episodes": episodes, "maps": maps}
+    blob = (json.dumps(merged, indent=2, ensure_ascii=True) + "\n").encode("utf-8")
+    print(
+        "merged mapdb episodes=%d maps=%d (+%d arena)"
+        % (len(episodes), len(maps), added)
+    )
+    return blob
+
+
 def ensure_farena_loose():
     """One copy of Final Arena maps/sounds under game brutal. Do not pack into every campaign."""
     if not os.path.isdir(FARENA):
@@ -132,6 +170,12 @@ n_maps = add_dir(shared, os.path.join(VENDOR, "id1", "maps"), "maps")
 n_progs = add_dir(shared, os.path.join(VENDOR, "id1", "progs"), "progs")
 print("authmdl shared maps=%d progs=%d" % (n_maps, n_progs))
 
+merged_mapdb = merge_id1_mapdb()
+loose_id1_mapdb = os.path.join(ROOT, "id1", "mapdb.json")
+with open(loose_id1_mapdb, "wb") as f:
+    f.write(merged_mapdb)
+print("wrote", loose_id1_mapdb)
+
 campaigns = {
     "id1": "id1",
     "hipnotic": "hipnotic",
@@ -160,6 +204,8 @@ for dest, src_name in campaigns.items():
     files["progs/hook.mdl"] = hook
     if "progs/g_hammer.mdl" in hammer_extra:
         files["progs/g_hammer.mdl"] = hammer_extra["progs/g_hammer.mdl"]
+    if dest == "id1":
+        files["mapdb.json"] = merged_mapdb
     dest_dir = os.path.join(ROOT, dest)
     pak1 = os.path.join(dest_dir, "pak1.pak")
     pak9 = os.path.join(dest_dir, "pak9.pak")

@@ -79,13 +79,13 @@ Turn **Enhanced Models** off under Options > Display so Authentic Models show. A
 
 Final Arena 1.20 maps and sounds are included. Local / listen deathmatch only — remaster matchmaking may ignore custom mods.
 
-Multiplayer → Local Play → Mode Deathmatch → episode Rocket Arena.
+Multiplayer → Local Play → Mode Deathmatch → episode Rocket Arena. Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Add QC bots with **P**.
 
 * Deathmatch episode **Rocket Arena** — 46 classic arenas
 * Alone: full loadout practice (100 HP, 200 armor, all guns)
 * Two or more: 1v1, 10-second lock, FIGHT, winner stays
 * Impulse 68 stats, 69 line position, 70 break
-* Impulse 71 adds a mid-to-hard named bot (Crush, Nailer, Bolt, Hopper, Sawbone, Vault, blunt, GrendelKhan, Godavine, Makavelli, Immortal, Thresh, JohnCarmack, JohnRomero, DrDeath, h0s3r, PiLL). Impulse 72 removes them. None have perfect aim.
+* Impulse 71 / **P** adds a mid-to-hard named bot (Crush, Nailer, Bolt, Hopper, Sawbone, Vault, blunt, GrendelKhan, Godavine, Makavelli, Immortal, Thresh, JohnCarmack, JohnRomero, DrDeath, h0s3r, PiLL). Impulse 72 / **K** removes them. None have perfect aim.
 
 See `farena_readme.txt` for the original map list and authors.
 
