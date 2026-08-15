@@ -552,6 +552,7 @@ float	AS_MISSILE		= 4;
 
 void() CP_OnKilledExtra;
 void() CP_FleshSplat;
+void() CP_GibThink;
 void() CP_FireOffhandProx;
 void() CP_EjectCasing;
 void(float force) CP_Recoil;

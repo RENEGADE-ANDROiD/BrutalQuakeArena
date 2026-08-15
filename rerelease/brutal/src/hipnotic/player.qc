@@ -588,9 +588,9 @@ void(string gibname, float dm) ThrowGib =
 	new.avelocity_x = random()*600;
 	new.avelocity_y = random()*600;
 	new.avelocity_z = random()*600;
-	new.think = SUB_Remove;
-	new.ltime = time;
-	new.nextthink = time + 40 + random()*10;
+	new.think = CP_GibThink;
+	new.ltime = time + 40 + random()*10;
+	new.nextthink = time + 0.25;
 	new.frame = 0;
 	new.flags = 0;
 	i = i + 1;
@@ -619,7 +619,7 @@ void(string gibname, float dm) ThrowHead =
 	self.takedamage = DAMAGE_NO;
 	self.solid = SOLID_NOT;
 	self.view_ofs = '0 0 8';
-	setsize (self, '-16 -16 0', '16 16 56');
+	setsize (self, '-8 -8 0', '8 8 16');
 	self.velocity = VelocityForDamage (dm);
 	self.origin_z = self.origin_z - 24;
 	self.flags = self.flags - (self.flags & FL_ONGROUND);

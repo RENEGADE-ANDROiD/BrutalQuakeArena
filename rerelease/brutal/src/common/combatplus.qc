@@ -13,6 +13,22 @@ void() CP_ProxThink;
 void() CP_ProxExplode;
 void() CP_ResetSlowmo;
 
+void() CP_GibThink =
+{
+	if (time > self.ltime)
+	{
+		remove (self);
+		return;
+	}
+	if (self.flags & FL_ONGROUND)
+	{
+		traceline (self.origin, self.origin - '0 0 48', TRUE, self);
+		if (trace_fraction == 1 || (self.origin_z - trace_endpos_z) > 8)
+			self.flags = self.flags - (self.flags & FL_ONGROUND);
+	}
+	self.nextthink = time + 0.25;
+};
+
 void() CP_GibCorpse =
 {
 	sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
@@ -59,6 +75,9 @@ void() CP_MakePuddle =
 	p.angles = '90 0 0';
 	p.avelocity = '0 0 0';
 	setorigin (p, self.origin);
+	traceline (p.origin + '0 0 8', p.origin - '0 0 256', TRUE, p);
+	if (trace_fraction < 1)
+		setorigin (p, trace_endpos);
 	particle (self.origin, '0 0 20', 73, 40);
 	p.nextthink = time + 40;
 	p.think = SUB_Remove;

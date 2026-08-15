@@ -1,10 +1,14 @@
-Brutal Quake — melee, meathook, extra gore, and Combat Plus-style extras for Quake 2021 Re-Release.  
+Brutal Quake — melee, meathook, extra gore, and Combat Plus-style extras for Quake 2021 Re-Release.  *Designed to work with Quake 2021 Re-Release.*
+
+
 
 Copy contents to your Steam Quake install directory.
 
 Add 'game brutal' to Launch Options.  See Options>Input to bind Axe for Quick Melee and Grapple Hook for Meathook.
 
 Turn **Enhanced Models** off under Options > Display so Authentic Models show. Ammo, health, and exploding boxes still replace with Enhanced Models on.
+
+
 
 **Campaigns**
 
