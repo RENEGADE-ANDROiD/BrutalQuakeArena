@@ -6,7 +6,7 @@ See Options > Input to bind Axe for Quick Melee and Grapple Hook for Meathook. A
 
 Turn **Enhanced Models** off under Options > Display so Authentic Models show. Ammo, health, and exploding boxes still replace with Enhanced Models on.
 
-Steam achievements: Single Player → **New Game** → official episode. Do not use Level Select. Rocket Arena is a custom episode and does not grant campaign achievements.
+Steam achievements: Single Player → **New Game** → official episode. Do not use Level Select. Rocket Arena maps are Deathmatch-only and do not grant campaign achievements.
 
 **Campaigns**
 * Original Quake (id1)
@@ -59,10 +59,10 @@ Steam achievements: Single Player → **New Game** → official episode. Do not 
 
 **Rocket Arena**
 Final Arena 1.20 maps and sounds are included. Every player needs this mod installed. Custom matches do not appear in Find Match / the public browser — invite friends.
-* **Local Play:** Multiplayer → Local Play → Deathmatch → episode **Rocket Arena**. Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Add QC bots with **P**.
-* **Online host:** Multiplayer → Start Match → Deathmatch → episode **Rocket Arena** → start → invite. Same bot rule. Joiners need this mod.
+* **Local Play:** Multiplayer → Local Play → Deathmatch → episode **Quake** → Arena maps (ArenaX and the rest). Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Add QC bots with **P**.
+* **Online host:** Multiplayer → Start Match → Deathmatch → episode **Quake** → Arena map → start → invite. Same bot rule. Joiners need this mod.
 * Console: `game brutal` then `exec arena.cfg` (put `arena.cfg` in `Users\<UserName>\Saved Games\Nightdive Studios\Quake\`).
-* Deathmatch episode **Rocket Arena** — 46 classic arenas
+* Deathmatch episode **Quake** — 46 classic arenas in the map list (not New Game)
 * Alone: full loadout practice (100 HP, 200 armor, all guns)
 * Two or more: 1v1, 10-second lock, FIGHT, winner stays
 * Impulse 68 stats, 69 line position, 70 break
