@@ -387,6 +387,7 @@ void()	s_explode6	=	[5,		SUB_Remove] {};
 
 void() BecomeExplosion =
 {
+	CP_ExplosionFX ();
 	self.movetype = MOVETYPE_NONE;
 	self.velocity = '0 0 0';
 	self.touch = SUB_Null;

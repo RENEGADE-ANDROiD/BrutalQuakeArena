@@ -1,10 +1,12 @@
-Brutal Quake Arena — melee, meathook, extra gore, and Combat Plus-style extras for Quake 2021 Re-Release, including 1997 Rocket Arena with local and invite play.
+﻿Brutal Quake Arena — melee, meathook, extra gore, and Combat Plus-style extras for Quake 2021 Re-Release, including 1997 Rocket Arena with local and invite play.
 
-Copy contents to your Steam Quake install directory.
+Copy contents to your Steam Quake install directory. Campaign overlays load automatically — do **not** put `game brutal` in Steam Launch Options.
 
-Add 'game brutal' to Launch Options.  See Options>Input to bind Axe for Quick Melee and Grapple Hook for Meathook. Arena and prox keys are in `default.cfg`. Rebind in the console: `bind p "impulse 71"`.
+See Options > Input to bind Axe for Quick Melee and Grapple Hook for Meathook. Arena and prox keys are in `default.cfg`. Rebind in the console: `bind p "impulse 71"`.
 
 Turn **Enhanced Models** off under Options > Display so Authentic Models show. Ammo, health, and exploding boxes still replace with Enhanced Models on.
+
+Steam achievements: Single Player → **New Game** → official episode. Do not use Level Select. Rocket Arena is a custom episode and does not grant campaign achievements.
 
 **Campaigns**
 * Original Quake (id1)
@@ -49,6 +51,7 @@ Turn **Enhanced Models** off under Options > Display so Authentic Models show. A
 * Shotgun / super shotgun shell casings
 * Weapon recoil on shotguns, grenades, and rockets
 * Explosion screen shake
+* Bigger explosions with extra fire, smoke, and debris
 * Ammo and health crates stay until you are actually full
 * Unused monster idles: grunt reload, ogre saw-rev, knight kneel
 * Rare Vorelings from a Vore
@@ -72,6 +75,3 @@ See `farena_readme.txt` for the original map list and authors.
 Monster, weapon, player, and pickup models: [Authentic Models for Quake](https://github.com/NightFright2k19/quake_authmdl) (NightFright and contributors). See `auth_mdl.txt`.
 
 Rocket Arena / Final Arena 1.20: David “crt” Wright and PlanetQuake (1997). Greg “TerMy” Wiles, Andrew “Kolinahr” Wu (sounds), Matt “WhiteFang” Ayres (NetQuake port), Telefragged Arena and the map authors listed in `farena_readme.txt`. Rules recreated in new QuakeC with credit; original RA server progs are not shipped.
-
-
-

@@ -11,6 +11,7 @@ void() SUB_Null;
 void() CP_ProxTouch;
 void() CP_ProxThink;
 void() CP_ProxExplode;
+void() CP_ExplosionFX;
 void() CP_ResetSlowmo;
 
 void() CP_GibThink =
@@ -268,6 +269,74 @@ void() CP_FireOffhandProx =
 	setorigin (missile, self.origin + v_forward * 16 + '0 0 16');
 };
 
+void() CP_ExplSpriteThink =
+{
+	self.frame = self.frame + 1;
+	if (self.frame > 5)
+	{
+		remove (self);
+		return;
+	}
+	self.nextthink = time + 0.05;
+};
+
+void() CP_ExplosionFX =
+{
+	local entity e;
+	local float i;
+	local vector org;
+
+	org = self.origin;
+	particle (org, '0 0 90', 225, 80);
+	particle (org, '0 0 40', 225, 50);
+	particle (org, '0 0 120', 0, 60);
+	particle (org + '0 0 12', '20 0 80', 0, 40);
+
+	i = 0;
+	while (i < 2)
+	{
+		e = spawn ();
+		e.movetype = MOVETYPE_NONE;
+		e.solid = SOLID_NOT;
+		e.origin = org;
+		e.origin_x = org_x + (random() - 0.5) * 24;
+		e.origin_y = org_y + (random() - 0.5) * 24;
+		e.origin_z = org_z + random() * 10;
+		setmodel (e, "progs/s_explod.spr");
+		setorigin (e, e.origin);
+		e.scale = 1.8 + random() * 0.8;
+		e.frame = 0;
+		e.nextthink = time + 0.05;
+		e.think = CP_ExplSpriteThink;
+		i = i + 1;
+	}
+
+	i = 0;
+	while (i < 7)
+	{
+		e = spawn ();
+		e.classname = "expl_debris";
+		e.movetype = MOVETYPE_BOUNCE;
+		e.solid = SOLID_NOT;
+		e.velocity_x = (random() - 0.5) * 420;
+		e.velocity_y = (random() - 0.5) * 420;
+		e.velocity_z = 140 + random() * 280;
+		e.avelocity = '300 400 200';
+		if (i < 3)
+			setmodel (e, "progs/s_spike.mdl");
+		else if (i < 5)
+			setmodel (e, "progs/gib1.mdl");
+		else
+			setmodel (e, "progs/gib3.mdl");
+		e.scale = 0.45 + random() * 0.35;
+		setsize (e, '0 0 0', '0 0 0');
+		setorigin (e, org);
+		e.nextthink = time + 1.8 + random();
+		e.think = SUB_Remove;
+		i = i + 1;
+	}
+};
+
 void() CP_ProxExplode =
 {
 	T_RadiusDamage (self, self.owner, 120, self);
@@ -277,6 +346,7 @@ void() CP_ProxExplode =
 	WriteCoord (MSG_BROADCAST, self.origin_x);
 	WriteCoord (MSG_BROADCAST, self.origin_y);
 	WriteCoord (MSG_BROADCAST, self.origin_z);
+	CP_ExplosionFX ();
 	remove (self);
 };
 

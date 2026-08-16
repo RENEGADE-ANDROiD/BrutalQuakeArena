@@ -575,12 +575,14 @@ float 	CS_MIXED		= 3; // can do ranged or melee equally.
 .float		cp_nailgrunt;
 .float		cp_defender;
 .float		cp_spawned_lings;
+.float		scale;
 
 void() CP_OnKilledExtra;
 void() CP_FleshSplat;
 void() CP_GibThink;
 void() CP_FireOffhandProx;
 void() CP_EjectCasing;
+void() CP_ExplosionFX;
 void(float force) CP_Recoil;
 void(entity first, float dmg) CP_ChainLightning;
 void() CP_DropChainsaw;
