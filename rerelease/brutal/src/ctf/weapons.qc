@@ -30,6 +30,7 @@ void() W_Precache =
   precache_model ("progs/hook.mdl");
   precache_sound ("ogre/ogsawatk.wav");
   precache_model ("progs/g_hammer.mdl");
+  precache_model ("progs/v_hammer.mdl");
   precache_sound ("hipweap/mjolslap.wav");
   precache_sound ("hipweap/mjoltink.wav");
   precache_sound ("ogre/ogdrag.wav");
@@ -93,14 +94,12 @@ void() W_FireAxe =
   {
     reach = 80;
     dmg = 45;
-    sound (self, CHAN_WEAPON, "ogre/ogsawatk.wav", 1, ATTN_NORM);
   }
   else if (self.melee_hammer)
   {
     reach = 56;
     dmg = 50;
     ham = 1;
-    sound (self, CHAN_WEAPON, "hipweap/mjolslap.wav", 1, ATTN_NORM);
   }
 
   makevectors (self.v_angle);
@@ -1028,7 +1027,12 @@ void() W_Attack =
 
   if (self.weapon == IT_AXE)
   {
-    sound (self, CHAN_WEAPON, "weapons/ax1.wav", 1, ATTN_NORM);
+    if (self.melee_saw)
+      sound (self, CHAN_WEAPON, "ogre/ogsawatk.wav", 1, ATTN_NORM);
+    else if (self.melee_hammer)
+      sound (self, CHAN_WEAPON, "hipweap/mjolslap.wav", 1, ATTN_NORM);
+    else
+      sound (self, CHAN_WEAPON, "weapons/ax1.wav", 1, ATTN_NORM);
     //stuffcmd (self, "vibrate tactile/weapons/ax1.bnvib");
     r = random();
     if (r < 0.25)

@@ -131,7 +131,7 @@ void() W_MeleeRestore =
 void() W_MeleeDoSwing =
 {
 	local float old_af;
-	local float r;
+	local float tries;
 
 	self.melee_lunge = 0;
 	if (self.health <= 0 || self.deadflag)
@@ -150,18 +150,34 @@ void() W_MeleeDoSwing =
 	if (self.items & IT_MJOLNIR)
 		self.has_mjolnir = 1;
 #endif
-	r = random();
-	if (self.has_chainsaw && self.has_mjolnir)
+	tries = 0;
+	self.melee_cycle = self.melee_cycle + 1;
+	if (self.melee_cycle > 2)
+		self.melee_cycle = 0;
+	while (tries < 3)
 	{
-		if (r < 0.33)
-			self.melee_saw = 1;
-		else if (r < 0.66)
-			self.melee_hammer = 1;
+		if (self.melee_cycle == 0)
+			break;
+		if (self.melee_cycle == 1 && self.has_mjolnir)
+			break;
+		if (self.melee_cycle == 2 && self.has_chainsaw)
+			break;
+		self.melee_cycle = self.melee_cycle + 1;
+		if (self.melee_cycle > 2)
+			self.melee_cycle = 0;
+		tries = tries + 1;
 	}
-	else if (self.has_chainsaw && r < 0.5)
-		self.melee_saw = 1;
-	else if (self.has_mjolnir && r < 0.5)
+	if (self.melee_cycle == 1)
+	{
 		self.melee_hammer = 1;
+		self.weaponmodel = "progs/v_hammer.mdl";
+	}
+	else
+	{
+		if (self.melee_cycle == 2)
+			self.melee_saw = 1;
+		self.weaponmodel = "progs/v_axe.mdl";
+	}
 
 	old_af = self.attack_finished;
 	SuperDamageSound ();

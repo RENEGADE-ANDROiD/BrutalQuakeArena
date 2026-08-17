@@ -19,6 +19,28 @@ void() CP_AxeTouch;
 void() CP_CarnageTouch;
 void() CP_DropCarnageVial;
 
+float() CP_PackMelee =
+{
+	local float p;
+
+	p = 0;
+	if (self.has_chainsaw)
+		p = p + 1;
+	if (self.has_mjolnir)
+		p = p + 2;
+	return p;
+};
+
+void(float p) CP_UnpackMelee =
+{
+	self.has_chainsaw = 0;
+	self.has_mjolnir = 0;
+	if (p & 1)
+		self.has_chainsaw = 1;
+	if (p & 2)
+		self.has_mjolnir = 1;
+};
+
 void() CP_GibThink =
 {
 	if (time > self.ltime)

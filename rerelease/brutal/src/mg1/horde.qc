@@ -316,6 +316,7 @@ void() PrecacheMonsters =
 	precache_model2 ("progs/shalrath.mdl");
 	precache_model2 ("progs/h_shal.mdl");
 	precache_model2 ("progs/v_spike.mdl");
+	precache_model2 ("progs/tarbaby.mdl");
 	
 	precache_sound2 ("shalrath/attack.wav");
 	precache_sound2 ("shalrath/attack2.wav");
