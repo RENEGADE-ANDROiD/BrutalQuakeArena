@@ -615,7 +615,6 @@ void() W_FireAxe =
 		reach = 80;
 		dmg = 45;
 		sound (self, CHAN_WEAPON, "ogre/ogsawatk.wav", 1, ATTN_NORM);
-		self.melee_saw = 0;
 	}
 	else if (self.melee_hammer)
 	{
@@ -623,7 +622,6 @@ void() W_FireAxe =
 		dmg = 50;
 		ham = 1;
 		sound (self, CHAN_WEAPON, "hipweap/mjolslap.wav", 1, ATTN_NORM);
-		self.melee_hammer = 0;
 	}
 
 	makevectors (self.v_angle);
@@ -639,19 +637,34 @@ void() W_FireAxe =
 	}
 	traceline (source, source + aim*reach, FALSE, self);
 	if (trace_fraction == 1.0)
+	{
+		self.melee_saw = 0;
+		self.melee_hammer = 0;
+		self.melee_glory = 0;
+		self.melee_style = 0;
 		return;
+	}
 
 	org = trace_endpos - aim*4;
 
 	if (trace_ent.takedamage)
 	{
+		dmg = W_MeleeHitDamage (trace_ent, dmg);
+		self.melee_saw = 0;
+		self.melee_hammer = 0;
 		trace_ent.axhitme = 1;
 		SpawnBlood (org, '0 0 0', dmg);
+		if (self.melee_glory)
+			SpawnBlood (org + '0 0 12', '0 0 40', 30);
 		T_Damage (trace_ent, self, self, dmg);
 		W_MeleeHitFeel (self);
 	}
 	else
 	{	// hit wall
+		self.melee_saw = 0;
+		self.melee_hammer = 0;
+		self.melee_glory = 0;
+		self.melee_style = 0;
 		if (ham)
 			sound (self, CHAN_WEAPON, "hipweap/mjoltink.wav", 1, ATTN_NORM);
 		else
@@ -813,6 +826,7 @@ void(float damage, vector dir) TraceAttack =
 
 	if (trace_ent.takedamage)
 	{
+		damage = CP_HeadshotDamage (trace_ent, trace_endpos, damage);
 		SpawnBlood (org, vel*0.2, damage);
 		AddMultiDamage (trace_ent, damage);
 	}
@@ -968,7 +982,7 @@ void() T_MissileTouch =
 
 	// don't do radius damage to the other, because all the damage
 	// was done in the impact
-	T_RadiusDamage (self, self.owner, 120, other);
+	T_RadiusDamage (self, self.owner, CP_CrushRadius (), other);
 
 //	sound (self, CHAN_WEAPON, "weapons/r_exp3.wav", 1, ATTN_NORM);
 	self.origin = self.origin - 8*normalize(self.velocity);
@@ -979,6 +993,8 @@ void() T_MissileTouch =
 	WriteCoord (MSG_BROADCAST, self.origin_y);
 	WriteCoord (MSG_BROADCAST, self.origin_z);
 
+	if (CP_CrushRadius () > 120)
+		CP_ExplosionFX ();
 	BecomeExplosion ();
 };
 
@@ -1414,6 +1430,8 @@ void(vector org, vector dir) launch_spike =
 	setorigin (newmis, org);
 
 	newmis.velocity = dir * 1000;
+	if (self.cp_elite)
+		newmis.velocity = newmis.velocity * 1.25;
 };
 
 void() W_FireSuperSpikes =
@@ -1483,7 +1501,7 @@ local float rand;
 	if (other.takedamage)
 	{
 		spawn_touchblood (9);
-		T_Damage (other, self, self.owner, 9);
+		T_Damage (other, self, self.owner, CP_HeadshotDamage (other, self.origin, 9));
 	}
 	else
 	{
@@ -1523,7 +1541,7 @@ local float rand;
 	if (other.takedamage)
 	{
 		spawn_touchblood (18);
-		T_Damage (other, self, self.owner, 18);
+		T_Damage (other, self, self.owner, CP_HeadshotDamage (other, self.origin, 18));
 	}
 	else
 	{

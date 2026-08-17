@@ -5,6 +5,8 @@ void(string gibname, float dm) ThrowHead;
 void(entity targ, entity inflictor, entity attacker, float damage) T_Damage;
 void(entity inflictor, entity attacker, float damage, entity ignore) T_RadiusDamage;
 void(vector org, vector vel, float damage) SpawnBlood;
+void(vector org, vector vel) SpawnMeatSpray;
+float(entity e, float healamount, float ignore) T_Heal;
 void() W_SetCurrentAmmo;
 void() SUB_Remove;
 void() SUB_Null;
@@ -13,6 +15,9 @@ void() CP_ProxThink;
 void() CP_ProxExplode;
 void() CP_ExplosionFX;
 void() CP_ResetSlowmo;
+void() CP_AxeTouch;
+void() CP_CarnageTouch;
+void() CP_DropCarnageVial;
 
 void() CP_GibThink =
 {
@@ -86,6 +91,18 @@ void() CP_MakePuddle =
 
 void(entity attacker, float damage) CP_CorpsePain =
 {
+	local vector dir;
+
+	if (attacker != world)
+	{
+		dir = self.origin - attacker.origin;
+		if (vlen (dir) < 1)
+			dir = '0 0 8';
+		dir = normalize (dir);
+		self.velocity = dir * 420 + '0 0 280';
+		self.flags = self.flags - (self.flags & FL_ONGROUND);
+	}
+	CP_GibCorpse ();
 };
 
 void() CP_CorpseReady =
@@ -146,24 +163,128 @@ void() CP_SetupCorpse =
 	h.think = CP_CorpseReady;
 };
 
+void() CP_MeleeGlorySip =
+{
+	local entity atk;
+
+	atk = self.enemy;
+	if (atk == world)
+		return;
+	if (!atk.melee_glory)
+		return;
+	if (!(atk.flags & FL_CLIENT))
+		return;
+	if (atk.health <= 0)
+		return;
+	if (atk.health >= atk.max_health)
+		return;
+
+	atk.health = atk.health + 10;
+	if (atk.health > atk.max_health)
+		atk.health = atk.max_health;
+	sound (atk, CHAN_ITEM, "items/n_health.wav", 1, ATTN_NORM);
+};
+
+void() CP_MeleeDismember =
+{
+	local entity atk;
+	local float style;
+	local vector kick;
+
+	atk = self.enemy;
+	if (atk == world)
+		return;
+	if (!(atk.flags & FL_CLIENT))
+		return;
+
+	style = atk.melee_style;
+	if (style < 1)
+		return;
+
+	if (style == 1)
+	{
+		ThrowGib ("progs/gib1.mdl", -80);
+		ThrowGib ("progs/gib2.mdl", -80);
+		SpawnBlood (self.origin + '0 0 24', '0 0 80', 30);
+	}
+	else if (style == 2)
+	{
+		ThrowGib ("progs/gib1.mdl", -90);
+		ThrowGib ("progs/gib2.mdl", -90);
+		ThrowGib ("progs/gib3.mdl", -90);
+		ThrowGib ("progs/gib1.mdl", -90);
+		SpawnMeatSpray (self.origin, '0 0 140');
+		SpawnMeatSpray (self.origin + '8 8 16', '80 -40 80');
+		SpawnBlood (self.origin, '0 0 100', 50);
+	}
+	else if (style == 3)
+	{
+		kick = self.origin - atk.origin;
+		kick_z = 0;
+		if (vlen (kick) < 1)
+			kick = '1 0 0';
+		kick = normalize (kick);
+		self.velocity = kick * 700 + '0 0 380';
+		self.flags = self.flags - (self.flags & FL_ONGROUND);
+		ThrowGib ("progs/gib3.mdl", -110);
+		ThrowGib ("progs/gib2.mdl", -110);
+		SpawnBlood (self.origin, '40 0 60', 40);
+	}
+
+	if (atk.melee_glory)
+		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
+};
+
 void() CP_OnKilledExtra =
 {
 	local entity h;
+	local entity atk;
 
-	SpawnBlood (self.origin, '0 0 90', 40);
-	SpawnBlood (self.origin + '8 0 16', '40 0 40', 25);
-	particle (self.origin, '0 0 60', 73, 80);
+	SpawnBlood (self.origin, '0 0 90', 55);
+	SpawnBlood (self.origin + '8 0 16', '40 0 40', 35);
+	SpawnBlood (self.origin + '-8 8 8', '0 40 50', 25);
+	particle (self.origin, '0 0 60', 73, 110);
+	particle (self.origin, '0 0 40', 225, 40);
 
+	CP_MeleeDismember ();
+	CP_MeleeGlorySip ();
+
+	atk = self.enemy;
 	if (self.health <= -40)
 	{
-		if (self.enemy.classname == "player")
+		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
+		sound (self, CHAN_BODY, "player/axhit1.wav", 1, ATTN_NORM);
+		if (atk.classname == "player")
 		{
-			stuffcmd (self.enemy, "slowmo 0.35\n");
+			stuffcmd (atk, "slowmo 0.35\n");
 			h = spawn ();
-			h.owner = self.enemy;
+			h.owner = atk;
 			h.nextthink = time + 0.45;
 			h.think = CP_ResetSlowmo;
+			if (atk.super_damage_finished > time)
+			{
+				particle (self.origin, '0 0 120', 73, 80);
+				particle (self.origin, '0 0 80', 225, 60);
+				WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+				WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+				WriteCoord (MSG_BROADCAST, self.origin_x);
+				WriteCoord (MSG_BROADCAST, self.origin_y);
+				WriteCoord (MSG_BROADCAST, self.origin_z);
+			}
 		}
+		if ((self.flags & FL_MONSTER) && cvar("brutal_nogibchain") == 0)
+		{
+			if (atk == world)
+				atk = self;
+			T_RadiusDamage (self, atk, 20, self);
+		}
+		CP_DropCarnageVial ();
+	}
+
+	if (self.enemy != world)
+	{
+		self.enemy.melee_glory = 0;
+		self.enemy.melee_style = 0;
 	}
 
 	CP_SetupCorpse ();
@@ -339,7 +460,15 @@ void() CP_ExplosionFX =
 
 void() CP_ProxExplode =
 {
-	T_RadiusDamage (self, self.owner, 120, self);
+	local float rad;
+
+	rad = 120;
+	if (self.owner != world)
+	{
+		if (self.owner.super_damage_finished > time || self.owner.invincible_finished > time)
+			rad = 180;
+	}
+	T_RadiusDamage (self, self.owner, rad, self);
 	sound (self, CHAN_WEAPON, "weapons/r_exp3.wav", 1, ATTN_NORM);
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
@@ -347,6 +476,8 @@ void() CP_ProxExplode =
 	WriteCoord (MSG_BROADCAST, self.origin_y);
 	WriteCoord (MSG_BROADCAST, self.origin_z);
 	CP_ExplosionFX ();
+	if (rad > 120)
+		CP_ExplosionFX ();
 	remove (self);
 };
 
@@ -471,6 +602,169 @@ void() CP_TryVorelings =
 {
 };
 #endif
+
+void() CP_MaybeElite =
+{
+	if (deathmatch)
+		return;
+	if (self.cp_elite)
+		return;
+	if (!(self.flags & FL_MONSTER))
+		return;
+	if (self.classname == "monster_oldone")
+		return;
+	if (self.classname == "monster_boss")
+		return;
+	if (random() >= 0.08)
+		return;
+
+	self.cp_elite = 1;
+	self.health = self.health * 1.5;
+	self.max_health = self.health;
+	self.effects = self.effects | EF_QUADLIGHT;
+};
+
+void() CP_AxeTouch =
+{
+	if (other == self.owner)
+		return;
+	if (pointcontents(self.origin) == CONTENT_SKY)
+	{
+		remove (self);
+		return;
+	}
+	if (other.takedamage)
+	{
+		SpawnBlood (other.origin, '0 0 0', 25);
+		T_Damage (other, self, self.owner, 25);
+	}
+	else
+	{
+		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+		WriteByte (MSG_BROADCAST, TE_KNIGHTSPIKE);
+		WriteCoord (MSG_BROADCAST, self.origin_x);
+		WriteCoord (MSG_BROADCAST, self.origin_y);
+		WriteCoord (MSG_BROADCAST, self.origin_z);
+	}
+	remove (self);
+};
+
+void() CP_KnightThrowAxe =
+{
+	local entity axe;
+	local vector dir;
+
+	if (self.enemy == world)
+		return;
+	dir = (self.enemy.origin + '0 0 16') - (self.origin + '0 0 20');
+	if (vlen (dir) < 80)
+		return;
+	dir = normalize (dir);
+
+	sound (self, CHAN_WEAPON, "knight/sword2.wav", 1, ATTN_NORM);
+	axe = spawn ();
+	axe.classname = "knight_axe";
+	axe.owner = self;
+	axe.movetype = MOVETYPE_FLYMISSILE;
+	axe.solid = SOLID_BBOX;
+	axe.velocity = dir * 700;
+	if (self.cp_elite)
+		axe.velocity = axe.velocity * 1.25;
+	axe.avelocity = '300 400 200';
+	axe.angles = vectoangles (axe.velocity);
+	axe.touch = CP_AxeTouch;
+	axe.think = SUB_Remove;
+	axe.nextthink = time + 3;
+	setmodel (axe, "progs/spike.mdl");
+	setsize (axe, '0 0 0', '0 0 0');
+	setorigin (axe, self.origin + '0 0 20' + dir * 16);
+};
+
+float(entity inflictor, entity attacker) CP_IsCook =
+{
+	if (inflictor.classname == "missile")
+		return TRUE;
+	if (inflictor.classname == "grenade")
+		return TRUE;
+	if (inflictor.classname == "ogre_grenade")
+		return TRUE;
+	if (inflictor.classname == "proximity_grenade")
+		return TRUE;
+	if (attacker.weapon == IT_LIGHTNING)
+		return TRUE;
+	return FALSE;
+};
+
+float(entity targ, vector hit, float dmg) CP_HeadshotDamage =
+{
+	local float top;
+
+	if (deathmatch)
+		return dmg;
+	if (targ == world)
+		return dmg;
+	if (!(targ.flags & FL_MONSTER))
+		return dmg;
+	if (targ.classname == "monster_oldone")
+		return dmg;
+	if (targ.classname == "monster_boss")
+		return dmg;
+
+	top = targ.origin_z + targ.maxs_z;
+	if (hit_z < top - targ.size_z * 0.45)
+		return dmg;
+
+	targ.cp_headshot = 1;
+	return dmg * 1.5;
+};
+
+float() CP_CrushRadius =
+{
+	if (self.owner == world)
+		return 120;
+	if (self.owner.super_damage_finished > time)
+		return 180;
+	if (self.owner.invincible_finished > time)
+		return 180;
+	return 120;
+};
+
+void() CP_CarnageTouch =
+{
+	if (other.classname != "player")
+		return;
+	if (other.health <= 0)
+		return;
+	if (!T_Heal (other, 10, 0))
+		return;
+	sound (other, CHAN_ITEM, "items/n_health.wav", 1, ATTN_NORM);
+	remove (self);
+};
+
+void() CP_DropCarnageVial =
+{
+	local entity v;
+
+	if (deathmatch)
+		return;
+	if (!(self.flags & FL_MONSTER))
+		return;
+	if (random() >= 0.2)
+		return;
+
+	v = spawn ();
+	v.classname = "item_carnage";
+	v.movetype = MOVETYPE_TOSS;
+	v.solid = SOLID_TRIGGER;
+	v.origin = self.origin + '0 0 24';
+	v.velocity = '0 0 180';
+	v.touch = CP_CarnageTouch;
+	v.nextthink = time + 15;
+	v.think = SUB_Remove;
+	setmodel (v, "maps/b_bh10.bsp");
+	setsize (v, '-8 -8 0', '8 8 16');
+	setorigin (v, v.origin);
+};
 
 void() CP_ResetSlowmo =
 {

@@ -136,6 +136,7 @@ local entity	etemp;
 		self.th_stand ();
 	}
 
+	CP_MaybeElite ();
 // spread think times so they don't all happen at same time
 	self.nextthink = self.nextthink + random()*0.5;
 };
@@ -196,6 +197,7 @@ void() flymonster_start_go =
 		self.pausetime = 99999999;
 		self.th_stand ();
 	}
+	CP_MaybeElite ();
 };
 
 void() flymonster_start =
@@ -247,6 +249,7 @@ void() swimmonster_start_go =
 		self.th_stand ();
 	}
 
+	CP_MaybeElite ();
 // spread think times so they don't all happen at same time
 	self.nextthink = self.nextthink + random()*0.5;
 };

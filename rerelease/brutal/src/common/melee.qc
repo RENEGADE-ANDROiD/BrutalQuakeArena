@@ -65,6 +65,54 @@ void(entity ply, entity targ) W_MeleeLungeDash =
 		ply.velocity_z = 0;
 };
 
+float(entity targ) W_MeleeIsGlory =
+{
+	if (deathmatch)
+		return FALSE;
+	if (targ == world)
+		return FALSE;
+	if (!(targ.flags & FL_MONSTER))
+		return FALSE;
+	if (targ.health <= 0 || targ.health > 40)
+		return FALSE;
+	if (targ.classname == "monster_oldone")
+		return FALSE;
+	if (targ.classname == "monster_boss")
+		return FALSE;
+	return TRUE;
+};
+
+float(entity targ, float dmg) W_MeleeHitDamage =
+{
+	local float style;
+
+	style = 1;
+	if (self.melee_saw)
+		style = 2;
+	else if (self.melee_hammer)
+		style = 3;
+	self.melee_style = style;
+
+	if (self.melee_glory)
+	{
+		if (targ != world && (targ.flags & FL_MONSTER) && targ.health > 0)
+		{
+			if (dmg < targ.health + 55)
+				dmg = targ.health + 55;
+		}
+	}
+	else if (self.super_damage_finished > time || self.invincible_finished > time)
+	{
+		if (targ != world && (targ.flags & FL_MONSTER) && targ.health > 0)
+		{
+			if (dmg < targ.health + 55)
+				dmg = targ.health + 55;
+		}
+	}
+
+	return dmg;
+};
+
 void() W_MeleeRestore =
 {
 	if (!self.melee_active)
@@ -73,6 +121,8 @@ void() W_MeleeRestore =
 	self.melee_active = 0;
 	self.melee_lunge = 0;
 	self.melee_target = world;
+	self.melee_glory = 0;
+	self.melee_style = 0;
 	self.weapon = self.melee_restore;
 	self.melee_restore = 0;
 	W_SetCurrentAmmo ();
@@ -92,6 +142,10 @@ void() W_MeleeDoSwing =
 
 	self.melee_saw = 0;
 	self.melee_hammer = 0;
+	if (W_MeleeIsGlory (self.melee_target))
+		self.melee_glory = 1;
+	else
+		self.melee_glory = 0;
 #ifdef CP_HAS_IT_MJOLNIR
 	if (self.items & IT_MJOLNIR)
 		self.has_mjolnir = 1;
@@ -163,6 +217,8 @@ entity() W_MeleeFindLungeTarget =
 								traceline (self.origin + '0 0 16', e.origin + '0 0 20', FALSE, self);
 								if (trace_fraction == 1 || trace_ent == e)
 								{
+									if (W_MeleeIsGlory (e))
+										dist = dist - 48;
 									if (dist < best_dist)
 									{
 										best_dist = dist;
@@ -283,6 +339,12 @@ void() W_QuickMelee =
 
 	if (self.weapon == IT_AXE)
 	{
+		targ = W_MeleeFindLungeTarget ();
+		self.melee_target = targ;
+		if (W_MeleeIsGlory (targ))
+			self.melee_glory = 1;
+		else
+			self.melee_glory = 0;
 		W_MeleeDoSwing ();
 		return;
 	}
@@ -297,6 +359,10 @@ void() W_QuickMelee =
 	targ = W_MeleeFindLungeTarget ();
 	if (targ != world)
 	{
+		if (W_MeleeIsGlory (targ))
+			self.melee_glory = 1;
+		else
+			self.melee_glory = 0;
 		W_MeleeStartLunge (targ);
 		return;
 	}

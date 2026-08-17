@@ -149,7 +149,7 @@ void()	knight_atk1	=[	$attackb1,		knight_atk2	] {
 void()	knight_atk2	=[	$attackb2,		knight_atk3	] {ai_charge(7);};
 void()	knight_atk3	=[	$attackb3,		knight_atk4	] {ai_charge(4);};
 void()	knight_atk4	=[	$attackb4,		knight_atk5	] {ai_charge(0);};
-void()	knight_atk5	=[	$attackb5,		knight_atk6	] {ai_charge(3);};
+void()	knight_atk5	=[	$attackb5,		knight_atk6	] {ai_charge(3); CP_KnightThrowAxe();};
 void()	knight_atk6	=[	$attackb6,		knight_atk7	] {ai_charge(4); ai_melee();};
 void()	knight_atk7	=[	$attackb7,		knight_atk8	] {ai_charge(1); ai_melee();};
 void()	knight_atk8	=[	$attackb8,		knight_atk9	] {ai_charge(3); ai_melee();};
@@ -302,10 +302,11 @@ void() monster_knight =
 	self.th_walk = knight_walk1;
 	self.th_run = knight_run1;
 	self.th_melee = knight_atk1;
+	self.th_missile = knight_atk1;
 	self.th_pain = knight_pain;
 	self.th_die = knight_die;
 	self.allowPathFind = TRUE;
-	self.combat_style = CS_MELEE;
+	self.combat_style = CS_MIXED;
 	
 	walkmonster_start ();
 };

@@ -82,6 +82,8 @@ void() OgreFireGrenade =
 
 	velocity = normalize(self.enemy.origin - self.origin);
 	velocity = velocity * 600;
+	if (self.cp_elite)
+		velocity = velocity * 1.25;
 	velocity_z = 200;
 
 	W_FireGrenade(damage, velocity);
@@ -239,7 +241,7 @@ void() ogre_nail2	=[	$shoot2,		ogre_nail3	] {ai_face();};
 void() ogre_nail3	=[	$shoot2,		ogre_nail4	] {ai_face();};
 void() ogre_nail4	=[	$shoot3,		ogre_nail5	] {ai_face();OgreFireGrenade();};
 void() ogre_nail5	=[	$shoot4,		ogre_nail6	] {ai_face();};
-void() ogre_nail6	=[	$shoot5,		ogre_nail7	] {ai_face();};
+void() ogre_nail6	=[	$shoot5,		ogre_nail7	] {ai_face(); OgreFireGrenade();};
 void() ogre_nail7	=[	$shoot6,		ogre_run1	] {ai_face();};
 
 void()	ogre_pain1	=[	$pain1,		ogre_pain2	] {};

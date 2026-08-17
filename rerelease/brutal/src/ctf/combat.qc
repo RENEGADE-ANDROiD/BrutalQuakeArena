@@ -94,7 +94,13 @@ void(entity targ, entity attacker) Killed =
 
   if (self.flags & FL_MONSTER)
   {
-    if (self.health <= -10 && self.health > -40)
+    if (self.cp_headshot)
+    {
+      if (self.health > -40)
+        self.health = -40;
+      self.cp_headshot = 0;
+    }
+    else if (self.health <= -10 && self.health > -40)
       self.health = -40;
     SpawnBlood (self.origin, '0 0 80', 50);
     SpawnMeatSpray (self.origin, '0 0 120');
@@ -258,6 +264,15 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 
   if (targ.health <= 0)
   {
+    if (CP_IsCook (inflictor, attacker))
+    {
+      if (targ.health > -50)
+        targ.health = -50;
+      oldself = self;
+      self = targ;
+      CP_ExplosionFX ();
+      self = oldself;
+    }
     Killed (targ, attacker);
     return;
   }

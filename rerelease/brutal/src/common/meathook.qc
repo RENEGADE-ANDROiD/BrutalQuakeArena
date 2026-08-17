@@ -48,8 +48,10 @@ void() MeatHookMiss =
 void() MeatHookPull =
 {
 	local entity ply;
+	local entity prey;
 	local vector dir;
 	local float dist;
+	local float yank;
 
 	ply = self.owner;
 	if (ply == world || ply.health <= 0)
@@ -64,28 +66,59 @@ void() MeatHookPull =
 		return;
 	}
 
-	if (self.enemy != world)
+	prey = self.enemy;
+	if (prey != world)
 	{
-		if (self.enemy.health <= 0)
+		if (prey.health <= 0)
 		{
 			MeatHookRemove ();
 			return;
 		}
-		setorigin (self, self.enemy.origin + '0 0 16');
+		setorigin (self, prey.origin + '0 0 16');
 	}
 
-	dir = self.origin - ply.origin;
-	dist = vlen (dir);
-	if (dist < 64)
+	yank = 0;
+	if (!deathmatch)
 	{
-		W_MeleeHitFeel (ply);
-		MeatHookRemove ();
-		return;
+		if (prey != world && (prey.flags & FL_MONSTER) && prey.health > 0)
+		{
+			if (prey.classname != "monster_oldone" && prey.classname != "monster_boss")
+				yank = 1;
+		}
 	}
 
-	dir = normalize (dir);
-	ply.flags = ply.flags - (ply.flags & FL_ONGROUND);
-	ply.velocity = dir * 800;
+	if (yank)
+	{
+		dir = ply.origin - prey.origin;
+		dist = vlen (dir);
+		if (dist < 64)
+		{
+			W_MeleeHitFeel (ply);
+			MeatHookRemove ();
+			return;
+		}
+
+		dir = normalize (dir);
+		prey.flags = prey.flags - (prey.flags & FL_ONGROUND);
+		prey.velocity = dir * 800;
+		prey.velocity_z = prey.velocity_z + 40;
+		setorigin (self, prey.origin + '0 0 16');
+	}
+	else
+	{
+		dir = self.origin - ply.origin;
+		dist = vlen (dir);
+		if (dist < 64)
+		{
+			W_MeleeHitFeel (ply);
+			MeatHookRemove ();
+			return;
+		}
+
+		dir = normalize (dir);
+		ply.flags = ply.flags - (ply.flags & FL_ONGROUND);
+		ply.velocity = dir * 800;
+	}
 
 	self.nextthink = time + 0.05;
 	self.think = MeatHookPull;

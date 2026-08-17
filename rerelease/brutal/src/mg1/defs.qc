@@ -575,10 +575,14 @@ float 	CS_MIXED		= 3; // can do ranged or melee equally.
 .float		melee_saw;
 .float		has_mjolnir;
 .float		melee_hammer;
+.float		melee_style;
+.float		melee_glory;
 .float		meat_hook_len;
 .float		cp_nailgrunt;
 .float		cp_defender;
 .float		cp_spawned_lings;
+.float		cp_elite;
+.float		cp_headshot;
 .float		scale;
 
 void() CP_OnKilledExtra;
@@ -591,6 +595,11 @@ void(entity first, float dmg) CP_ChainLightning;
 void() CP_DropChainsaw;
 void() CP_DropMjolnir;
 void() CP_TryVorelings;
+void() CP_MaybeElite;
+void() CP_KnightThrowAxe;
+float(entity inflictor, entity attacker) CP_IsCook;
+float(entity targ, vector hit, float dmg) CP_HeadshotDamage;
+float() CP_CrushRadius;
 
 .float		ra_role;
 .float		ra_wins;
@@ -607,6 +616,8 @@ void() CP_FireOffhandProx;
 void() W_QuickMelee;
 void() W_MeleeRestore;
 void(entity ply) W_MeleeHitFeel;
+float(entity targ) W_MeleeIsGlory;
+float(entity targ, float dmg) W_MeleeHitDamage;
 void() W_FireMeathook;
 void() W_MeathookRelease;
 
