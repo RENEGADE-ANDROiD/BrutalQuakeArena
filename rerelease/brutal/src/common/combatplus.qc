@@ -99,8 +99,10 @@ void() CP_FleshSplat =
 		ThrowGib ("progs/gib2.mdl", -20);
 	else if (r < 0.75)
 		ThrowGib ("progs/gib3.mdl", -20);
-	else
+	else if (Q2M_ModelsOk ())
 		Q2M_ExtraGibs ();
+	else
+		ThrowGib ("progs/gib1.mdl", -20);
 };
 
 void() CP_MakePuddle =
@@ -241,7 +243,8 @@ void() CP_MeleeDismember =
 	{
 		ThrowGib ("progs/gib1.mdl", -80);
 		ThrowGib ("progs/gib2.mdl", -80);
-		Q2M_ExtraGibs ();
+		if (Q2M_ModelsOk ())
+			Q2M_ExtraGibs ();
 		SpawnBlood (self.origin + '0 0 24', '0 0 80', 30);
 	}
 	else if (style == 2)
@@ -250,8 +253,11 @@ void() CP_MeleeDismember =
 		ThrowGib ("progs/gib2.mdl", -90);
 		ThrowGib ("progs/gib3.mdl", -90);
 		ThrowGib ("progs/gib1.mdl", -90);
-		Q2M_ExtraGibs ();
-		Q2M_ExtraGibs ();
+		if (Q2M_ModelsOk ())
+		{
+			Q2M_ExtraGibs ();
+			Q2M_ExtraGibs ();
+		}
 		SpawnMeatSpray (self.origin, '0 0 140');
 		SpawnMeatSpray (self.origin + '8 8 16', '80 -40 80');
 		SpawnBlood (self.origin, '0 0 100', 50);
@@ -267,7 +273,8 @@ void() CP_MeleeDismember =
 		self.flags = self.flags - (self.flags & FL_ONGROUND);
 		ThrowGib ("progs/gib3.mdl", -110);
 		ThrowGib ("progs/gib2.mdl", -110);
-		Q2M_ExtraGibs ();
+		if (Q2M_ModelsOk ())
+			Q2M_ExtraGibs ();
 		SpawnBlood (self.origin, '40 0 60', 40);
 	}
 
@@ -287,7 +294,7 @@ void() CP_OnKilledExtra =
 	particle (self.origin, '0 0 60', 73, 110);
 	particle (self.origin, '0 0 40', 225, 40);
 	particle (self.origin, '20 0 50', 73, 50);
-	if (self.health <= -40)
+	if (self.health <= -40 && Q2M_ModelsOk ())
 		Q2M_ExtraGibs ();
 
 	CP_MeleeDismember ();

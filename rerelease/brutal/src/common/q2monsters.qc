@@ -74,126 +74,136 @@ float() Q2M_PoolReplaceOk =
 
 void() Q2M_Precache =
 {
-	precache_model ("progs/q2_soldier.mdl");
-	precache_model ("progs/q2_infantry.mdl");
-	precache_model ("progs/q2_gunner.mdl");
-	precache_model ("progs/q2_berserk.mdl");
-	precache_model ("progs/q2_gladiatr.mdl");
-	precache_model ("progs/q2_tank.mdl");
-	precache_model ("progs/q2_flyer.mdl");
-	precache_model ("progs/q2_float.mdl");
-	precache_model ("progs/q2_hover.mdl");
-	precache_model ("progs/q2_chick.mdl");
-	precache_model ("progs/q2_mutant.mdl");
-	precache_model ("progs/q2_brain.mdl");
-	precache_model ("progs/q2_medic.mdl");
+	if (!Q2M_ModelsOk ())
+		return;
 	precache_model ("progs/q2gib_arm.mdl");
-	precache_model ("progs/q2gib_bone.mdl");
-	precache_model ("progs/q2gib_bone2.mdl");
-	precache_model ("progs/q2gib_chest.mdl");
-	precache_model ("progs/q2gib_gear.mdl");
 	precache_model ("progs/q2gib_head.mdl");
-	precache_model ("progs/q2gib_head2.mdl");
-	precache_model ("progs/q2gib_leg.mdl");
-	precache_model ("progs/q2gib_skull.mdl");
 	precache_model ("progs/q2gib_sm_meat.mdl");
-	precache_model ("progs/q2gib_sm_metal.mdl");
-	precache_sound ("soldier/solidle1.wav");
-	precache_sound ("soldier/solpain1.wav");
-	precache_sound ("soldier/solsght1.wav");
-	precache_sound ("soldier/solatck2.wav");
-	precache_sound ("soldier/soldeth1.wav");
-	precache_sound ("infantry/infidle1.wav");
-	precache_sound ("infantry/infpain1.wav");
-	precache_sound ("infantry/infsght1.wav");
-	precache_sound ("infantry/infatck1.wav");
-	precache_sound ("infantry/infdeth1.wav");
-	precache_sound ("gunner/gunidle1.wav");
-	precache_sound ("gunner/gunpain1.wav");
-	precache_sound ("gunner/sight1.wav");
-	precache_sound ("gunner/gunatck1.wav");
-	precache_sound ("gunner/gunatck2.wav");
-	precache_sound ("gunner/death1.wav");
-	precache_sound ("berserk/beridle1.wav");
-	precache_sound ("berserk/berpain2.wav");
-	precache_sound ("berserk/bersrch1.wav");
-	precache_sound ("berserk/attack.wav");
-	precache_sound ("berserk/death.wav");
-	precache_sound ("gladiator/gldidle1.wav");
-	precache_sound ("gladiator/gldpain2.wav");
-	precache_sound ("gladiator/sight.wav");
-	precache_sound ("gladiator/railgun.wav");
-	precache_sound ("gladiator/melee1.wav");
-	precache_sound ("gladiator/death.wav");
-	precache_sound ("tank/tnkidle1.wav");
-	precache_sound ("tank/pain.wav");
-	precache_sound ("tank/sight1.wav");
-	precache_sound ("tank/tnkatck3.wav");
-	precache_sound ("tank/death.wav");
-	precache_sound ("flyer/flysrch1.wav");
-	precache_sound ("flyer/flypain1.wav");
-	precache_sound ("flyer/flysght1.wav");
-	precache_sound ("flyer/flyatck2.wav");
-	precache_sound ("flyer/flydeth1.wav");
-	precache_sound ("floater/fltsrch1.wav");
-	precache_sound ("floater/fltpain1.wav");
-	precache_sound ("floater/fltsght1.wav");
-	precache_sound ("floater/fltatck2.wav");
-	precache_sound ("floater/fltdeth1.wav");
-	precache_sound ("hover/hovidle1.wav");
-	precache_sound ("hover/hovpain1.wav");
-	precache_sound ("hover/hovsght1.wav");
-	precache_sound ("hover/hovatck1.wav");
-	precache_sound ("hover/hovdeth1.wav");
-	precache_sound ("chick/chkidle1.wav");
-	precache_sound ("chick/chkpain1.wav");
-	precache_sound ("chick/chksght1.wav");
-	precache_sound ("chick/chkatck2.wav");
-	precache_sound ("chick/chkdeth1.wav");
-	precache_sound ("mutant/mutidle1.wav");
-	precache_sound ("mutant/mutpain1.wav");
-	precache_sound ("mutant/mutsght1.wav");
-	precache_sound ("mutant/mutatck1.wav");
-	precache_sound ("mutant/mutdeth1.wav");
-	precache_sound ("brain/brnidle1.wav");
-	precache_sound ("brain/brnpain1.wav");
-	precache_sound ("brain/brnsght1.wav");
-	precache_sound ("brain/melee1.wav");
-	precache_sound ("brain/brndeth1.wav");
-	precache_sound ("medic/idle.wav");
-	precache_sound ("medic/medpain1.wav");
-	precache_sound ("medic/medsght1.wav");
-	precache_sound ("medic/medatck1.wav");
-	precache_sound ("medic/meddeth1.wav");
+};
+
+void(float kind) Q2M_PrecacheKind =
+{
+	if (kind == Q2M_SOLDIER)
+	{
+		precache_model ("progs/q2_soldier.mdl");
+		precache_sound ("soldier/solsght1.wav");
+		precache_sound ("soldier/solpain1.wav");
+		precache_sound ("soldier/solatck2.wav");
+		precache_sound ("soldier/soldeth1.wav");
+	}
+	else if (kind == Q2M_INFANTRY)
+	{
+		precache_model ("progs/q2_infantry.mdl");
+		precache_sound ("infantry/infsght1.wav");
+		precache_sound ("infantry/infpain1.wav");
+		precache_sound ("infantry/infatck1.wav");
+		precache_sound ("infantry/infdeth1.wav");
+	}
+	else if (kind == Q2M_GUNNER)
+	{
+		precache_model ("progs/q2_gunner.mdl");
+		precache_sound ("gunner/sight1.wav");
+		precache_sound ("gunner/gunpain1.wav");
+		precache_sound ("gunner/gunatck1.wav");
+		precache_sound ("gunner/gunatck2.wav");
+		precache_sound ("gunner/death1.wav");
+	}
+	else if (kind == Q2M_BERSERK)
+	{
+		precache_model ("progs/q2_berserk.mdl");
+		precache_sound ("berserk/bersrch1.wav");
+		precache_sound ("berserk/berpain2.wav");
+		precache_sound ("berserk/attack.wav");
+		precache_sound ("berserk/death.wav");
+	}
+	else if (kind == Q2M_GLADIATOR)
+	{
+		precache_model ("progs/q2_gladiatr.mdl");
+		precache_sound ("gladiator/sight.wav");
+		precache_sound ("gladiator/gldpain2.wav");
+		precache_sound ("gladiator/railgun.wav");
+		precache_sound ("gladiator/melee1.wav");
+		precache_sound ("gladiator/death.wav");
+	}
+	else if (kind == Q2M_TANK)
+	{
+		precache_model ("progs/q2_tank.mdl");
+		precache_sound ("tank/sight1.wav");
+		precache_sound ("tank/pain.wav");
+		precache_sound ("tank/tnkatck3.wav");
+		precache_sound ("tank/death.wav");
+	}
+	else if (kind == Q2M_FLYER)
+	{
+		precache_model ("progs/q2_flyer.mdl");
+		precache_sound ("flyer/flysght1.wav");
+		precache_sound ("flyer/flypain1.wav");
+		precache_sound ("flyer/flyatck2.wav");
+		precache_sound ("flyer/flydeth1.wav");
+	}
+	else if (kind == Q2M_FLOAT)
+	{
+		precache_model ("progs/q2_float.mdl");
+		precache_sound ("floater/fltsght1.wav");
+		precache_sound ("floater/fltpain1.wav");
+		precache_sound ("floater/fltatck2.wav");
+		precache_sound ("floater/fltdeth1.wav");
+	}
+	else if (kind == Q2M_HOVER)
+	{
+		precache_model ("progs/q2_hover.mdl");
+		precache_sound ("hover/hovsght1.wav");
+		precache_sound ("hover/hovpain1.wav");
+		precache_sound ("hover/hovatck1.wav");
+		precache_sound ("hover/hovdeth1.wav");
+	}
+	else if (kind == Q2M_CHICK)
+	{
+		precache_model ("progs/q2_chick.mdl");
+		precache_sound ("chick/chksght1.wav");
+		precache_sound ("chick/chkpain1.wav");
+		precache_sound ("chick/chkatck2.wav");
+		precache_sound ("chick/chkdeth1.wav");
+	}
+	else if (kind == Q2M_MUTANT)
+	{
+		precache_model ("progs/q2_mutant.mdl");
+		precache_sound ("mutant/mutsght1.wav");
+		precache_sound ("mutant/mutpain1.wav");
+		precache_sound ("mutant/mutatck1.wav");
+		precache_sound ("mutant/mutdeth1.wav");
+	}
+	else if (kind == Q2M_BRAIN)
+	{
+		precache_model ("progs/q2_brain.mdl");
+		precache_sound ("brain/brnsght1.wav");
+		precache_sound ("brain/brnpain1.wav");
+		precache_sound ("brain/melee1.wav");
+		precache_sound ("brain/brndeth1.wav");
+	}
+	else
+	{
+		precache_model ("progs/q2_medic.mdl");
+		precache_sound ("medic/medsght1.wav");
+		precache_sound ("medic/medpain1.wav");
+		precache_sound ("medic/medatck1.wav");
+		precache_sound ("medic/meddeth1.wav");
+	}
 };
 
 void() Q2M_ExtraGibs =
 {
 	local float r;
 
+	if (!Q2M_ModelsOk ())
+		return;
 	r = random ();
-	if (r < 0.12)
+	if (r < 0.34)
 		ThrowGib ("progs/q2gib_arm.mdl", -50);
-	else if (r < 0.24)
-		ThrowGib ("progs/q2gib_leg.mdl", -50);
-	else if (r < 0.36)
+	else if (r < 0.67)
 		ThrowGib ("progs/q2gib_head.mdl", -40);
-	else if (r < 0.48)
-		ThrowGib ("progs/q2gib_chest.mdl", -55);
-	else if (r < 0.60)
-		ThrowGib ("progs/q2gib_bone.mdl", -35);
-	else if (r < 0.72)
-		ThrowGib ("progs/q2gib_skull.mdl", -40);
-	else if (r < 0.84)
-		ThrowGib ("progs/q2gib_sm_meat.mdl", -30);
 	else
-		ThrowGib ("progs/q2gib_sm_metal.mdl", -30);
-	if (random () < 0.4)
-		ThrowGib ("progs/q2gib_bone2.mdl", -25);
-	if (random () < 0.25)
-		ThrowGib ("progs/q2gib_head2.mdl", -35);
-	if (random () < 0.2)
-		ThrowGib ("progs/q2gib_gear.mdl", -20);
+		ThrowGib ("progs/q2gib_sm_meat.mdl", -30);
 };
 
 #ifdef CP_HAS_MONSTERS
@@ -207,39 +217,39 @@ void() Q2M_SetRange =
 	self.q2_ffire = -1;
 	if (k == Q2M_SOLDIER)
 	{
-		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 146; self.q2_fend = 214; }
-		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 215; self.q2_fend = 271; }
-		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 97; self.q2_fend = 108; }
-		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 12; self.q2_fend = 29; self.q2_ffire = 18; }
-		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 50; self.q2_fend = 64; }
-		else { self.q2_fstart = 272; self.q2_fend = 300; }
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 45; self.q2_fend = 113; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 114; self.q2_fend = 170; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 33; self.q2_fend = 44; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 0; self.q2_fend = 17; self.q2_ffire = 6; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 18; self.q2_fend = 32; }
+		else { self.q2_fstart = 171; self.q2_fend = 199; }
 	}
 	else if (k == Q2M_INFANTRY)
 	{
-		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 1; self.q2_fend = 71; }
-		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 72; self.q2_fend = 91; }
-		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 92; self.q2_fend = 99; }
-		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 184; self.q2_fend = 206; self.q2_ffire = 192; }
-		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 100; self.q2_fend = 110; }
-		else { self.q2_fstart = 125; self.q2_fend = 150; }
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 70; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 71; self.q2_fend = 90; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 91; self.q2_fend = 98; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 136; self.q2_fend = 158; self.q2_ffire = 144; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 99; self.q2_fend = 109; }
+		else { self.q2_fstart = 110; self.q2_fend = 135; }
 	}
 	else if (k == Q2M_GUNNER)
 	{
 		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 69; }
 		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 70; self.q2_fend = 93; }
 		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 94; self.q2_fend = 101; }
-		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 108; self.q2_fend = 140; self.q2_ffire = 120; }
-		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 159; self.q2_fend = 170; }
-		else { self.q2_fstart = 190; self.q2_fend = 200; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 102; self.q2_fend = 134; self.q2_ffire = 114; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 135; self.q2_fend = 146; }
+		else { self.q2_fstart = 147; self.q2_fend = 157; }
 	}
 	else if (k == Q2M_BERSERK)
 	{
-		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 5; self.q2_fend = 24; }
-		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 25; self.q2_fend = 35; }
-		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 36; self.q2_fend = 41; }
-		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 42; self.q2_fend = 54; self.q2_ffire = 48; }
-		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 203; self.q2_fend = 214; }
-		else { self.q2_fstart = 223; self.q2_fend = 235; }
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 19; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 20; self.q2_fend = 30; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 31; self.q2_fend = 36; }
+		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 37; self.q2_fend = 49; self.q2_ffire = 43; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 50; self.q2_fend = 61; }
+		else { self.q2_fstart = 62; self.q2_fend = 74; }
 	}
 	else if (k == Q2M_GLADIATOR)
 	{
@@ -257,102 +267,76 @@ void() Q2M_SetRange =
 		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 30; self.q2_fend = 54; }
 		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 30; self.q2_fend = 54; }
 		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 55; self.q2_fend = 80; self.q2_ffire = 68; }
-		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 197; self.q2_fend = 210; }
-		else { self.q2_fstart = 222; self.q2_fend = 253; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 81; self.q2_fend = 94; }
+		else { self.q2_fstart = 95; self.q2_fend = 126; }
 	}
 	else if (k == Q2M_FLYER)
 	{
-		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 13; self.q2_fend = 57; }
-		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 13; self.q2_fend = 57; }
-		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 13; self.q2_fend = 57; }
-		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 58; self.q2_fend = 80; self.q2_ffire = 68; }
-		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 134; self.q2_fend = 142; }
-		else { self.q2_fstart = 134; self.q2_fend = 150; }
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 44; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 0; self.q2_fend = 44; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 0; self.q2_fend = 44; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 45; self.q2_fend = 67; self.q2_ffire = 55; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 68; self.q2_fend = 76; }
+		else { self.q2_fstart = 68; self.q2_fend = 84; }
 	}
 	else if (k == Q2M_FLOAT)
 	{
-		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 144; self.q2_fend = 247; }
-		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 144; self.q2_fend = 247; }
-		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 144; self.q2_fend = 247; }
-		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 31; self.q2_fend = 55; self.q2_ffire = 42; }
-		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 117; self.q2_fend = 130; }
-		else { self.q2_fstart = 104; self.q2_fend = 116; }
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 52; self.q2_fend = 155; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 52; self.q2_fend = 155; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 52; self.q2_fend = 155; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 0; self.q2_fend = 24; self.q2_ffire = 11; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 38; self.q2_fend = 51; }
+		else { self.q2_fstart = 25; self.q2_fend = 37; }
 	}
 	else if (k == Q2M_HOVER)
 	{
 		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 29; }
 		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 30; self.q2_fend = 64; }
 		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 30; self.q2_fend = 64; }
-		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 197; self.q2_fend = 204; self.q2_ffire = 200; }
-		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 113; self.q2_fend = 125; }
-		else { self.q2_fstart = 162; self.q2_fend = 172; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 89; self.q2_fend = 96; self.q2_ffire = 92; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 65; self.q2_fend = 77; }
+		else { self.q2_fstart = 78; self.q2_fend = 88; }
 	}
 	else if (k == Q2M_CHICK)
 	{
-		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 121; self.q2_fend = 180; }
-		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 181; self.q2_fend = 207; }
-		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 181; self.q2_fend = 207; }
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 76; self.q2_fend = 135; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 136; self.q2_fend = 162; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 136; self.q2_fend = 162; }
 		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 0; self.q2_fend = 24; self.q2_ffire = 14; }
-		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 90; self.q2_fend = 105; }
-		else { self.q2_fstart = 48; self.q2_fend = 82; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 60; self.q2_fend = 75; }
+		else { self.q2_fstart = 25; self.q2_fend = 59; }
 	}
 	else if (k == Q2M_MUTANT)
 	{
-		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 62; self.q2_fend = 125; }
-		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 126; self.q2_fend = 148; }
-		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 56; self.q2_fend = 61; }
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 52; self.q2_fend = 115; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 116; self.q2_fend = 138; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 46; self.q2_fend = 51; }
 		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 0; self.q2_fend = 14; self.q2_ffire = 7; }
 		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 34; self.q2_fend = 45; }
 		else { self.q2_fstart = 15; self.q2_fend = 33; }
 	}
 	else if (k == Q2M_BRAIN)
 	{
-		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 162; self.q2_fend = 221; }
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 112; self.q2_fend = 171; }
 		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 0; self.q2_fend = 52; }
 		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 0; self.q2_fend = 52; }
 		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 53; self.q2_fend = 75; self.q2_ffire = 64; }
-		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 88; self.q2_fend = 100; }
-		else { self.q2_fstart = 123; self.q2_fend = 145; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 76; self.q2_fend = 88; }
+		else { self.q2_fstart = 89; self.q2_fend = 111; }
 	}
 	else
 	{
 		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 12; self.q2_fend = 101; }
 		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 0; self.q2_fend = 11; }
 		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 102; self.q2_fend = 107; }
-		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 177; self.q2_fend = 200; self.q2_ffire = 188; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 146; self.q2_fend = 169; self.q2_ffire = 157; }
 		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 108; self.q2_fend = 115; }
-		else { self.q2_fstart = 147; self.q2_fend = 176; }
+		else { self.q2_fstart = 116; self.q2_fend = 145; }
 	}
 };
 
 void() Q2M_PlayIdle =
 {
-	if (self.q2_kind == Q2M_SOLDIER)
-		sound (self, CHAN_VOICE, "soldier/solidle1.wav", 1, ATTN_IDLE);
-	else if (self.q2_kind == Q2M_INFANTRY)
-		sound (self, CHAN_VOICE, "infantry/infidle1.wav", 1, ATTN_IDLE);
-	else if (self.q2_kind == Q2M_GUNNER)
-		sound (self, CHAN_VOICE, "gunner/gunidle1.wav", 1, ATTN_IDLE);
-	else if (self.q2_kind == Q2M_BERSERK)
-		sound (self, CHAN_VOICE, "berserk/beridle1.wav", 1, ATTN_IDLE);
-	else if (self.q2_kind == Q2M_GLADIATOR)
-		sound (self, CHAN_VOICE, "gladiator/gldidle1.wav", 1, ATTN_IDLE);
-	else if (self.q2_kind == Q2M_TANK)
-		sound (self, CHAN_VOICE, "tank/tnkidle1.wav", 1, ATTN_IDLE);
-	else if (self.q2_kind == Q2M_FLYER)
-		sound (self, CHAN_VOICE, "flyer/flysrch1.wav", 1, ATTN_IDLE);
-	else if (self.q2_kind == Q2M_FLOAT)
-		sound (self, CHAN_VOICE, "floater/fltsrch1.wav", 1, ATTN_IDLE);
-	else if (self.q2_kind == Q2M_HOVER)
-		sound (self, CHAN_VOICE, "hover/hovidle1.wav", 1, ATTN_IDLE);
-	else if (self.q2_kind == Q2M_CHICK)
-		sound (self, CHAN_VOICE, "chick/chkidle1.wav", 1, ATTN_IDLE);
-	else if (self.q2_kind == Q2M_MUTANT)
-		sound (self, CHAN_VOICE, "mutant/mutidle1.wav", 1, ATTN_IDLE);
-	else if (self.q2_kind == Q2M_BRAIN)
-		sound (self, CHAN_VOICE, "brain/brnidle1.wav", 1, ATTN_IDLE);
-	else
-		sound (self, CHAN_VOICE, "medic/idle.wav", 1, ATTN_IDLE);
 };
 
 void() Q2M_FireShot =
@@ -704,6 +688,7 @@ void(float kind) Q2M_Setup =
 {
 	local string mdl;
 
+	Q2M_PrecacheKind (kind);
 	self.q2_kind = kind;
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_STEP;

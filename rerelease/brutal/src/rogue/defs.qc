@@ -633,6 +633,7 @@ void() Q2_GrantArena;
 float() Q2_TossCurrent;
 void() Q2_ClearHeld;
 void() Q2M_Precache;
+float() Q2M_ModelsOk;
 float(float slot) Q2M_TryReplace;
 void() Q2M_Start;
 void() Q2M_ExtraGibs;
