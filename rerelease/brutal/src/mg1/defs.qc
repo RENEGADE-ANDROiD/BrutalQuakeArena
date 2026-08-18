@@ -427,6 +427,15 @@ float	MSG_INIT		= 3;		// write to the init string
 float TEAM_MONSTERS        = 0;
 float TEAM_HUMANS        = 1;
 
+float COLOR_RED			= 251;
+float COLOR_GREEN		= 184;
+float COLOR_BLUE		= 208;
+float COLOR_YELLOW		= 192;
+float COLOR_WHITE		= 254;
+float COLOR_BLACK		= 0;
+float COLOR_CYAN		= 244;
+float COLOR_ORANGE		= 95;
+
 // player expanded settings flags
 float PEF_CHANGEONLYNEW	= 1;
 float PEF_CHANGENEVER   = 2;
@@ -589,6 +598,11 @@ float 	CS_MIXED		= 3; // can do ranged or melee equally.
 .float		q2_fstart;
 .float		q2_fend;
 .float		q2_ffire;
+.float		q2_ffire2;
+.float		q2_runspeed;
+.float		q2_gibhealth;
+.float		q2_alt;
+.entity		q2_flash;
 .float		meat_hook_len;
 .float		cp_nailgrunt;
 .float		cp_defender;
@@ -625,6 +639,7 @@ float() Q2_TossCurrent;
 void() Q2_ClearHeld;
 void() Q2M_Precache;
 float() Q2M_ModelsOk;
+float() Q2M_CheckAttack;
 float(float slot) Q2M_TryReplace;
 void() Q2M_Start;
 void() Q2M_ExtraGibs;

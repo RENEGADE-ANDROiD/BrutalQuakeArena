@@ -947,6 +947,8 @@ float() CheckAnyAttack =
 {
 	if (!enemy_vis)
 		return;
+   if (self.q2_kind)
+		return Q2M_CheckAttack ();
    if (self.classname == "monster_army")
 		return SoldierCheckAttack ();
    if (self.classname == "monster_ogre")

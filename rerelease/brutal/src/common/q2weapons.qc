@@ -15,6 +15,7 @@ void() spike_touch;
 float() crandom;
 void() BecomeExplosion;
 void() bound_other_ammo;
+float() Q2_BestWeapon;
 
 float() Q2_ModelsOk =
 {
@@ -48,6 +49,8 @@ float(float bit) Q2_Has =
 
 void() Q2_Precache =
 {
+	if (!Q2_ModelsOk ())
+		return;
 	precache_model ("progs/v_machn.mdl");
 	precache_model ("progs/v_chain.mdl");
 	precache_model ("progs/v_hyperb.mdl");
@@ -160,23 +163,215 @@ float() Q2_SetCurrentAmmo =
 	return FALSE;
 };
 
+void() Q2_FlashOff =
+{
+	self.effects = 0;
+};
+
+void(entity e, float bright) Q2_Muzzle =
+{
+	local entity f;
+
+	e.effects = e.effects | EF_MUZZLEFLASH;
+	f = e.q2_flash;
+	if (f == world)
+	{
+		f = spawn ();
+		f.movetype = MOVETYPE_NOCLIP;
+		f.solid = SOLID_NOT;
+		f.owner = e;
+		e.q2_flash = f;
+	}
+	setorigin (f, e.origin + '0 0 22');
+	if (bright >= 2)
+		f.effects = EF_QUADLIGHT;
+	else if (bright)
+		f.effects = EF_BRIGHTLIGHT;
+	else
+		f.effects = EF_DIMLIGHT;
+	f.think = Q2_FlashOff;
+	f.nextthink = time + 0.12;
+};
+
+void(vector org, vector vel, float color, float count) Q2_Sparks =
+{
+	particle (org, vel, color, count);
+};
+
+void(vector org, float style) Q2_Impact =
+{
+	local entity f;
+
+	if (style == 1)
+	{
+		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+		WriteByte (MSG_BROADCAST, TE_WIZSPIKE);
+		WriteCoord (MSG_BROADCAST, org_x);
+		WriteCoord (MSG_BROADCAST, org_y);
+		WriteCoord (MSG_BROADCAST, org_z);
+		Q2_Sparks (org, '0 0 80', COLOR_CYAN, 80);
+		Q2_Sparks (org, '20 0 40', COLOR_BLUE, 40);
+	}
+	else if (style == 2)
+	{
+		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+		WriteByte (MSG_BROADCAST, TE_TAREXPLOSION);
+		WriteCoord (MSG_BROADCAST, org_x);
+		WriteCoord (MSG_BROADCAST, org_y);
+		WriteCoord (MSG_BROADCAST, org_z);
+		Q2_Sparks (org, '0 0 120', COLOR_CYAN, 120);
+		Q2_Sparks (org, '0 0 60', COLOR_WHITE, 80);
+	}
+	else if (style == 3)
+	{
+		Q2_Sparks (org, '0 0 140', COLOR_ORANGE, 120);
+		Q2_Sparks (org, '30 0 80', COLOR_RED, 80);
+		Q2_Sparks (org, '0 0 40', COLOR_YELLOW, 60);
+	}
+	else
+	{
+		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+		WriteByte (MSG_BROADCAST, TE_GUNSHOT);
+		WriteCoord (MSG_BROADCAST, org_x);
+		WriteCoord (MSG_BROADCAST, org_y);
+		WriteCoord (MSG_BROADCAST, org_z);
+		Q2_Sparks (org, '0 0 50', COLOR_YELLOW, 40);
+	}
+	if (style >= 1)
+	{
+		f = spawn ();
+		f.movetype = MOVETYPE_NOCLIP;
+		f.solid = SOLID_NOT;
+		setorigin (f, org);
+		if (style >= 2)
+			f.effects = EF_BRIGHTLIGHT;
+		else
+			f.effects = EF_DIMLIGHT;
+		f.think = SUB_Remove;
+		f.nextthink = time + 0.15;
+	}
+};
+
+void(vector a, vector b) Q2_RailTrail =
+{
+	local vector p, d;
+	local float n;
+
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_LIGHTNING2);
+	WriteEntity (MSG_BROADCAST, self);
+	WriteCoord (MSG_BROADCAST, a_x);
+	WriteCoord (MSG_BROADCAST, a_y);
+	WriteCoord (MSG_BROADCAST, a_z);
+	WriteCoord (MSG_BROADCAST, b_x);
+	WriteCoord (MSG_BROADCAST, b_y);
+	WriteCoord (MSG_BROADCAST, b_z);
+	d = b - a;
+	n = vlen (d);
+	if (n < 1)
+		return;
+	d = d * (1 / n);
+	p = a;
+	while (n > 0)
+	{
+		Q2_Sparks (p, '0 0 30', COLOR_CYAN, 8);
+		p = p + d * 40;
+		n = n - 40;
+	}
+};
+
+void() Q2_BoltThink =
+{
+	Q2_Sparks (self.origin, '0 0 24', COLOR_CYAN, 10);
+	if (time > self.ltime)
+	{
+		remove (self);
+		return;
+	}
+	self.nextthink = time + 0.05;
+};
+
+void() Q2_BlasterTouch =
+{
+	if (other == self.owner)
+		return;
+	if (pointcontents (self.origin) == CONTENT_SKY)
+	{
+		remove (self);
+		return;
+	}
+	Q2_Impact (self.origin, 1);
+	if (other.takedamage)
+		T_Damage (other, self, self.owner, 15);
+	remove (self);
+};
+
+void() Q2_BFGDetonate =
+{
+	local entity h;
+	local float n;
+
+	sound (self, CHAN_WEAPON, "weapons/bfg__x1b.wav", 1, ATTN_NORM);
+	T_RadiusDamage (self, self.owner, 200, self.owner);
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+	WriteCoord (MSG_BROADCAST, self.origin_x);
+	WriteCoord (MSG_BROADCAST, self.origin_y);
+	WriteCoord (MSG_BROADCAST, self.origin_z);
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_TAREXPLOSION);
+	WriteCoord (MSG_BROADCAST, self.origin_x);
+	WriteCoord (MSG_BROADCAST, self.origin_y);
+	WriteCoord (MSG_BROADCAST, self.origin_z);
+	Q2_Impact (self.origin, 3);
+	Q2_Sparks (self.origin, '0 0 180', COLOR_YELLOW, 200);
+	n = 0;
+	h = findradius (self.origin, 600);
+	while (h != world)
+	{
+		if (h != self.owner && h.takedamage && n < 6)
+		{
+			WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+			WriteByte (MSG_BROADCAST, TE_LIGHTNING2);
+			WriteEntity (MSG_BROADCAST, self);
+			WriteCoord (MSG_BROADCAST, self.origin_x);
+			WriteCoord (MSG_BROADCAST, self.origin_y);
+			WriteCoord (MSG_BROADCAST, self.origin_z);
+			WriteCoord (MSG_BROADCAST, h.origin_x);
+			WriteCoord (MSG_BROADCAST, h.origin_y);
+			WriteCoord (MSG_BROADCAST, h.origin_z);
+			T_Damage (h, self, self.owner, 30);
+			n = n + 1;
+		}
+		h = h.chain;
+	}
+	self.owner = world;
+	BecomeExplosion ();
+};
+
+void() Q2_BFGThink =
+{
+	Q2_Sparks (self.origin, '0 0 50', COLOR_YELLOW, 18);
+	Q2_Sparks (self.origin, '16 0 20', COLOR_GREEN, 12);
+	if (time > self.ltime)
+	{
+		Q2_BFGDetonate ();
+		return;
+	}
+	self.nextthink = time + 0.1;
+};
+
 void() Q2_FireHitscan =
 {
 	local vector org, dir;
 
-	org = self.origin + '0 0 16';
-	dir = v_forward + v_right * crandom () * 0.03 + v_up * crandom () * 0.03;
+	org = self.origin + self.view_ofs;
+	dir = v_forward + v_right * crandom () * 0.1 + v_up * crandom () * 0.1;
 	traceline (org, org + dir * 2048, FALSE, self);
 	if (trace_ent.takedamage)
 		T_Damage (trace_ent, self, self, 8);
-	else if (trace_fraction < 1)
-	{
-		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-		WriteByte (MSG_BROADCAST, TE_GUNSHOT);
-		WriteCoord (MSG_BROADCAST, trace_endpos_x);
-		WriteCoord (MSG_BROADCAST, trace_endpos_y);
-		WriteCoord (MSG_BROADCAST, trace_endpos_z);
-	}
+	if (trace_fraction < 1)
+		Q2_Impact (trace_endpos, 0);
 };
 
 void() Q2_FireMG =
@@ -198,12 +393,15 @@ void() Q2_FireMG =
 		sound (self, CHAN_WEAPON, "weapons/machgf5b.wav", 1, ATTN_NORM);
 	self.currentammo = self.ammo_nails = self.ammo_nails - 1;
 	self.punchangle_x = self.punchangle_x - 1;
+	Q2_Muzzle (self, 0);
 	Q2_FireHitscan ();
 	self.attack_finished = time + 0.1;
 };
 
 void() Q2_FireCG =
 {
+	local float shots;
+
 	if (self.ammo_nails < 1)
 		return;
 	if (!self.q2_spin || time > (self.q2_spin + 1))
@@ -219,12 +417,20 @@ void() Q2_FireCG =
 		return;
 	}
 	sound (self, CHAN_WEAPON, "weapons/chngnl1a.wav", 1, ATTN_NORM);
-	self.currentammo = self.ammo_nails = self.ammo_nails - 1;
-	if (self.ammo_nails > 0)
-		self.currentammo = self.ammo_nails = self.ammo_nails - 1;
+	shots = 1;
+	if (self.ammo_nails >= 2)
+		shots = 2;
+	if (self.ammo_nails >= 3 && time > (self.q2_spin + 0.3))
+		shots = 3;
 	self.punchangle_x = self.punchangle_x - 1;
-	Q2_FireHitscan ();
-	Q2_FireHitscan ();
+	Q2_Muzzle (self, 0);
+	while (shots > 0 && self.ammo_nails >= 1)
+	{
+		self.currentammo = self.ammo_nails = self.ammo_nails - 1;
+		Q2_FireHitscan ();
+		Q2_Sparks (trace_endpos, '0 0 40', COLOR_YELLOW, 20);
+		shots = shots - 1;
+	}
 	self.attack_finished = time + 0.05;
 };
 
@@ -237,16 +443,20 @@ void() Q2_FireHyper =
 	sound (self, CHAN_WEAPON, "weapons/hyprbf1a.wav", 1, ATTN_NORM);
 	self.currentammo = self.ammo_cells = self.ammo_cells - 1;
 	self.punchangle_x = self.punchangle_x - 1;
-	org = self.origin + '0 0 16';
+	Q2_Muzzle (self, 0);
+	Q2_Sparks (self.origin + self.view_ofs, v_forward * 40, COLOR_CYAN, 16);
+	org = self.origin + self.view_ofs + v_forward * 8;
 	newmis = spawn ();
 	newmis.owner = self;
 	newmis.movetype = MOVETYPE_FLYMISSILE;
 	newmis.solid = SOLID_BBOX;
 	newmis.angles = vectoangles (v_forward);
-	newmis.touch = spike_touch;
-	newmis.classname = "spike";
-	newmis.think = SUB_Remove;
-	newmis.nextthink = time + 6;
+	newmis.touch = Q2_BlasterTouch;
+	newmis.classname = "q2_blaster";
+	newmis.effects = EF_DIMLIGHT;
+	newmis.ltime = time + 6;
+	newmis.think = Q2_BoltThink;
+	newmis.nextthink = time + 0.05;
 	setmodel (newmis, "progs/spike.mdl");
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
 	setorigin (newmis, org);
@@ -256,26 +466,44 @@ void() Q2_FireHyper =
 
 void() Q2_FireRail =
 {
-	local vector org;
+	local vector org, dest, dir;
+	local entity skip;
+	local float n, dmg;
 
-	if (self.ammo_cells < 10)
+	if (self.ammo_cells < 1)
 		return;
 	sound (self, CHAN_WEAPON, "weapons/railgf1a.wav", 1, ATTN_NORM);
-	self.currentammo = self.ammo_cells = self.ammo_cells - 10;
+	self.currentammo = self.ammo_cells = self.ammo_cells - 1;
 	self.punchangle_x = self.punchangle_x - 3;
-	org = self.origin + '0 0 16';
-	traceline (org, org + v_forward * 8192, FALSE, self);
-	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
-	WriteByte (MSG_BROADCAST, TE_LIGHTNING2);
-	WriteEntity (MSG_BROADCAST, self);
-	WriteCoord (MSG_BROADCAST, org_x);
-	WriteCoord (MSG_BROADCAST, org_y);
-	WriteCoord (MSG_BROADCAST, org_z);
-	WriteCoord (MSG_BROADCAST, trace_endpos_x);
-	WriteCoord (MSG_BROADCAST, trace_endpos_y);
-	WriteCoord (MSG_BROADCAST, trace_endpos_z);
-	if (trace_ent.takedamage)
-		T_Damage (trace_ent, self, self, 120);
+	Q2_Muzzle (self, 1);
+	org = self.origin + self.view_ofs;
+	dir = v_forward;
+	dest = org + dir * 8192;
+	skip = self;
+	n = 0;
+	if (deathmatch)
+		dmg = 100;
+	else
+		dmg = 150;
+	while (n < 6)
+	{
+		traceline (org, dest, FALSE, skip);
+		if (trace_ent.takedamage)
+		{
+			T_Damage (trace_ent, self, self, dmg);
+			Q2_Sparks (trace_endpos, '0 0 80', COLOR_CYAN, 40);
+			org = trace_endpos + dir * 8;
+			skip = trace_ent;
+			n = n + 1;
+		}
+		else
+		{
+			n = 6;
+		}
+	}
+	Q2_RailTrail (self.origin + self.view_ofs, trace_endpos);
+	if (trace_fraction < 1)
+		Q2_Impact (trace_endpos, 2);
 	self.attack_finished = time + 1.5;
 };
 
@@ -283,15 +511,12 @@ void() Q2_BFGTouch =
 {
 	if (other == self.owner)
 		return;
-	if (pointcontents(self.origin) == CONTENT_SKY)
+	if (pointcontents (self.origin) == CONTENT_SKY)
 	{
 		remove (self);
 		return;
 	}
-	sound (self, CHAN_WEAPON, "weapons/bfg__x1b.wav", 1, ATTN_NORM);
-	T_RadiusDamage (self, self.owner, 200, self.owner);
-	self.owner = world;
-	BecomeExplosion ();
+	Q2_BFGDetonate ();
 };
 
 void() Q2_FireBFG =
@@ -301,17 +526,20 @@ void() Q2_FireBFG =
 	sound (self, CHAN_WEAPON, "weapons/bfg__f1y.wav", 1, ATTN_NORM);
 	self.currentammo = self.ammo_cells = self.ammo_cells - 40;
 	self.punchangle_x = self.punchangle_x - 4;
+	Q2_Muzzle (self, 2);
 	newmis = spawn ();
 	newmis.owner = self;
 	newmis.movetype = MOVETYPE_FLYMISSILE;
 	newmis.solid = SOLID_BBOX;
 	newmis.classname = "q2_bfg";
 	newmis.touch = Q2_BFGTouch;
-	newmis.think = SUB_Remove;
-	newmis.nextthink = time + 6;
+	newmis.effects = EF_BRIGHTLIGHT | EF_QUADLIGHT;
+	newmis.ltime = time + 6;
+	newmis.think = Q2_BFGThink;
+	newmis.nextthink = time + 0.1;
 	setmodel (newmis, "progs/grenade.mdl");
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
-	setorigin (newmis, self.origin + v_forward * 8 + '0 0 16');
+	setorigin (newmis, self.origin + v_forward * 8 + self.view_ofs);
 	newmis.velocity = v_forward * 400;
 	newmis.angles = vectoangles (newmis.velocity);
 	self.attack_finished = time + 1.1;
@@ -321,44 +549,47 @@ float() Q2_Attack =
 {
 	if (!self.q2_held)
 		return FALSE;
+	if (self.q2_held == 2 && self.q2_spin && !self.button0)
+	{
+		sound (self, CHAN_WEAPON, "weapons/chngnd1a.wav", 1, ATTN_NORM);
+		self.q2_spin = 0;
+	}
+	if ((self.q2_held == 1 && self.ammo_nails < 1) || (self.q2_held == 2 && self.ammo_nails < 1) || (self.q2_held == 3 && self.ammo_cells < 1) || (self.q2_held == 4 && self.ammo_cells < 1) || (self.q2_held == 5 && self.ammo_cells < 40))
+	{
+		self.q2_held = 0;
+		self.q2_spin = 0;
+		if (Q2_BestWeapon ())
+			W_SetCurrentAmmo ();
+		return TRUE;
+	}
 	makevectors (self.v_angle);
 	self.show_hostile = time + 1;
 	if (self.q2_held == 1)
 	{
-		if (self.ammo_nails < 1)
-			return FALSE;
 		player_nail1 ();
 		Q2_FireMG ();
 		return TRUE;
 	}
 	if (self.q2_held == 2)
 	{
-		if (self.ammo_nails < 1)
-			return FALSE;
 		player_nail1 ();
 		Q2_FireCG ();
 		return TRUE;
 	}
 	if (self.q2_held == 3)
 	{
-		if (self.ammo_cells < 1)
-			return FALSE;
 		player_nail1 ();
 		Q2_FireHyper ();
 		return TRUE;
 	}
 	if (self.q2_held == 4)
 	{
-		if (self.ammo_cells < 10)
-			return FALSE;
 		player_light1 ();
 		Q2_FireRail ();
 		return TRUE;
 	}
 	if (self.q2_held == 5)
 	{
-		if (self.ammo_cells < 40)
-			return FALSE;
 		player_rocket1 ();
 		Q2_FireBFG ();
 		return TRUE;
@@ -411,7 +642,7 @@ void(float held) Q2_SelectMelee =
 
 float() Q2_BestWeapon =
 {
-	if (Q2_Has (Q2_RAIL) && self.ammo_cells >= 10 && self.waterlevel <= 1)
+	if (Q2_Has (Q2_RAIL) && self.ammo_cells >= 1 && self.waterlevel <= 1)
 	{
 		self.q2_held = 4;
 		return IT_LIGHTNING;
@@ -441,7 +672,7 @@ float() Q2_BestWeapon =
 
 float() Q2_PickNextCell =
 {
-	if (Q2_Has (Q2_RAIL) && self.ammo_cells >= 10)
+	if (Q2_Has (Q2_RAIL) && self.ammo_cells >= 1)
 	{
 		Q2_Select (4);
 		return TRUE;
@@ -471,7 +702,7 @@ float() Q2_PickPrevCell =
 		Q2_Select (3);
 		return TRUE;
 	}
-	if (Q2_Has (Q2_RAIL) && self.ammo_cells >= 10)
+	if (Q2_Has (Q2_RAIL) && self.ammo_cells >= 1)
 	{
 		Q2_Select (4);
 		return TRUE;
@@ -706,7 +937,7 @@ float(float dir) Q2_Cycle =
 				Q2_Select (3);
 				return TRUE;
 			}
-			if (Q2_Has (Q2_RAIL) && self.ammo_cells >= 10)
+			if (Q2_Has (Q2_RAIL) && self.ammo_cells >= 1)
 			{
 				Q2_Select (4);
 				return TRUE;
@@ -717,7 +948,7 @@ float(float dir) Q2_Cycle =
 		}
 		if (self.q2_held == 3)
 		{
-			if (Q2_Has (Q2_RAIL) && self.ammo_cells >= 10)
+			if (Q2_Has (Q2_RAIL) && self.ammo_cells >= 1)
 			{
 				Q2_Select (4);
 				return TRUE;
@@ -957,6 +1188,18 @@ float() Q2_TossCurrent =
 	item.think = SUB_Remove;
 	item.nextthink = time + 120;
 	self.q2weap = self.q2weap - (self.q2weap & bit);
+	if (self.q2_held <= 2)
+	{
+		self.ammo_nails = self.ammo_nails - 30;
+		if (self.ammo_nails < 0)
+			self.ammo_nails = 0;
+	}
+	else
+	{
+		self.ammo_cells = self.ammo_cells - 15;
+		if (self.ammo_cells < 0)
+			self.ammo_cells = 0;
+	}
 	self.q2_held = 0;
 	return TRUE;
 };

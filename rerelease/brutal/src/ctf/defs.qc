@@ -618,6 +618,11 @@ float   CS_MIXED    = 3; // can do ranged or melee equally.
 .float    q2_fstart;
 .float    q2_fend;
 .float    q2_ffire;
+.float    q2_ffire2;
+.float    q2_runspeed;
+.float    q2_gibhealth;
+.float    q2_alt;
+.entity   q2_flash;
 .float    meat_hook_len;
 .float    cp_nailgrunt;
 .float    cp_defender;

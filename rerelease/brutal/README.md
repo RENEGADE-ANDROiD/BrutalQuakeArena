@@ -1,10 +1,10 @@
-﻿Brutal Quake Arena — Quick melee, meathook, extra gore, enemy elites and Glory Kill rewards for Quake 2021 Re-Release, including 1997 Rocket Arena with local and invite play.
+﻿Brutal Quake Arena — Quick melee, meathook, extra gore, enemy elites and Glory Kill rewards for Quake 2021 Re-Release, including 1997 Rocket Arena with local and invite play + optional Quake 2 Enemies mix & player-feel with centered Weapon models (Machinegun, Chaingun, Hyperblaster, Railgun & BFG).
 
 Copy contents to your Steam Quake install directory. Campaign overlays load automatically — do **not** put `game brutal` in Steam Launch Options.
 
 See Options > Input to bind Axe for Quick Melee and Grapple Hook for Meathook. Arena and prox keys are in `default.cfg`. Rebind in the console: `bind p "impulse 71"`.
 
-Turn **Enhanced Models** off under Options > Display so Authentic Models show. Ammo, health, and exploding boxes still replace with Enhanced Models on.
+Turn **Enhanced Models** off under Options > Display so Authentic Models & Quake 2 Enemy & Weapon models show. Authentic Models ammo, health, and exploding boxes still replace with Enhanced Models on.
 
 Steam achievements: Single Player → **New Game** → official episode. Do not use Level Select. Rocket Arena maps are Deathmatch-only and do not grant campaign achievements.
 
@@ -27,6 +27,7 @@ Steam achievements: Single Player → **New Game** → official episode. Do not 
 * Impulse 70 / B — Rocket Arena take a break or return to the line
 * Impulse 71 / P — add an Arena bot (max 3)
 * Impulse 72 / K — remove Arena bots
+* Impulse 80–84 — Quake 2 guns if you have them: machinegun, chaingun, hyperblaster, railgun, BFG. Machinegun and chaingun spend nails; hyperblaster, railgun (1 cell), and BFG (40 cells) spend cells. Turn Enhanced Models off or they will not appear.
 
 **Melee and hook**
 * Quick axe melee with lock-on lunge (128 unit range)
@@ -40,6 +41,7 @@ Steam achievements: Single Player → **New Game** → official episode. Do not 
 * Scourge of Armagon and Dissolution extras (prox, hammer, Rogue guns/boxes)
 
 **Gore**
+* Q2 Gore Mix
 * Heavier blood sprays on hits and deaths
 * Extra meat chunks on hard hits
 * More gibs that last longer

@@ -29,6 +29,7 @@ float() CP_PackMelee =
 	if (self.has_mjolnir)
 		p = p + 2;
 	p = p + (self.q2weap * 4);
+	p = p + (self.q2_held * 128);
 	return p;
 };
 
@@ -37,6 +38,9 @@ void(float p) CP_UnpackMelee =
 	self.has_chainsaw = 0;
 	self.has_mjolnir = 0;
 	self.q2weap = 0;
+	self.q2_held = 0;
+	self.q2_held = floor (p / 128);
+	p = p - (self.q2_held * 128);
 	if (p & 1)
 		self.has_chainsaw = 1;
 	if (p & 2)
@@ -188,6 +192,8 @@ void() CP_SetupCorpse =
 	local entity h;
 
 	if (self.health <= -40)
+		return;
+	if (self.q2_kind)
 		return;
 	if (!((self.flags & FL_MONSTER) || (self.classname == "player")))
 		return;
