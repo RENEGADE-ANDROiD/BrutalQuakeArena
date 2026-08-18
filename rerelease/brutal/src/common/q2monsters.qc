@@ -512,9 +512,12 @@ void() Q2M_Think =
 	{
 		if (self.frame < self.q2_fend)
 			self.frame = self.frame + 1;
+		if (self.frame >= self.q2_fstart + 3)
+			self.solid = SOLID_NOT;
+		if (self.frame > self.q2_fend)
+			self.frame = self.q2_fend;
 		self.nextthink = time + 0.1;
-		if (self.frame >= self.q2_fend)
-			self.think = SUB_Null;
+		self.think = Q2M_Think;
 		return;
 	}
 	if (self.frame < self.q2_fend)
@@ -635,7 +638,9 @@ void() Q2M_Die =
 {
 	monster_death_use ();
 	self.takedamage = DAMAGE_NO;
-	self.solid = SOLID_NOT;
+	self.velocity = '0 0 0';
+	self.avelocity = '0 0 0';
+	self.flags = self.flags | FL_ONGROUND;
 	if (self.health < -35 || self.q2_kind == Q2M_FLYER)
 	{
 		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
@@ -644,6 +649,7 @@ void() Q2M_Die =
 		ThrowGib ("progs/gib3.mdl", self.health);
 		Q2M_ExtraGibs ();
 		Q2M_ExtraGibs ();
+		self.solid = SOLID_NOT;
 		if (self.q2_kind == Q2M_SOLDIER || self.q2_kind == Q2M_INFANTRY)
 		{
 			self.ammo_shells = 5;
@@ -699,6 +705,8 @@ void(float kind) Q2M_Setup =
 	self.th_die = Q2M_Die;
 	self.th_missile = SUB_Null;
 	self.th_melee = SUB_Null;
+	self.allowPathFind = TRUE;
+	self.combat_style = CS_RANGED;
 	if (kind == Q2M_SOLDIER)
 	{
 		mdl = "progs/q2_soldier.mdl";
@@ -722,7 +730,7 @@ void(float kind) Q2M_Setup =
 		mdl = "progs/q2_gunner.mdl";
 		self.classname = "monster_q2gunner";
 		self.noise = "gunner/sight1.wav";
-		setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+		setsize (self, '-16 -16 -24', '16 16 40');
 		self.health = 200;
 		self.th_missile = Q2M_Missile;
 	}
@@ -734,6 +742,7 @@ void(float kind) Q2M_Setup =
 		setsize (self, '-16 -16 -24', '16 16 40');
 		self.health = 75;
 		self.th_melee = Q2M_Melee;
+		self.combat_style = CS_MELEE;
 	}
 	else if (kind == Q2M_GLADIATOR)
 	{
@@ -744,6 +753,7 @@ void(float kind) Q2M_Setup =
 		self.health = 250;
 		self.th_missile = Q2M_Missile;
 		self.th_melee = Q2M_Melee;
+		self.combat_style = CS_MIXED;
 	}
 	else if (kind == Q2M_TANK)
 	{
@@ -805,6 +815,7 @@ void(float kind) Q2M_Setup =
 		self.health = 300;
 		self.th_melee = Q2M_Melee;
 		self.th_missile = Q2M_Melee;
+		self.combat_style = CS_MELEE;
 	}
 	else if (kind == Q2M_BRAIN)
 	{
@@ -814,13 +825,14 @@ void(float kind) Q2M_Setup =
 		setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 		self.health = 600;
 		self.th_melee = Q2M_Melee;
+		self.combat_style = CS_MELEE;
 	}
 	else
 	{
 		mdl = "progs/q2_medic.mdl";
 		self.classname = "monster_q2medic";
 		self.noise = "medic/medsght1.wav";
-		setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
+		setsize (self, '-16 -16 -24', '16 16 40');
 		self.health = 400;
 		self.th_missile = Q2M_Missile;
 	}
@@ -880,6 +892,12 @@ void() Q2M_StartGo =
 	{
 		self.origin_z = self.origin_z + 1;
 		droptofloor ();
+	}
+	if (!walkmove (0, 0))
+	{
+		dprint ("q2 monster in wall at: ");
+		dprint (vtos (self.origin));
+		dprint ("\n");
 	}
 	self.takedamage = DAMAGE_AIM;
 	self.ideal_yaw = self.angles * '0 1 0';

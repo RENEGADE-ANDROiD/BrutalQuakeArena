@@ -548,6 +548,13 @@ float	AS_SLIDING		= 2;
 float	AS_MELEE		= 3;
 float	AS_MISSILE		= 4;
 
+.float  allowPathFind;
+.float 	combat_style;
+float   CS_NONE 		= 0;
+float 	CS_RANGED		= 1;
+float 	CS_MELEE		= 2;
+float 	CS_MIXED		= 3;
+
 //
 // player only fields
 //
