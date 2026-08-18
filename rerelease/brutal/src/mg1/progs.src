@@ -79,6 +79,8 @@ map_specific/hub.qc
 
 horde.qc // Yoder readded Sept 24, 2021
 ../common/combatplus.qc
+../common/moveplus.qc
+../common/q2weapons.qc
 ../common/arena.qc
 ../common/arena_bot.qc
 

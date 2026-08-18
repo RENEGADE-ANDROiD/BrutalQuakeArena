@@ -593,6 +593,8 @@ void() weapon_supershotgun =
 void() weapon_nailgun =
 {
 	precache_model ("progs/g_nail.mdl");
+	if (Q2_TryReplace (1))
+		return;
 	setmodel (self, "progs/g_nail.mdl");
 	self.weapon = IT_NAILGUN;
 	self.netname = "$qc_nailgun";
@@ -607,6 +609,8 @@ void() weapon_nailgun =
 void() weapon_supernailgun =
 {
 	precache_model ("progs/g_nail2.mdl");
+	if (Q2_TryReplace (2))
+		return;
 	setmodel (self, "progs/g_nail2.mdl");
 	self.weapon = IT_SUPER_NAILGUN;
 	self.netname = "$qc_super_nailgun";
@@ -636,6 +640,8 @@ void() weapon_grenadelauncher =
 void() weapon_rocketlauncher =
 {
 	precache_model ("progs/g_rock2.mdl");
+	if (Q2_TryReplace (4))
+		return;
 	setmodel (self, "progs/g_rock2.mdl");
 	self.weapon = 3;
 	self.items = IT_ROCKET_LAUNCHER;
@@ -652,6 +658,8 @@ void() weapon_rocketlauncher =
 void() weapon_lightning =
 {
 	precache_model ("progs/g_light.mdl");
+	if (Q2_TryReplace (3))
+		return;
 	setmodel (self, "progs/g_light.mdl");
 	self.weapon = 3;
 	self.items = IT_LIGHTNING;

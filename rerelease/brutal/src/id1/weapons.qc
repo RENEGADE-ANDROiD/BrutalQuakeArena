@@ -54,6 +54,7 @@ void() W_Precache =
 	precache_sound ("weapons/grenade.wav");	// grenade launcher
 	precache_sound ("weapons/bounce.wav");		// grenade bounce
 	precache_sound ("weapons/shotgn2.wav");	// super shotgun
+	Q2_Precache ();
 };
 
 float() crandom =
@@ -858,6 +859,9 @@ PLAYER WEAPON USE
 
 void() W_SetCurrentAmmo =
 {
+	if (Q2_SetCurrentAmmo ())
+		return;
+
 	player_run ();		// get out of any weapon firing states
 	self.weaponframe = 0;
 
@@ -920,6 +924,12 @@ void() W_SetCurrentAmmo =
 float() W_BestWeapon =
 {
 	local	float	it;
+	local	float	q2;
+
+	q2 = Q2_BestWeapon ();
+	if (q2)
+		return q2;
+	self.q2_held = 0;
 	
 	it = self.items;
 
@@ -992,6 +1002,9 @@ void() W_Attack =
 	if ( W_HasNoAmmo() ) {
 		return;
 	}
+
+	if (Q2_Attack ())
+		return;
 	
 	makevectors	(self.v_angle);		// calculate forward angle for velocity
 	self.show_hostile = time + 1;	// wake monsters up
@@ -1004,6 +1017,15 @@ void() W_Attack =
 
 	if (self.weapon == IT_AXE)
 	{
+		if (!self.melee_active)
+		{
+			self.melee_hammer = 0;
+			self.melee_saw = 0;
+			if (self.melee_held == 1)
+				self.melee_hammer = 1;
+			if (self.melee_held == 2)
+				self.melee_saw = 1;
+		}
 		if (self.melee_saw)
 			sound (self, CHAN_WEAPON, "ogre/ogsawatk.wav", 1, ATTN_NORM);
 		else if (self.melee_hammer)
@@ -1072,6 +1094,9 @@ W_ChangeWeapon
 void() W_ChangeWeapon =
 {
 	local	float	it, am, fl;
+
+	Q2_ClearHeld ();
+	self.melee_held = 0;
 	
 	fl = it = self.items;
 	am = 0;
@@ -1199,6 +1224,8 @@ void() CycleWeaponCommand =
 	
 	it = self.items;
 	self.impulse = 0;
+	if (Q2_Cycle (1))
+		return;
 	
 	while (1)
 	{
@@ -1280,6 +1307,8 @@ void() CycleWeaponReverseCommand =
 
 	it = self.items;
 	self.impulse = 0;
+	if (Q2_Cycle (-1))
+		return;
 
 	while (1)
 	{
@@ -1416,6 +1445,7 @@ void() W_WeaponFrame =
 		if (self.ra_role == 1 || self.ra_role == 4)
 			return;
 	}
+	Q2_Impulse ();
 	if (self.impulse == 1 || self.impulse == 50)
 	{
 		W_QuickMelee ();

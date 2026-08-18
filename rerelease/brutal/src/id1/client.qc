@@ -1041,19 +1041,15 @@ void() PlayerJump =
 	}
 
 	if (!(self.flags & FL_ONGROUND))
-		return;
+	{
+		if (!MP_CanCoyote ())
+			return;
+	}
 
 	if ( !(self.flags & FL_JUMPRELEASED) )
 		return;		// don't pogo stick
 
-	self.flags = self.flags - (self.flags & FL_JUMPRELEASED);
-
-	self.flags = self.flags - FL_ONGROUND;	// don't stairwalk
-	
-	self.button2 = 0;
-	// player jumping sound
-	sound (self, CHAN_BODY, "player/plyrjmp8.wav", 1, ATTN_NORM);
-	self.velocity_z = self.velocity_z + 270;
+	MP_DoJump ();
 };
 
 
@@ -1220,6 +1216,8 @@ void() PlayerPreThink =
 	
 	if (self.deadflag == DEAD_DYING)
 		return;	// dying, so do nothing
+
+	MP_PreThink ();
 
 	if (self.button2)
 	{
@@ -1454,11 +1452,14 @@ void() PlayerPostThink =
 		else
 			sound (self, CHAN_VOICE, "player/land.wav", 1, ATTN_NORM);
 
+		MP_LandPunch (self.jump_flag);
 		self.jump_flag = 0;
 	}
 
 	if (!(self.flags & FL_ONGROUND))
 		self.jump_flag = self.velocity_z;
+
+	MP_PostThink ();
 
 	CheckPowerups();
 	CheckHealthRot();

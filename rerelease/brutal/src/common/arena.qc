@@ -152,6 +152,7 @@ void(entity ply) RA_SetLoadout =
 	self.ammo_cells = 100;
 	self.items = IT_AXE + IT_SHOTGUN + IT_SUPER_SHOTGUN + IT_NAILGUN + IT_SUPER_NAILGUN + IT_GRENADE_LAUNCHER + IT_ROCKET_LAUNCHER + IT_LIGHTNING + IT_SHELLS + IT_NAILS + IT_ROCKETS + IT_CELLS;
 	self.weapon = IT_ROCKET_LAUNCHER;
+	Q2_GrantArena ();
 	W_SetCurrentAmmo ();
 	self = prev;
 };

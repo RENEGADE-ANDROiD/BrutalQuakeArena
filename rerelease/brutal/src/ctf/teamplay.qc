@@ -770,6 +770,13 @@ void() TossWeapon =
   if (deathmatch != 1)
     return;  // only in deathmatch 1
 
+  if (Q2_TossCurrent ())
+  {
+    self.weapon = W_BestWeapon();
+    W_SetCurrentAmmo();
+    return;
+  }
+
   if((self.weapon == IT_AXE) || (self.weapon == IT_SHOTGUN) ||
     (self.weapon == IT_HOOK))
     return;

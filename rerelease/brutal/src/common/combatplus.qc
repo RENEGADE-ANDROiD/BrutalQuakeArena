@@ -28,6 +28,7 @@ float() CP_PackMelee =
 		p = p + 1;
 	if (self.has_mjolnir)
 		p = p + 2;
+	p = p + (self.q2weap * 4);
 	return p;
 };
 
@@ -35,10 +36,21 @@ void(float p) CP_UnpackMelee =
 {
 	self.has_chainsaw = 0;
 	self.has_mjolnir = 0;
+	self.q2weap = 0;
 	if (p & 1)
 		self.has_chainsaw = 1;
 	if (p & 2)
 		self.has_mjolnir = 1;
+	if (p & 4)
+		self.q2weap = self.q2weap + 1;
+	if (p & 8)
+		self.q2weap = self.q2weap + 2;
+	if (p & 16)
+		self.q2weap = self.q2weap + 4;
+	if (p & 32)
+		self.q2weap = self.q2weap + 8;
+	if (p & 64)
+		self.q2weap = self.q2weap + 16;
 };
 
 void() CP_GibThink =

@@ -814,6 +814,13 @@ void() TossWeapon =
 	if (teamplay < 1)
 		return;
 
+	if (Q2_TossCurrent ())
+	{
+		self.weapon = W_BestWeapon();
+		W_SetCurrentAmmo();
+		return;
+	}
+
 	if((self.weapon == IT_AXE) || (self.weapon == IT_SHOTGUN) ||
 		(self.weapon == IT_GRAPPLE))
 		return;

@@ -40,5 +40,7 @@ monsters/shub.qc		// registered
 
 bots/bot.qc				// bot support
 ../common/combatplus.qc
+../common/moveplus.qc
+../common/q2weapons.qc
 ../common/arena.qc
 ../common/arena_bot.qc
