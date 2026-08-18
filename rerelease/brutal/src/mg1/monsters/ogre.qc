@@ -82,7 +82,7 @@ void() OgreFireGrenade =
 
 	velocity = normalize(self.enemy.origin - self.origin);
 	velocity = velocity * 600;
-	if (self.cp_elite)
+	if (self.bqa_elite)
 		velocity = velocity * 1.25;
 	velocity_z = 200;
 
@@ -392,7 +392,7 @@ void() ogre_die =
 		ThrowGib ("progs/gib3.mdl", self.health);
 		ThrowGib ("progs/gib3.mdl", self.health);
 		if (random() < 0.45)
-			CP_DropChainsaw ();
+			BQA_DropChainsaw ();
 		return;
 	}
 

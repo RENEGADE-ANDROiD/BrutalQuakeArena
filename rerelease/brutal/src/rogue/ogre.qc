@@ -130,7 +130,7 @@ void() OgreFireGrenade =
 	makevectors (self.angles);
 	missile.velocity = normalize(self.enemy.origin - self.origin);
 	missile.velocity = missile.velocity * 600;
-	if (self.cp_elite)
+	if (self.bqa_elite)
 		missile.velocity = missile.velocity * 1.25;
 	missile.velocity_z = 200;
 	missile.avelocity = '300 300 300';
@@ -465,7 +465,7 @@ void() ogre_die =
 		ThrowGib ("progs/gib3.mdl", self.health);
 		ThrowGib ("progs/gib3.mdl", self.health);
 		if (random() < 0.45)
-			CP_DropChainsaw ();
+			BQA_DropChainsaw ();
 		return;
 	}
 

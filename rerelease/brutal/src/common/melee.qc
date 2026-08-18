@@ -146,7 +146,7 @@ void() W_MeleeDoSwing =
 		self.melee_glory = 1;
 	else
 		self.melee_glory = 0;
-#ifdef CP_HAS_IT_MJOLNIR
+#ifdef BQA_HAS_IT_MJOLNIR
 	if (self.items & IT_MJOLNIR)
 		self.has_mjolnir = 1;
 #endif

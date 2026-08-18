@@ -164,7 +164,7 @@ void() StartMonster =
 	self.flags = self.flags | FL_MONSTER;
 	if(self.lefty == MONSTER_TYPE_FLY) self.flags = self.flags | FL_FLY;
 	if(self.lefty == MONSTER_TYPE_SWIM) self.flags = self.flags | FL_SWIM;
-	CP_MaybeElite ();
+	BQA_MaybeElite ();
 	
 	if (self.target)
 	{

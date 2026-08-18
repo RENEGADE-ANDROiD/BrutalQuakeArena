@@ -98,7 +98,7 @@ void() SetChangeParms =
 		parm11 = self.ammo_lava_nails;
 		parm12 = self.ammo_multi_rockets;
 		parm13 = self.ammo_plasma;
-		parm15 = CP_PackMelee ();
+		parm15 = BQA_PackMelee ();
 	}
 	parm14 = self.steam; // save team setting
 };
@@ -169,7 +169,7 @@ void() DecodeLevelParms =
 		self.steam = parm14;
 		TeamSetSkin();
 	}
-	CP_UnpackMelee (parm15);
+	BQA_UnpackMelee (parm15);
 //--ZOID
 };
 

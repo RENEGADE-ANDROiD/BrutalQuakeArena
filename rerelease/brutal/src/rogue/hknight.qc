@@ -247,7 +247,7 @@ void() hknight_die =
 			ThrowGib ("progs/gib3.mdl", self.health);
 		}
 		if (random() < 0.45)
-			CP_DropMjolnir ();
+			BQA_DropMjolnir ();
 		return;
 	}
 

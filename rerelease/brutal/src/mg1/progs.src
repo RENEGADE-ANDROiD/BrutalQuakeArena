@@ -19,12 +19,12 @@
 
 // Makes it so that killing an entity that has a delayed trigger behaviour while the delay is pending also cancels the delayed trigger
 #define ALLOW_DELAYED_THINK_CANCEL
-#define CP_HAS_MONSTERS
+#define BQA_HAS_MONSTERS
 
 #includelist
 
 defs.qc
-../common/cputil.qc
+../common/bqautil.qc
 math.qc
 subs.qc
 frametick.qc
@@ -79,7 +79,7 @@ map_specific/mge2m2.qc
 map_specific/hub.qc
 
 horde.qc // Yoder readded Sept 24, 2021
-../common/combatplus.qc
+../common/bqa.qc
 ../common/moveplus.qc
 ../common/q2weapons.qc
 ../common/q2monsters.qc

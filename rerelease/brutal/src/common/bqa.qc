@@ -1,4 +1,4 @@
-// Combat Plus-style extras that work in remaster QuakeC
+// Brutal Quake Arena extras that work in remaster QuakeC
 
 void(string gibname, float dm) ThrowGib;
 void(string gibname, float dm) ThrowHead;
@@ -10,16 +10,16 @@ float(entity e, float healamount, float ignore) T_Heal;
 void() W_SetCurrentAmmo;
 void() SUB_Remove;
 void() SUB_Null;
-void() CP_ProxTouch;
-void() CP_ProxThink;
-void() CP_ProxExplode;
-void() CP_ExplosionFX;
-void() CP_ResetSlowmo;
-void() CP_AxeTouch;
-void() CP_CarnageTouch;
-void() CP_DropCarnageVial;
+void() BQA_ProxTouch;
+void() BQA_ProxThink;
+void() BQA_ProxExplode;
+void() BQA_ExplosionFX;
+void() BQA_ResetSlowmo;
+void() BQA_AxeTouch;
+void() BQA_CarnageTouch;
+void() BQA_DropCarnageVial;
 
-float() CP_PackMelee =
+float() BQA_PackMelee =
 {
 	local float p;
 
@@ -33,7 +33,7 @@ float() CP_PackMelee =
 	return p;
 };
 
-void(float p) CP_UnpackMelee =
+void(float p) BQA_UnpackMelee =
 {
 	self.has_chainsaw = 0;
 	self.has_mjolnir = 0;
@@ -57,7 +57,7 @@ void(float p) CP_UnpackMelee =
 		self.q2weap = self.q2weap + 16;
 };
 
-void() CP_GibThink =
+void() BQA_GibThink =
 {
 	if (time > self.ltime)
 	{
@@ -73,12 +73,14 @@ void() CP_GibThink =
 	self.nextthink = time + 0.25;
 };
 
-void() CP_GibCorpse =
+void() BQA_GibCorpse =
 {
 	sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
 	ThrowGib ("progs/gib1.mdl", -60);
 	ThrowGib ("progs/gib2.mdl", -60);
 	ThrowGib ("progs/gib3.mdl", -60);
+	if (self.q2_kind)
+		Q2M_ExtraGibs ();
 	self.solid = SOLID_NOT;
 	self.takedamage = DAMAGE_NO;
 	self.movetype = MOVETYPE_TOSS;
@@ -87,7 +89,7 @@ void() CP_GibCorpse =
 	self.think = SUB_Remove;
 };
 
-void() CP_FleshSplat =
+void() BQA_FleshSplat =
 {
 	local float r;
 
@@ -109,7 +111,7 @@ void() CP_FleshSplat =
 		ThrowGib ("progs/gib1.mdl", -20);
 };
 
-void() CP_MakePuddle =
+void() BQA_MakePuddle =
 {
 	local entity p;
 
@@ -131,7 +133,7 @@ void() CP_MakePuddle =
 	p.think = SUB_Remove;
 };
 
-void(entity attacker, float damage) CP_CorpsePain =
+void(entity attacker, float damage) BQA_CorpsePain =
 {
 	local vector dir;
 
@@ -144,10 +146,10 @@ void(entity attacker, float damage) CP_CorpsePain =
 		self.velocity = dir * 420 + '0 0 280';
 		self.flags = self.flags - (self.flags & FL_ONGROUND);
 	}
-	CP_GibCorpse ();
+	BQA_GibCorpse ();
 };
 
-void() CP_CorpseReady =
+void() BQA_CorpseReady =
 {
 	local entity corpse;
 
@@ -170,8 +172,8 @@ void() CP_CorpseReady =
 
 	corpse.takedamage = DAMAGE_YES;
 	corpse.health = 60;
-	corpse.th_die = CP_GibCorpse;
-	corpse.th_pain = CP_CorpsePain;
+	corpse.th_die = BQA_GibCorpse;
+	corpse.th_pain = BQA_CorpsePain;
 	corpse.th_melee = SUB_Null;
 	corpse.th_missile = SUB_Null;
 	corpse.th_run = SUB_Null;
@@ -187,7 +189,7 @@ void() CP_CorpseReady =
 	remove (self);
 };
 
-void() CP_SetupCorpse =
+void() BQA_SetupCorpse =
 {
 	local entity h;
 
@@ -198,16 +200,16 @@ void() CP_SetupCorpse =
 	if (!((self.flags & FL_MONSTER) || (self.classname == "player")))
 		return;
 
-	CP_MakePuddle ();
+	BQA_MakePuddle ();
 
 	h = spawn ();
 	h.classname = "corpse_setup";
 	h.owner = self;
 	h.nextthink = time + 1.8;
-	h.think = CP_CorpseReady;
+	h.think = BQA_CorpseReady;
 };
 
-void() CP_MeleeGlorySip =
+void() BQA_MeleeGlorySip =
 {
 	local entity atk;
 
@@ -229,7 +231,7 @@ void() CP_MeleeGlorySip =
 	sound (atk, CHAN_ITEM, "items/n_health.wav", 1, ATTN_NORM);
 };
 
-void() CP_MeleeDismember =
+void() BQA_MeleeDismember =
 {
 	local entity atk;
 	local float style;
@@ -288,7 +290,7 @@ void() CP_MeleeDismember =
 		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
 };
 
-void() CP_OnKilledExtra =
+void() BQA_OnKilledExtra =
 {
 	local entity h;
 	local entity atk;
@@ -303,8 +305,8 @@ void() CP_OnKilledExtra =
 	if (self.health <= -40 && Q2M_ModelsOk ())
 		Q2M_ExtraGibs ();
 
-	CP_MeleeDismember ();
-	CP_MeleeGlorySip ();
+	BQA_MeleeDismember ();
+	BQA_MeleeGlorySip ();
 
 	atk = self.enemy;
 	if (self.health <= -40)
@@ -317,7 +319,7 @@ void() CP_OnKilledExtra =
 			h = spawn ();
 			h.owner = atk;
 			h.nextthink = time + 0.45;
-			h.think = CP_ResetSlowmo;
+			h.think = BQA_ResetSlowmo;
 			if (atk.super_damage_finished > time)
 			{
 				particle (self.origin, '0 0 120', 73, 80);
@@ -335,7 +337,7 @@ void() CP_OnKilledExtra =
 				atk = self;
 			T_RadiusDamage (self, atk, 20, self);
 		}
-		CP_DropCarnageVial ();
+		BQA_DropCarnageVial ();
 	}
 
 	if (self.enemy != world)
@@ -344,10 +346,10 @@ void() CP_OnKilledExtra =
 		self.enemy.melee_style = 0;
 	}
 
-	CP_SetupCorpse ();
+	BQA_SetupCorpse ();
 };
 
-void() CP_SawTouch =
+void() BQA_SawTouch =
 {
 	if (other.classname != "player")
 		return;
@@ -363,7 +365,7 @@ void() CP_SawTouch =
 	remove (self);
 };
 
-void() CP_DropChainsaw =
+void() BQA_DropChainsaw =
 {
 	local entity saw;
 
@@ -373,14 +375,14 @@ void() CP_DropChainsaw =
 	saw.solid = SOLID_TRIGGER;
 	saw.origin = self.origin + '0 0 24';
 	saw.velocity = '0 0 200';
-	saw.touch = CP_SawTouch;
+	saw.touch = BQA_SawTouch;
 	saw.nextthink = time + 60;
 	saw.think = SUB_Remove;
 	setmodel (saw, "progs/g_rock2.mdl");
 	setsize (saw, '-16 -16 0', '16 16 56');
 };
 
-void() CP_MjolnirTouch =
+void() BQA_MjolnirTouch =
 {
 	if (other.classname != "player")
 		return;
@@ -396,7 +398,7 @@ void() CP_MjolnirTouch =
 	remove (self);
 };
 
-void() CP_DropMjolnir =
+void() BQA_DropMjolnir =
 {
 	local entity ham;
 
@@ -406,14 +408,14 @@ void() CP_DropMjolnir =
 	ham.solid = SOLID_TRIGGER;
 	ham.origin = self.origin + '0 0 24';
 	ham.velocity = '0 0 200';
-	ham.touch = CP_MjolnirTouch;
+	ham.touch = BQA_MjolnirTouch;
 	ham.nextthink = time + 60;
 	ham.think = SUB_Remove;
 	setmodel (ham, "progs/g_hammer.mdl");
 	setsize (ham, '-16 -16 0', '16 16 56');
 };
 
-void() CP_FireOffhandProx =
+void() BQA_FireOffhandProx =
 {
 	local entity missile;
 
@@ -438,16 +440,16 @@ void() CP_FireOffhandProx =
 	missile.velocity = v_forward * 600 + v_up * 200;
 	missile.avelocity = '100 600 100';
 	missile.angles = vectoangles (missile.velocity);
-	missile.touch = CP_ProxTouch;
+	missile.touch = BQA_ProxTouch;
 	missile.nextthink = time + 1.2;
-	missile.think = CP_ProxThink;
+	missile.think = BQA_ProxThink;
 	missile.attack_finished = time + 12;
 	setmodel (missile, "progs/grenade.mdl");
 	setsize (missile, '0 0 0', '0 0 0');
 	setorigin (missile, self.origin + v_forward * 16 + '0 0 16');
 };
 
-void() CP_ExplSpriteThink =
+void() BQA_ExplSpriteThink =
 {
 	self.frame = self.frame + 1;
 	if (self.frame > 5)
@@ -458,7 +460,7 @@ void() CP_ExplSpriteThink =
 	self.nextthink = time + 0.05;
 };
 
-void() CP_ExplosionFX =
+void() BQA_ExplosionFX =
 {
 	local entity e;
 	local float i;
@@ -485,7 +487,7 @@ void() CP_ExplosionFX =
 		e.scale = 1.8 + random() * 0.8;
 		e.frame = 0;
 		e.nextthink = time + 0.05;
-		e.think = CP_ExplSpriteThink;
+		e.think = BQA_ExplSpriteThink;
 		i = i + 1;
 	}
 
@@ -515,7 +517,7 @@ void() CP_ExplosionFX =
 	}
 };
 
-void() CP_ProxExplode =
+void() BQA_ProxExplode =
 {
 	local float rad;
 
@@ -532,28 +534,28 @@ void() CP_ProxExplode =
 	WriteCoord (MSG_BROADCAST, self.origin_x);
 	WriteCoord (MSG_BROADCAST, self.origin_y);
 	WriteCoord (MSG_BROADCAST, self.origin_z);
-	CP_ExplosionFX ();
+	BQA_ExplosionFX ();
 	if (rad > 120)
-		CP_ExplosionFX ();
+		BQA_ExplosionFX ();
 	remove (self);
 };
 
-void() CP_ProxTouch =
+void() BQA_ProxTouch =
 {
 	if (other == self.owner)
 		return;
 	if (other.takedamage && ((other.flags & FL_MONSTER) || (other.flags & FL_CLIENT)))
-		CP_ProxExplode ();
+		BQA_ProxExplode ();
 };
 
-void() CP_ProxThink =
+void() BQA_ProxThink =
 {
 	local entity head;
 	local entity e;
 
 	if (time > self.attack_finished)
 	{
-		CP_ProxExplode ();
+		BQA_ProxExplode ();
 		return;
 	}
 
@@ -568,7 +570,7 @@ void() CP_ProxThink =
 			{
 				if (vlen (e.origin - self.origin) < 80)
 				{
-					CP_ProxExplode ();
+					BQA_ProxExplode ();
 					return;
 				}
 			}
@@ -576,10 +578,10 @@ void() CP_ProxThink =
 	}
 
 	self.nextthink = time + 0.2;
-	self.think = CP_ProxThink;
+	self.think = BQA_ProxThink;
 };
 
-void() CP_EjectCasing =
+void() BQA_EjectCasing =
 {
 	local entity c;
 
@@ -597,14 +599,14 @@ void() CP_EjectCasing =
 	setorigin (c, self.origin + '0 0 16' + v_right * 8 + v_forward * 12);
 };
 
-void(float force) CP_Recoil =
+void(float force) BQA_Recoil =
 {
 	makevectors (self.v_angle);
 	self.velocity = self.velocity - v_forward * force;
 	self.flags = self.flags - (self.flags & FL_ONGROUND);
 };
 
-void(entity first, float dmg) CP_ChainLightning =
+void(entity first, float dmg) BQA_ChainLightning =
 {
 	local entity head;
 	local entity e;
@@ -646,7 +648,7 @@ void(entity first, float dmg) CP_ChainLightning =
 	}
 };
 
-void() CP_RadiusShake =
+void() BQA_RadiusShake =
 {
 	if (!(self.flags & FL_CLIENT))
 		return;
@@ -654,17 +656,17 @@ void() CP_RadiusShake =
 	self.punchangle_z = self.punchangle_z + (random() - 0.5) * 6;
 };
 
-#ifndef CP_HAS_VORELINGS
-void() CP_TryVorelings =
+#ifndef BQA_HAS_VORELINGS
+void() BQA_TryVorelings =
 {
 };
 #endif
 
-void() CP_MaybeElite =
+void() BQA_MaybeElite =
 {
 	if (deathmatch)
 		return;
-	if (self.cp_elite)
+	if (self.bqa_elite)
 		return;
 	if (!(self.flags & FL_MONSTER))
 		return;
@@ -675,13 +677,13 @@ void() CP_MaybeElite =
 	if (random() >= 0.08)
 		return;
 
-	self.cp_elite = 1;
+	self.bqa_elite = 1;
 	self.health = self.health * 1.5;
 	self.max_health = self.health;
 	self.effects = self.effects | EF_QUADLIGHT;
 };
 
-void() CP_AxeTouch =
+void() BQA_AxeTouch =
 {
 	if (other == self.owner)
 		return;
@@ -706,7 +708,7 @@ void() CP_AxeTouch =
 	remove (self);
 };
 
-void() CP_KnightThrowAxe =
+void() BQA_KnightThrowAxe =
 {
 	local entity axe;
 	local vector dir;
@@ -725,11 +727,11 @@ void() CP_KnightThrowAxe =
 	axe.movetype = MOVETYPE_FLYMISSILE;
 	axe.solid = SOLID_BBOX;
 	axe.velocity = dir * 700;
-	if (self.cp_elite)
+	if (self.bqa_elite)
 		axe.velocity = axe.velocity * 1.25;
 	axe.avelocity = '300 400 200';
 	axe.angles = vectoangles (axe.velocity);
-	axe.touch = CP_AxeTouch;
+	axe.touch = BQA_AxeTouch;
 	axe.think = SUB_Remove;
 	axe.nextthink = time + 3;
 	setmodel (axe, "progs/spike.mdl");
@@ -737,7 +739,7 @@ void() CP_KnightThrowAxe =
 	setorigin (axe, self.origin + '0 0 20' + dir * 16);
 };
 
-float(entity inflictor, entity attacker) CP_IsCook =
+float(entity inflictor, entity attacker) BQA_IsCook =
 {
 	if (inflictor.classname == "missile")
 		return TRUE;
@@ -752,7 +754,7 @@ float(entity inflictor, entity attacker) CP_IsCook =
 	return FALSE;
 };
 
-float(entity targ, vector hit, float dmg) CP_HeadshotDamage =
+float(entity targ, vector hit, float dmg) BQA_HeadshotDamage =
 {
 	local float top;
 
@@ -771,11 +773,11 @@ float(entity targ, vector hit, float dmg) CP_HeadshotDamage =
 	if (hit_z < top - targ.size_z * 0.45)
 		return dmg;
 
-	targ.cp_headshot = 1;
+	targ.bqa_headshot = 1;
 	return dmg * 1.5;
 };
 
-float() CP_CrushRadius =
+float() BQA_CrushRadius =
 {
 	if (self.owner == world)
 		return 120;
@@ -786,7 +788,7 @@ float() CP_CrushRadius =
 	return 120;
 };
 
-void() CP_CarnageTouch =
+void() BQA_CarnageTouch =
 {
 	if (other.classname != "player")
 		return;
@@ -798,7 +800,7 @@ void() CP_CarnageTouch =
 	remove (self);
 };
 
-void() CP_DropCarnageVial =
+void() BQA_DropCarnageVial =
 {
 	local entity v;
 
@@ -815,7 +817,7 @@ void() CP_DropCarnageVial =
 	v.solid = SOLID_TRIGGER;
 	v.origin = self.origin + '0 0 24';
 	v.velocity = '0 0 180';
-	v.touch = CP_CarnageTouch;
+	v.touch = BQA_CarnageTouch;
 	v.nextthink = time + 15;
 	v.think = SUB_Remove;
 	setmodel (v, "maps/b_bh10.bsp");
@@ -823,7 +825,7 @@ void() CP_DropCarnageVial =
 	setorigin (v, v.origin);
 };
 
-void() CP_ResetSlowmo =
+void() BQA_ResetSlowmo =
 {
 	if (self.owner.classname == "player")
 		stuffcmd (self.owner, "slowmo 1\n");

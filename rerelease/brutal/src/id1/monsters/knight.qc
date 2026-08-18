@@ -149,7 +149,7 @@ void()	knight_atk1	=[	$attackb1,		knight_atk2	] {
 void()	knight_atk2	=[	$attackb2,		knight_atk3	] {ai_charge(7);};
 void()	knight_atk3	=[	$attackb3,		knight_atk4	] {ai_charge(4);};
 void()	knight_atk4	=[	$attackb4,		knight_atk5	] {ai_charge(0);};
-void()	knight_atk5	=[	$attackb5,		knight_atk6	] {ai_charge(3); CP_KnightThrowAxe();};
+void()	knight_atk5	=[	$attackb5,		knight_atk6	] {ai_charge(3); BQA_KnightThrowAxe();};
 void()	knight_atk6	=[	$attackb6,		knight_atk7	] {ai_charge(4); ai_melee();};
 void()	knight_atk7	=[	$attackb7,		knight_atk8	] {ai_charge(1); ai_melee();};
 void()	knight_atk8	=[	$attackb8,		knight_atk9	] {ai_charge(3); ai_melee();};
@@ -250,7 +250,7 @@ void() knight_die =
 		ThrowGib ("progs/gib2.mdl", self.health);
 		ThrowGib ("progs/gib3.mdl", self.health);
 		if (random() < 0.45)
-			CP_DropMjolnir ();
+			BQA_DropMjolnir ();
 		return;
 	}
 

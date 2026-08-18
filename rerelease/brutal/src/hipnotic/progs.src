@@ -1,8 +1,8 @@
 progs.dat
 
-#define CP_HAS_MONSTERS
+#define BQA_HAS_MONSTERS
 defs.qc
-../common/cputil.qc
+../common/bqautil.qc
 hipdefs.qc   //JIM
 subs.qc
 fight.qc
@@ -65,7 +65,7 @@ hipwater.qc
 hipdecoy.qc
 
 bots/bot.qc				// bot support
-../common/combatplus.qc
+../common/bqa.qc
 ../common/moveplus.qc
 ../common/q2weapons.qc
 ../common/q2monsters.qc

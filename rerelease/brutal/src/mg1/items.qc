@@ -205,7 +205,7 @@ void() health_touch =
 	}
 	if (other.health >= cap)
 		return;
-	give = CP_AmmoRoom (other.health, self.healamount, cap);
+	give = BQA_AmmoRoom (other.health, self.healamount, cap);
 	if (!T_Heal(other, give, ignore))
 		return;
 	
@@ -752,7 +752,7 @@ void() ammo_touch =
 	// shotgun
 	if (self.weapon == 1)
 	{
-		take = CP_AmmoRoom (other.ammo_shells, self.aflag, 100);
+		take = BQA_AmmoRoom (other.ammo_shells, self.aflag, 100);
 		if (take <= 0)
 			return;
 		other.ammo_shells = other.ammo_shells + take;
@@ -762,7 +762,7 @@ void() ammo_touch =
 	// spikes
 	if (self.weapon == 2)
 	{
-		take = CP_AmmoRoom (other.ammo_nails, self.aflag, 200);
+		take = BQA_AmmoRoom (other.ammo_nails, self.aflag, 200);
 		if (take <= 0)
 			return;
 		other.ammo_nails = other.ammo_nails + take;
@@ -772,7 +772,7 @@ void() ammo_touch =
 	//	rockets
 	if (self.weapon == 3)
 	{
-		take = CP_AmmoRoom (other.ammo_rockets, self.aflag, 100);
+		take = BQA_AmmoRoom (other.ammo_rockets, self.aflag, 100);
 		if (take <= 0)
 			return;
 		other.ammo_rockets = other.ammo_rockets + take;
@@ -782,7 +782,7 @@ void() ammo_touch =
 	//	cells
 	if (self.weapon == 4)
 	{
-		take = CP_AmmoRoom (other.ammo_cells, self.aflag, 100);
+		take = BQA_AmmoRoom (other.ammo_cells, self.aflag, 100);
 		if (take <= 0)
 			return;
 		other.ammo_cells = other.ammo_cells + take;
@@ -1298,7 +1298,7 @@ void() BackpackTouch =
 	if (other.health <= 0)
 		return;
 
-	if (!CP_AmmoRoom (other.ammo_shells, self.ammo_shells, 100) && !CP_AmmoRoom (other.ammo_nails, self.ammo_nails, 200) && !CP_AmmoRoom (other.ammo_rockets, self.ammo_rockets, 100) && !CP_AmmoRoom (other.ammo_cells, self.ammo_cells, 100))
+	if (!BQA_AmmoRoom (other.ammo_shells, self.ammo_shells, 100) && !BQA_AmmoRoom (other.ammo_nails, self.ammo_nails, 200) && !BQA_AmmoRoom (other.ammo_rockets, self.ammo_rockets, 100) && !BQA_AmmoRoom (other.ammo_cells, self.ammo_cells, 100))
 	{
 		if (!self.items || (other.items & self.items))
 			return;

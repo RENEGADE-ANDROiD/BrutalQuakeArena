@@ -112,7 +112,7 @@ void() SetChangeParms =
 	parm7 = self.ammo_cells;
 	parm8 = self.weapon;
 	parm9 = self.armortype * 100;
-	parm10 = CP_PackMelee ();
+	parm10 = BQA_PackMelee ();
 };
 
 void() SetNewParms =
@@ -152,7 +152,7 @@ void() DecodeLevelParms =
 	self.ammo_cells = parm7;
 	self.weapon = parm8;
 	self.armortype = parm9 * 0.01;
-	CP_UnpackMelee (parm10);
+	BQA_UnpackMelee (parm10);
 };
 
 /*

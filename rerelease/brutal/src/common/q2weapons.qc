@@ -742,7 +742,7 @@ float(float dir) Q2_Cycle =
 {
 	if (dir >= 0)
 	{
-#ifdef CP_HAS_IT_MJOLNIR
+#ifdef BQA_HAS_IT_MJOLNIR
 		if (self.weapon == IT_MJOLNIR && self.has_chainsaw)
 		{
 			Q2_SelectMelee (2);
@@ -849,7 +849,7 @@ float(float dir) Q2_Cycle =
 		return FALSE;
 	}
 
-#ifdef CP_HAS_IT_MJOLNIR
+#ifdef BQA_HAS_IT_MJOLNIR
 	if (self.weapon == IT_AXE)
 	{
 		if (self.melee_held == 0 && self.has_chainsaw)

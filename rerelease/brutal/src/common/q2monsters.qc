@@ -34,7 +34,7 @@ float	Q2M_ANIM_MELEE = 7;
 
 void(string gibname, float dm) ThrowGib;
 
-#ifdef CP_HAS_MONSTERS
+#ifdef BQA_HAS_MONSTERS
 void() monster_use;
 void() monster_death_use;
 void() FoundTarget;
@@ -62,6 +62,9 @@ float(entity targ) visible;
 float(entity targ) range;
 void(float n) SUB_AttackFinished;
 float() crandom;
+void() SUB_Null;
+void() BQA_GibCorpse;
+void(entity attacker, float damage) BQA_CorpsePain;
 #endif
 
 float() Q2M_ModelsOk =
@@ -216,7 +219,7 @@ void() Q2M_ExtraGibs =
 		ThrowGib ("progs/q2gib_sm_meat.mdl", -30);
 };
 
-#ifdef CP_HAS_MONSTERS
+#ifdef BQA_HAS_MONSTERS
 
 void() Q2M_SetRange =
 {
@@ -368,6 +371,10 @@ void() Q2M_FireShot =
 	local float n, dist;
 	local entity skip;
 
+	if (self.health <= 0)
+		return;
+	if (self.q2_anim == Q2M_ANIM_DIE)
+		return;
 	ai_face ();
 	makevectors (self.angles);
 	org = self.origin + self.view_ofs;
@@ -551,6 +558,10 @@ void() Q2M_FireMelee =
 {
 	local float dmg;
 
+	if (self.health <= 0)
+		return;
+	if (self.q2_anim == Q2M_ANIM_DIE)
+		return;
 	ai_charge (10);
 	if (self.enemy == world)
 		return;
@@ -597,6 +608,10 @@ float() Q2M_CheckAttack =
 	local float r, chance, sk;
 	local vector spot1, spot2;
 
+	if (self.health <= 0)
+		return FALSE;
+	if (self.q2_anim == Q2M_ANIM_DIE)
+		return FALSE;
 	if (self.enemy == world)
 		return FALSE;
 	if (time < self.attack_finished)
@@ -669,7 +684,11 @@ float() Q2M_CheckAttack =
 void() Q2M_Think =
 {
 	if (self.health <= 0 && self.q2_anim != Q2M_ANIM_DIE)
+	{
+		self.q2_anim = Q2M_ANIM_DIE;
+		Q2M_BecomeCorpse ();
 		return;
+	}
 	if (self.q2_anim == Q2M_ANIM_DIE)
 	{
 		if (self.frame < self.q2_fend)
@@ -682,8 +701,8 @@ void() Q2M_Think =
 			{
 				self.think = Q2M_HoverBoom;
 				self.nextthink = time + 1;
-				return;
 			}
+			return;
 		}
 		self.nextthink = time + 0.1;
 		self.think = Q2M_Think;
@@ -718,6 +737,8 @@ void() Q2M_Think =
 		ai_walk (8);
 	else if (self.q2_anim == Q2M_ANIM_RUN)
 	{
+		if (self.health <= 0)
+			return;
 		if (self.q2_runspeed)
 			ai_run (self.q2_runspeed);
 		else
@@ -725,12 +746,16 @@ void() Q2M_Think =
 	}
 	else if (self.q2_anim == Q2M_ANIM_ATK)
 	{
+		if (self.health <= 0)
+			return;
 		ai_face ();
 		if (self.frame >= self.q2_ffire && self.frame <= self.q2_ffire2)
 			Q2M_FireShot ();
 	}
 	else if (self.q2_anim == Q2M_ANIM_MELEE)
 	{
+		if (self.health <= 0)
+			return;
 		if (self.frame >= self.q2_ffire && self.frame <= self.q2_ffire2)
 			Q2M_FireMelee ();
 		else
@@ -750,7 +775,22 @@ void() Q2M_BecomeCorpse =
 	self.velocity = '0 0 0';
 	self.avelocity = '0 0 0';
 	self.flags = self.flags | FL_ONGROUND;
-	self.solid = SOLID_NOT;
+	self.takedamage = DAMAGE_YES;
+	self.health = 60;
+	self.th_die = BQA_GibCorpse;
+	self.th_pain = BQA_CorpsePain;
+	self.th_melee = SUB_Null;
+	self.th_missile = SUB_Null;
+	self.th_run = SUB_Null;
+	self.th_walk = SUB_Null;
+	self.th_stand = SUB_Null;
+	self.touch = SUB_Null;
+	self.think = SUB_Null;
+	self.nextthink = -1;
+	self.enemy = world;
+	self.solid = SOLID_CORPSE;
+	self.allowPathFind = FALSE;
+	self.flags = self.flags - (self.flags & FL_MONSTER);
 };
 
 void() Q2M_HoverBoom =
@@ -775,7 +815,16 @@ void() Q2M_LeapTouch =
 void() Q2M_LeapThink =
 {
 	if (self.health <= 0)
+	{
+		self.touch = SUB_Null;
+		self.movetype = MOVETYPE_STEP;
+		if (self.q2_anim != Q2M_ANIM_DIE)
+		{
+			self.q2_anim = Q2M_ANIM_DIE;
+			Q2M_BecomeCorpse ();
+		}
 		return;
+	}
 	if ((self.flags & FL_ONGROUND) || time > self.attack_finished)
 	{
 		self.touch = SUB_Null;
@@ -793,6 +842,10 @@ void() Q2M_Leap =
 {
 	local vector d;
 
+	if (self.health <= 0)
+		return;
+	if (self.q2_anim == Q2M_ANIM_DIE)
+		return;
 	if (self.enemy == world)
 		return;
 	sound (self, CHAN_VOICE, "mutant/mutatck1.wav", 1, ATTN_NORM);
@@ -959,6 +1012,18 @@ void() Q2M_Die =
 	}
 	self.q2_anim = Q2M_ANIM_DIE;
 	Q2M_BeginAnim ();
+	self.th_stand = SUB_Null;
+	self.th_walk = SUB_Null;
+	self.th_run = SUB_Null;
+	self.th_missile = SUB_Null;
+	self.th_melee = SUB_Null;
+	self.th_pain = SUB_Null;
+	self.allowPathFind = FALSE;
+	self.touch = SUB_Null;
+	self.th_die = BQA_GibCorpse;
+	self.takedamage = DAMAGE_YES;
+	self.health = 60;
+	self.flags = self.flags - (self.flags & FL_MONSTER);
 };
 
 void(float kind) Q2M_Setup =
@@ -1224,7 +1289,7 @@ void() Q2M_StartGo =
 		self.pausetime = 99999999;
 		self.th_stand ();
 	}
-	CP_MaybeElite ();
+	BQA_MaybeElite ();
 	self.nextthink = self.nextthink + random () * 0.5;
 };
 

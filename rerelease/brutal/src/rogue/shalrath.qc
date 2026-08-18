@@ -41,20 +41,20 @@ $frame	walk1 walk2 walk3 walk4 walk5 walk6 walk7 walk8 walk9 walk10
 $frame	walk11 walk12
 
 
-#define CP_HAS_VORELINGS
+#define BQA_HAS_VORELINGS
 void() monster_tarbaby;
 void() FoundTarget;
 
-void() CP_TryVorelings =
+void() BQA_TryVorelings =
 {
 	local entity oself;
 	local float i;
 	local vector org;
 	local vector ang;
 
-	if (self.cp_spawned_lings)
+	if (self.bqa_spawned_lings)
 		return;
-	self.cp_spawned_lings = 1;
+	self.bqa_spawned_lings = 1;
 	if (random() > 0.1)
 		return;
 

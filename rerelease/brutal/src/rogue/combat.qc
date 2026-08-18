@@ -98,11 +98,11 @@ void(entity targ, entity attacker) Killed =
 
 	if (self.flags & FL_MONSTER)
 	{
-		if (self.cp_headshot)
+		if (self.bqa_headshot)
 		{
 			if (self.health > -40)
 				self.health = -40;
-			self.cp_headshot = 0;
+			self.bqa_headshot = 0;
 		}
 		else if (self.health <= -10 && self.health > -40)
 			self.health = -40;
@@ -142,7 +142,7 @@ void(entity targ, entity attacker) Killed =
 	self.touch = SUB_Null;
 
 	monster_death_use();
-	CP_OnKilledExtra ();
+	BQA_OnKilledExtra ();
 	if (self.classname == "player")
 		RA_PlayerDied (attacker);
 	self.th_die ();
@@ -280,7 +280,7 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 			{
 				oldself = self;
 				self = targ;
-				CP_FleshSplat ();
+				BQA_FleshSplat ();
 				self = oldself;
 			}
 		}
@@ -288,13 +288,13 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 
 	if (targ.health <= 0)
 	{
-		if (CP_IsCook (inflictor, attacker))
+		if (BQA_IsCook (inflictor, attacker))
 		{
 			if (targ.health > -50)
 				targ.health = -50;
 			oldself = self;
 			self = targ;
-			CP_ExplosionFX ();
+			BQA_ExplosionFX ();
 			self = oldself;
 		}
 		Killed (targ, attacker);

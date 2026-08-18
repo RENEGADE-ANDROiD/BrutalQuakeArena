@@ -579,7 +579,7 @@ void() FoundTarget =
 	SightSound ();
 	HuntTarget ();
 	if (self.classname == "monster_shalrath")
-		CP_TryVorelings ();
+		BQA_TryVorelings ();
 };
 
 /*

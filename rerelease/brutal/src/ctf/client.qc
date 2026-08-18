@@ -113,7 +113,7 @@ void() SetChangeParms =
     parm10 = self.lastteam; // Save the current team of the player
   parm15 = self.accesslvl; // remote admin state
   parm16 = self.player_flag;
-  parm11 = CP_PackMelee ();
+  parm11 = BQA_PackMelee ();
 };
 
 void() SetNewParms =
@@ -181,7 +181,7 @@ void() DecodeLevelParms =
 // *TEAMPLAY*
   if(TeamColorIsLegal(parm10))
     self.lastteam = parm10;
-  CP_UnpackMelee (parm11);
+  BQA_UnpackMelee (parm11);
 };
 
 /*

@@ -311,7 +311,7 @@ void(float damage, vector dir) TraceAttack =
 
 	if (trace_ent.takedamage)
 	{
-		damage = CP_HeadshotDamage (trace_ent, trace_endpos, damage);
+		damage = BQA_HeadshotDamage (trace_ent, trace_endpos, damage);
 		SpawnBlood (org, vel*0.2, damage);
 		AddMultiDamage (trace_ent, damage);
 	}
@@ -369,8 +369,8 @@ void() W_FireShotgun =
 	sound (self, CHAN_WEAPON, "weapons/guncock.wav", 1, ATTN_NORM);	
 
 	self.punchangle_x = -2;
-	CP_EjectCasing ();
-	CP_Recoil (80);
+	BQA_EjectCasing ();
+	BQA_Recoil (80);
 	
 	self.currentammo = self.ammo_shells1 = self.ammo_shells1 - 1;
 	UpdateAmmoCounts(self);
@@ -397,9 +397,9 @@ void() W_FireSuperShotgun =
 	sound (self ,CHAN_WEAPON, "weapons/shotgn2.wav", 1, ATTN_NORM);	
 
 	self.punchangle_x = -4;
-	CP_EjectCasing ();
-	CP_EjectCasing ();
-	CP_Recoil (140);
+	BQA_EjectCasing ();
+	BQA_EjectCasing ();
+	BQA_Recoil (140);
 	
 	self.currentammo = self.ammo_shells1 = self.ammo_shells1 - 2;
 	UpdateAmmoCounts(self);
@@ -425,7 +425,7 @@ void()	s_explode6	=	[5,		SUB_Remove] {};
 
 void() BecomeExplosion =
 {
-	CP_ExplosionFX ();
+	BQA_ExplosionFX ();
 	self.movetype = MOVETYPE_NONE;
 	self.velocity = '0 0 0';
 	self.touch = SUB_Null;
@@ -458,7 +458,7 @@ void() T_MissileTouch =
 
 	// don't do radius damage to the other, because all the damage
 	// was done in the impact
-	T_RadiusDamage (self, self.owner, CP_CrushRadius (), other);
+	T_RadiusDamage (self, self.owner, BQA_CrushRadius (), other);
 
 //	sound (self, CHAN_WEAPON, "weapons/r_exp3.wav", 1, ATTN_NORM);
 	self.origin = self.origin - 8*normalize(self.velocity);
@@ -469,8 +469,8 @@ void() T_MissileTouch =
 	WriteCoord (MSG_BROADCAST, self.origin_y);
 	WriteCoord (MSG_BROADCAST, self.origin_z);
 
-	if (CP_CrushRadius () > 120)
-		CP_ExplosionFX ();
+	if (BQA_CrushRadius () > 120)
+		BQA_ExplosionFX ();
 	BecomeExplosion ();
 };
 
@@ -491,7 +491,7 @@ void() W_FireRocket =
 	sound (self, CHAN_WEAPON, "weapons/sgun1.wav", 1, ATTN_NORM);
 
 	self.punchangle_x = -2;
-	CP_Recoil (120);
+	BQA_Recoil (120);
 
 	missile = spawn ();
 	missile.owner = self;
@@ -550,7 +550,7 @@ void(vector p1, vector p2, entity from, float damage) LightningDamage =
 		particle (trace_endpos, '0 0 100', 225, damage*4);
 		T_Damage (trace_ent, from, from, damage);
 		if (from.classname == "player")
-			CP_ChainLightning (trace_ent, damage);
+			BQA_ChainLightning (trace_ent, damage);
 		if (self.classname == "player")
 		{
 			if (other.classname == "player")
@@ -673,7 +673,7 @@ void() W_FireGrenade =
 	sound (self, CHAN_WEAPON, "weapons/grenade.wav", 1, ATTN_NORM);
 
 	self.punchangle_x = -2;
-	CP_Recoil (60);
+	BQA_Recoil (60);
 
 	missile = spawn ();
 	missile.owner = self;
@@ -742,7 +742,7 @@ void(vector org, vector dir) launch_spike =
 	setorigin (newmis, org);
 
 	newmis.velocity = dir * 1000;
-	if (self.cp_elite)
+	if (self.bqa_elite)
 		newmis.velocity = newmis.velocity * 1.25;
 };
 
@@ -816,7 +816,7 @@ local float rand;
 	if (other.takedamage)
 	{
 		spawn_touchblood (9);
-		T_Damage (other, self, self.owner, CP_HeadshotDamage (other, self.origin, 9));
+		T_Damage (other, self, self.owner, BQA_HeadshotDamage (other, self.origin, 9));
 	}
 	else
 	{
@@ -856,7 +856,7 @@ local float rand;
 	if (other.takedamage)
 	{
 		spawn_touchblood (18);
-		T_Damage (other, self, self.owner, CP_HeadshotDamage (other, self.origin, 18));
+		T_Damage (other, self, self.owner, BQA_HeadshotDamage (other, self.origin, 18));
 	}
 	else
 	{
@@ -1843,7 +1843,7 @@ void() W_WeaponFrame =
 	}
 	else if (self.impulse == 215)
 	{
-		CP_FireOffhandProx ();
+		BQA_FireOffhandProx ();
 		self.impulse = 0;
 	}
 

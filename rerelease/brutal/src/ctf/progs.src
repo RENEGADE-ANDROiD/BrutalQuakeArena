@@ -1,7 +1,7 @@
 progs.dat
 
 defs.qc
-../common/cputil.qc
+../common/bqautil.qc
 log.qc			// Console logging of game actions
 teamplay.qc     // Compile the teamplay file
 ctfgame.qc		// vote exit stuff
@@ -25,7 +25,7 @@ misc.qc
 hook.qc
 server.qc
 bots/bot.qc
-../common/combatplus.qc
+../common/bqa.qc
 ../common/moveplus.qc
 ../common/q2weapons.qc
 ../common/q2monsters.qc

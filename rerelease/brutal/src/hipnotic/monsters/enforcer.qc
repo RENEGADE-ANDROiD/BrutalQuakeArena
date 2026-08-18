@@ -114,7 +114,7 @@ void(vector org, vector vec) LaunchLaser =
 	setorigin (newmis, org);
 
 	newmis.velocity = vec * 600;
-	if (self.cp_elite)
+	if (self.bqa_elite)
 		newmis.velocity = newmis.velocity * 1.25;
 	newmis.angles = vectoangles(newmis.velocity);
 
@@ -135,7 +135,7 @@ void() enforcer_fire =
 	org = self.origin + v_forward * 30 + v_right * 8.5 + '0 0 16';
 
 	LaunchLaser(org, self.enemy.origin - self.origin);
-	if (self.cp_defender)
+	if (self.bqa_defender)
 	{
 		LaunchLaser(org + v_right * 6, self.enemy.origin - self.origin);
 		if (vlen(self.enemy.origin - self.origin) < 220)
@@ -193,7 +193,7 @@ void()	enf_atk5	=[	$attack5,	enf_atk6	] {ai_face();};
 void()	enf_atk6	=[	$attack6,	enf_atk7	] {enforcer_fire();};
 void()	enf_atk7	=[	$attack7,	enf_atk8	] {ai_face();};
 void()	enf_atk8	=[	$attack8,	enf_atk9	] {
-	if (self.cp_defender)
+	if (self.bqa_defender)
 		enforcer_fire();
 	else
 		ai_face();
@@ -390,7 +390,7 @@ void() monster_enforcer =
 	if (self.skin == 1 || random() < 0.2)
 	{
 		self.skin = 1;
-		self.cp_defender = 1;
+		self.bqa_defender = 1;
 	}
 	self.th_missile = enf_atk1;
 

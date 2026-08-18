@@ -25,7 +25,7 @@ entity nullentity;
 entity bulletholes;
 entity lastbullet;
 float numbulletholes;
-#define CP_HAS_IT_MJOLNIR
+#define BQA_HAS_IT_MJOLNIR
 float IT_MJOLNIR = 128;
 float IT_LASER_CANNON = 8388608;
 float IT_PROXIMITY_GUN = 65536;

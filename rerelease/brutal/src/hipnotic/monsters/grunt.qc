@@ -225,7 +225,7 @@ void() army_fire =
 	dir = en.origin - en.velocity*0.2;
 	dir = normalize (dir - self.origin);
 	
-	if (self.cp_nailgrunt)
+	if (self.bqa_nailgrunt)
 	{
 		sound (self, CHAN_WEAPON, "weapons/spike2.wav", 1, ATTN_NORM);
 		launch_spike (self.origin + '0 0 16', dir);
@@ -330,7 +330,7 @@ void() monster_army =
 	self.th_die = army_die;
 
 	if (self.skin == 1 || random() < 0.25)
-		self.cp_nailgrunt = 1;
+		self.bqa_nailgrunt = 1;
 
 	walkmonster_start ();
 };
