@@ -100,12 +100,40 @@ void() Q2_ClearHeld =
 	self.q2_spin = 0;
 };
 
+void() Q2_PlayerDied =
+{
+	local entity f;
+
+	self.q2_spin = 0;
+	f = self.q2_flash;
+	if (f != world)
+	{
+		remove (f);
+		self.q2_flash = world;
+	}
+};
+
+void() Q2_AnimFire =
+{
+	self.weaponframe = self.weaponframe + 1;
+	if (self.weaponframe < 1 || self.weaponframe > 9)
+		self.weaponframe = 1;
+};
+
+void() Q2_AnimHold =
+{
+	if (self.weaponframe < 1)
+		self.weaponframe = 1;
+	else if (self.weaponframe < 6)
+		self.weaponframe = self.weaponframe + 1;
+};
+
 float() Q2_SetCurrentAmmo =
 {
 	if (self.q2_held == 1)
 	{
 		player_run ();
-		self.weaponframe = 0;
+		self.weaponframe = 1;
 		self.currentammo = self.ammo_nails;
 		self.weaponmodel = "progs/v_machn.mdl";
 		self.items = self.items - (self.items & (IT_SHELLS | IT_NAILS | IT_ROCKETS | IT_CELLS));
@@ -115,7 +143,7 @@ float() Q2_SetCurrentAmmo =
 	if (self.q2_held == 2)
 	{
 		player_run ();
-		self.weaponframe = 0;
+		self.weaponframe = 1;
 		self.currentammo = self.ammo_nails;
 		self.weaponmodel = "progs/v_chain.mdl";
 		self.items = self.items - (self.items & (IT_SHELLS | IT_NAILS | IT_ROCKETS | IT_CELLS));
@@ -125,7 +153,7 @@ float() Q2_SetCurrentAmmo =
 	if (self.q2_held == 3)
 	{
 		player_run ();
-		self.weaponframe = 0;
+		self.weaponframe = 1;
 		self.currentammo = self.ammo_cells;
 		self.weaponmodel = "progs/v_hyperb.mdl";
 		self.items = self.items - (self.items & (IT_SHELLS | IT_NAILS | IT_ROCKETS | IT_CELLS));
@@ -135,7 +163,7 @@ float() Q2_SetCurrentAmmo =
 	if (self.q2_held == 4)
 	{
 		player_run ();
-		self.weaponframe = 0;
+		self.weaponframe = 1;
 		self.currentammo = self.ammo_cells;
 		self.weaponmodel = "progs/v_rail.mdl";
 		self.items = self.items - (self.items & (IT_SHELLS | IT_NAILS | IT_ROCKETS | IT_CELLS));
@@ -145,7 +173,7 @@ float() Q2_SetCurrentAmmo =
 	if (self.q2_held == 5)
 	{
 		player_run ();
-		self.weaponframe = 0;
+		self.weaponframe = 1;
 		self.currentammo = self.ammo_cells;
 		self.weaponmodel = "progs/v_bfg.mdl";
 		self.items = self.items - (self.items & (IT_SHELLS | IT_NAILS | IT_ROCKETS | IT_CELLS));
@@ -394,6 +422,7 @@ void() Q2_FireMG =
 	self.currentammo = self.ammo_nails = self.ammo_nails - 1;
 	self.punchangle_x = self.punchangle_x - 1;
 	Q2_Muzzle (self, 0);
+	Q2_AnimFire ();
 	Q2_FireHitscan ();
 	self.attack_finished = time + 0.1;
 };
@@ -424,6 +453,7 @@ void() Q2_FireCG =
 		shots = 3;
 	self.punchangle_x = self.punchangle_x - 1;
 	Q2_Muzzle (self, 0);
+	Q2_AnimFire ();
 	while (shots > 0 && self.ammo_nails >= 1)
 	{
 		self.currentammo = self.ammo_nails = self.ammo_nails - 1;
@@ -444,6 +474,7 @@ void() Q2_FireHyper =
 	self.currentammo = self.ammo_cells = self.ammo_cells - 1;
 	self.punchangle_x = self.punchangle_x - 1;
 	Q2_Muzzle (self, 0);
+	Q2_AnimFire ();
 	Q2_Sparks (self.origin + self.view_ofs, v_forward * 40, COLOR_CYAN, 16);
 	org = self.origin + self.view_ofs + v_forward * 8;
 	newmis = spawn ();
@@ -476,6 +507,7 @@ void() Q2_FireRail =
 	self.currentammo = self.ammo_cells = self.ammo_cells - 1;
 	self.punchangle_x = self.punchangle_x - 3;
 	Q2_Muzzle (self, 1);
+	Q2_AnimHold ();
 	org = self.origin + self.view_ofs;
 	dir = v_forward;
 	dest = org + dir * 8192;
@@ -527,6 +559,7 @@ void() Q2_FireBFG =
 	self.currentammo = self.ammo_cells = self.ammo_cells - 40;
 	self.punchangle_x = self.punchangle_x - 4;
 	Q2_Muzzle (self, 2);
+	Q2_AnimHold ();
 	newmis = spawn ();
 	newmis.owner = self;
 	newmis.movetype = MOVETYPE_FLYMISSILE;
@@ -566,31 +599,26 @@ float() Q2_Attack =
 	self.show_hostile = time + 1;
 	if (self.q2_held == 1)
 	{
-		player_nail1 ();
 		Q2_FireMG ();
 		return TRUE;
 	}
 	if (self.q2_held == 2)
 	{
-		player_nail1 ();
 		Q2_FireCG ();
 		return TRUE;
 	}
 	if (self.q2_held == 3)
 	{
-		player_nail1 ();
 		Q2_FireHyper ();
 		return TRUE;
 	}
 	if (self.q2_held == 4)
 	{
-		player_light1 ();
 		Q2_FireRail ();
 		return TRUE;
 	}
 	if (self.q2_held == 5)
 	{
-		player_rocket1 ();
 		Q2_FireBFG ();
 		return TRUE;
 	}

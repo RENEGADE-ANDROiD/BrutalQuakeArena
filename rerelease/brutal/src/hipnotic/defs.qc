@@ -606,6 +606,7 @@ float(float kind) Q2_TryReplace;
 void() Q2_GrantArena;
 float() Q2_TossCurrent;
 void() Q2_ClearHeld;
+void() Q2_PlayerDied;
 void() Q2M_Precache;
 float() Q2M_ModelsOk;
 float() Q2M_CheckAttack;

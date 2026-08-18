@@ -109,7 +109,8 @@ void() player_run;
 
 void()  player_stand1 =[  $axstnd1, player_stand1 ]
 {
-  self.weaponframe = 0;
+  if (!self.q2_held)
+    self.weaponframe = 0;
 
   if (self.velocity_x || self.velocity_y)
   {
@@ -138,7 +139,8 @@ void()  player_stand1 =[  $axstnd1, player_stand1 ]
 
 void()  player_run =[ $rockrun1,  player_run  ]
 {
-  self.weaponframe = 0;
+  if (!self.q2_held)
+    self.weaponframe = 0;
 
   if (!self.velocity_x && !self.velocity_y)
   {
@@ -237,6 +239,8 @@ void()  player_chain5=  [$axattd4, player_run    ] {self.weaponframe=5;};
 
 void() player_nail1   =[$nailatt1, player_nail2  ] 
 {
+  if (self.health <= 0 || self.deadflag)
+    return;
   self.effects = self.effects | EF_MUZZLEFLASH;
 
   if (!self.button0)
@@ -255,6 +259,8 @@ void() player_nail1   =[$nailatt1, player_nail2  ]
 
 void() player_nail2   =[$nailatt2, player_nail1  ]
 {
+  if (self.health <= 0 || self.deadflag)
+    return;
   self.effects = self.effects | EF_MUZZLEFLASH;
 
   if (!self.button0)
@@ -275,6 +281,8 @@ void() player_nail2   =[$nailatt2, player_nail1  ]
 
 void() player_light1   =[$light1, player_light2  ] 
 {
+  if (self.health <= 0 || self.deadflag)
+    return;
   self.effects = self.effects | EF_MUZZLEFLASH;
 
   if (!self.button0)
@@ -293,6 +301,8 @@ void() player_light1   =[$light1, player_light2  ]
 
 void() player_light2   =[$light2, player_light1  ]
 {
+  if (self.health <= 0 || self.deadflag)
+    return;
   self.effects = self.effects | EF_MUZZLEFLASH;
 
   if (!self.button0)
@@ -635,6 +645,7 @@ void() PlayerDie =
   
   self.melee_active = 0;
   W_MeathookRelease ();
+  Q2_PlayerDied ();
   self.items = self.items - (self.items & ( IT_INVISIBILITY | IT_INVULNERABILITY | IT_SUIT | IT_QUAD ) );
   self.invisible_finished = 0;  // don't die as eyes
   self.invincible_finished = 0;
