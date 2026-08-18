@@ -1,5 +1,6 @@
 progs.dat
 
+#define CP_HAS_MONSTERS
 defs.qc
 ../common/cputil.qc
 hipdefs.qc   //JIM
@@ -67,6 +68,7 @@ bots/bot.qc				// bot support
 ../common/combatplus.qc
 ../common/moveplus.qc
 ../common/q2weapons.qc
+../common/q2monsters.qc
 ../common/arena.qc
 ../common/arena_bot.qc
 

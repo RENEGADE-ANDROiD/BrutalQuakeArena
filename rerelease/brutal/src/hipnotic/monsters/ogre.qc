@@ -469,6 +469,11 @@ void() ogre_melee =
 */
 void() monster_ogre =
 {
+	if (Q2M_TryReplace (5))
+	{
+		Q2M_Start ();
+		return;
+	}
 	if (deathmatch)
 	{
 		remove(self);
@@ -507,5 +512,10 @@ void() monster_ogre =
 
 void() monster_ogre_marksman =
 {
+	if (Q2M_TryReplace (5))
+	{
+		Q2M_Start ();
+		return;
+	}
 	monster_ogre ();
 };

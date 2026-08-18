@@ -55,6 +55,7 @@ void() W_Precache =
 	precache_sound ("weapons/bounce.wav");		// grenade bounce
 	precache_sound ("weapons/shotgn2.wav");	// super shotgun
 	Q2_Precache ();
+	Q2M_Precache ();
 };
 
 float() crandom =

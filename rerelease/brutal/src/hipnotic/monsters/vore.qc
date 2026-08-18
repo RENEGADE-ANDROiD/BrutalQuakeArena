@@ -265,6 +265,11 @@ void() ShalMissileTouch =
 */
 void() monster_shalrath =
 {
+	if (Q2M_TryReplace (9))
+	{
+		Q2M_Start ();
+		return;
+	}
 	if (deathmatch)
 	{
 		remove(self);

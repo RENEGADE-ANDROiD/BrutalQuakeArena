@@ -494,6 +494,11 @@ Normal: use the original skin and fire normal grenades.
 */
 void() monster_ogre =
 {
+	if (Q2M_TryReplace (5))
+	{
+		Q2M_Start ();
+		return;
+	}
 	if (deathmatch)
 	{
 		remove(self);

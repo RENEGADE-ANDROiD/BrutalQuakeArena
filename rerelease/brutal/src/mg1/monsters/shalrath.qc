@@ -272,6 +272,11 @@ void() ShalMissileTouch =
 */
 void() monster_shalrath =
 {
+	if (Q2M_TryReplace (9))
+	{
+		Q2M_Start ();
+		return;
+	}
 	precache_model2 ("progs/shalrath.mdl");
 	precache_model2 ("progs/h_shal.mdl");
 	precache_model2 ("progs/v_spike.mdl");

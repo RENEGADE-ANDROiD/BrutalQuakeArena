@@ -348,6 +348,11 @@ void() enf_die =
 */
 void() monster_enforcer =
 {
+	if (Q2M_TryReplace (2))
+	{
+		Q2M_Start ();
+		return;
+	}
 	precache_model2 ("progs/enforcer.mdl");
 	precache_model2 ("progs/h_mega.mdl");
 	precache_model2 ("progs/laser.mdl");

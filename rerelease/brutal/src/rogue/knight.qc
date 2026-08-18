@@ -333,6 +333,11 @@ frame: frame to be frozen in. (default 44)
 */
 void() monster_knight =
 {
+	if (Q2M_TryReplace (3))
+	{
+		Q2M_Start ();
+		return;
+	}
 	if (deathmatch)
 	{
 		remove(self);

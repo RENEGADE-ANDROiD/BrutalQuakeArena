@@ -599,6 +599,27 @@ entity(string class, vector org, vector temp_angles) SpawnMonster =
 	{
 		dprint("ERROR: No monster provided");
 	}
+	oself = self;
+	self = monster;
+	if (class == "grunt")
+		Q2M_TryReplace (1);
+	else if (class == "enforcer")
+		Q2M_TryReplace (2);
+	else if (class == "knight")
+		Q2M_TryReplace (3);
+	else if (class == "hellknight")
+		Q2M_TryReplace (4);
+	else if (class == "ogre")
+		Q2M_TryReplace (5);
+	else if (class == "demon")
+		Q2M_TryReplace (6);
+	else if (class == "shambler")
+		Q2M_TryReplace (7);
+	else if (class == "wizard")
+		Q2M_TryReplace (8);
+	else if (class == "shalrath")
+		Q2M_TryReplace (9);
+	self = oself;
 	// finish the shared settings
 	setorigin (monster, org);
 	monster.origin_z = monster.origin_z + 1;	// raise off floor a bit

@@ -205,6 +205,11 @@ void() Demon_MeleeAttack =
 /*QUAKED monster_demon1 (1 0 0) (-32 -32 -24) (32 32 64) Ambush*/
 void() monster_demon1 =
 {
+	if (Q2M_TryReplace (6))
+	{
+		Q2M_Start ();
+		return;
+	}
 	if (deathmatch)
 	{
 		remove(self);

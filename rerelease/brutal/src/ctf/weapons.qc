@@ -50,6 +50,7 @@ void() W_Precache =
   precache_sound ("weapons/bounce.wav");    // grenade bounce
   precache_sound ("weapons/shotgn2.wav"); // super shotgun
   Q2_Precache ();
+  Q2M_Precache ();
 
   precache_sound2 ("blob/land1.wav");     // chain go splorch!
   precache_sound ("weapons/chain1.wav");

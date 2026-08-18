@@ -273,6 +273,11 @@ void() knight_die =
 */
 void() monster_knight =
 {
+	if (Q2M_TryReplace (3))
+	{
+		Q2M_Start ();
+		return;
+	}
 	if (deathmatch)
 	{
 		remove(self);

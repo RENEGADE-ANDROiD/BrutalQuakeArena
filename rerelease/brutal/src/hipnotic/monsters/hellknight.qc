@@ -422,6 +422,11 @@ void() hknight_melee =
 */
 void() monster_hell_knight =
 {
+	if (Q2M_TryReplace (4))
+	{
+		Q2M_Start ();
+		return;
+	}
 	if (deathmatch)
 	{
 		remove(self);

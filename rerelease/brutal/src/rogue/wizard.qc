@@ -393,6 +393,11 @@ void() Wiz_Missile =
 */
 void() monster_wizard =
 {
+	if (Q2M_TryReplace (8))
+	{
+		Q2M_Start ();
+		return;
+	}
 	if (deathmatch)
 	{
 		remove(self);

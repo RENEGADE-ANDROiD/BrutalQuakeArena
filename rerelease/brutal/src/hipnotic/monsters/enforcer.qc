@@ -349,6 +349,11 @@ void() enf_die =
 */
 void() monster_enforcer =
 {
+	if (Q2M_TryReplace (2))
+	{
+		Q2M_Start ();
+		return;
+	}
 	if (deathmatch)
 	{
 		remove(self);

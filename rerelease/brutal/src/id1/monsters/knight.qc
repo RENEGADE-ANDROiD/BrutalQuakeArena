@@ -269,6 +269,11 @@ QUAKED monster_knight (1 0 0) (-16 -16 -24) (16 16 40) Ambush
 */
 void() monster_knight =
 {
+	if (Q2M_TryReplace (3))
+	{
+		Q2M_Start ();
+		return;
+	}
 	if (deathmatch)
 	{
 		remove(self);

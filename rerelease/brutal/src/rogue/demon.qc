@@ -198,6 +198,11 @@ void() Demon_MeleeAttack =
 */
 void() monster_demon1 =
 {
+	if (Q2M_TryReplace (6))
+	{
+		Q2M_Start ();
+		return;
+	}
 	if (deathmatch)
 	{
 		remove(self);

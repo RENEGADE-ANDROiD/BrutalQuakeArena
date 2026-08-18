@@ -287,6 +287,11 @@ void() knight_die =
 */
 void() monster_knight =
 {
+	if (Q2M_TryReplace (3))
+	{
+		Q2M_Start ();
+		return;
+	}
 	precache_model ("progs/knight.mdl");
 	precache_model ("progs/h_knight.mdl");
 

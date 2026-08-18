@@ -205,6 +205,11 @@ void() Demon_MeleeAttack =
 */
 void() monster_demon1 =
 {
+	if (Q2M_TryReplace (6))
+	{
+		Q2M_Start ();
+		return;
+	}
 	precache_model ("progs/demon.mdl");
 	precache_model ("progs/h_demon.mdl");
 

@@ -361,6 +361,11 @@ void() sham_die =
 */
 void() monster_shambler =
 {
+	if (Q2M_TryReplace (7))
+	{
+		Q2M_Start ();
+		return;
+	}
 	if (deathmatch)
 	{
 		remove(self);

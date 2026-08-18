@@ -401,6 +401,11 @@ void() Wiz_Missile =
 */
 void() monster_wizard =
 {
+	if (Q2M_TryReplace (8))
+	{
+		Q2M_Start ();
+		return;
+	}
 	precache_model ("progs/wizard.mdl");
 	precache_model ("progs/h_wizard.mdl");
 	precache_model ("progs/w_spike.mdl");

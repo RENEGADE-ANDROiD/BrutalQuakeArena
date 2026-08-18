@@ -366,6 +366,11 @@ void() sham_die =
 */
 void() monster_shambler =
 {
+	if (Q2M_TryReplace (7))
+	{
+		Q2M_Start ();
+		return;
+	}
 	precache_model ("progs/shambler.mdl");
 	precache_model ("progs/s_light.mdl");
 	precache_model ("progs/h_shams.mdl");

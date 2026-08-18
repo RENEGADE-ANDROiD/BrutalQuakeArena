@@ -28,5 +28,6 @@ bots/bot.qc
 ../common/combatplus.qc
 ../common/moveplus.qc
 ../common/q2weapons.qc
+../common/q2monsters.qc
 ../common/arena.qc
 ../common/arena_bot.qc

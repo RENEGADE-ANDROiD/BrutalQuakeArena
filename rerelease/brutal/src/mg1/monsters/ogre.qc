@@ -418,6 +418,11 @@ void() ogre_melee =
 */
 void() monster_ogre =
 {
+	if (Q2M_TryReplace (5))
+	{
+		Q2M_Start ();
+		return;
+	}
 	precache_model ("progs/ogre.mdl");
 	precache_model ("progs/h_ogre.mdl");
 	precache_model ("progs/grenade.mdl");
@@ -450,6 +455,11 @@ void() monster_ogre =
 
 void() monster_ogre_marksman =
 {
+	if (Q2M_TryReplace (5))
+	{
+		Q2M_Start ();
+		return;
+	}
 	monster_ogre ();
 };
 

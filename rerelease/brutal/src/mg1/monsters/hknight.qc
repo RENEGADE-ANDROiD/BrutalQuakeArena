@@ -434,6 +434,11 @@ void() hknight_melee =
 */
 void() monster_hell_knight =
 {
+	if (Q2M_TryReplace (4))
+	{
+		Q2M_Start ();
+		return;
+	}
 	precache_model2 ("progs/hknight.mdl");
 	precache_model2 ("progs/k_spike.mdl");
 	precache_model2 ("progs/h_hellkn.mdl");

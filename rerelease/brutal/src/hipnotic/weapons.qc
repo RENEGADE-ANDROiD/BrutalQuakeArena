@@ -583,6 +583,7 @@ void() W_Precache =
 	precache_sound ("weapons/bounce.wav");		// grenade bounce
 	precache_sound ("weapons/shotgn2.wav");	// super shotgun
 	Q2_Precache ();
+	Q2M_Precache ();
 //MED
    precache_sound ("enforcer/enfstop.wav");   // laser cannon
 //MED 11/06/96
