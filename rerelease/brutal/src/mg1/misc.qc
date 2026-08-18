@@ -124,22 +124,13 @@ void() fire_touch =
 
 void() barrel_explode =
 {
-	self.origin_z = self.origin_z + 32;
-	
-	// did say self.owner
-	T_RadiusDamage (self, self, 160, world);
-	sound (self, CHAN_VOICE, "weapons/r_exp3.wav", 1, ATTN_NORM);
-	particle (self.origin, '0 0 0', 75, 255);
-	
-	
-	// yoder add, 27/09/2020 to make barrels fire targets on explode
 	activator = self.enemy;
 	dprint("enemy name: ");
 	dprint(self.enemy.classname);
 	dprint("\n");
 	SUB_UseTargets ();
 	
-	BecomeExplosion ();
+	BQA_BarrelBoom (self);
 };
 
 void() barrel_detonate =

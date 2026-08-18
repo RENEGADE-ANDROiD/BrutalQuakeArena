@@ -10,6 +10,7 @@ float(entity e, float healamount, float ignore) T_Heal;
 void() W_SetCurrentAmmo;
 void() SUB_Remove;
 void() SUB_Null;
+void() BecomeExplosion;
 void() BQA_ProxTouch;
 void() BQA_ProxThink;
 void() BQA_ProxExplode;
@@ -515,6 +516,87 @@ void() BQA_ExplosionFX =
 		e.think = SUB_Remove;
 		i = i + 1;
 	}
+};
+
+void(string mdl, float spd) BQA_ThrowDebris =
+{
+	local entity e;
+
+	e = spawn ();
+	e.classname = "expl_debris";
+	e.movetype = MOVETYPE_BOUNCE;
+	e.solid = SOLID_NOT;
+	e.velocity_x = (random () - 0.5) * spd * 420;
+	e.velocity_y = (random () - 0.5) * spd * 420;
+	e.velocity_z = 160 + random () * 320;
+	e.avelocity = '400 500 300';
+	setmodel (e, mdl);
+	e.scale = 0.7 + random () * 0.6;
+	setsize (e, '0 0 0', '0 0 0');
+	setorigin (e, self.origin);
+	e.nextthink = time + 2.5 + random ();
+	e.think = SUB_Remove;
+};
+
+void(entity atk) BQA_BarrelBoom =
+{
+	local entity e;
+	local float i;
+	local vector org;
+
+	if (atk == world)
+		atk = self;
+	T_RadiusDamage (self, atk, 240, world);
+	sound (self, CHAN_VOICE, "weapons/r_exp3.wav", 1, ATTN_NORM);
+	org = self.origin;
+	particle (org, '0 0 0', 75, 255);
+	particle (org, '0 0 120', 225, 180);
+	particle (org, '40 0 80', 95, 140);
+	particle (org + '32 0 16', '0 0 90', 0, 120);
+	particle (org + '-32 16 8', '20 0 70', 75, 100);
+	particle (org + '0 -48 24', '0 30 80', 225, 90);
+	particle (org + '48 32 8', '-20 0 60', 0, 80);
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+	WriteCoord (MSG_BROADCAST, org_x);
+	WriteCoord (MSG_BROADCAST, org_y);
+	WriteCoord (MSG_BROADCAST, org_z);
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_EXPLOSION2);
+	WriteCoord (MSG_BROADCAST, org_x);
+	WriteCoord (MSG_BROADCAST, org_y);
+	WriteCoord (MSG_BROADCAST, org_z);
+
+	i = 0;
+	while (i < 4)
+	{
+		e = spawn ();
+		e.movetype = MOVETYPE_NONE;
+		e.solid = SOLID_NOT;
+		e.origin_x = org_x + (random () - 0.5) * 64;
+		e.origin_y = org_y + (random () - 0.5) * 64;
+		e.origin_z = org_z + random () * 24;
+		setmodel (e, "progs/s_explod.spr");
+		setorigin (e, e.origin);
+		e.scale = 3 + random ();
+		e.frame = 0;
+		e.nextthink = time + 0.05;
+		e.think = BQA_ExplSpriteThink;
+		i = i + 1;
+	}
+
+	BQA_ThrowDebris ("progs/q2debris1.mdl", 1.5);
+	BQA_ThrowDebris ("progs/q2debris1.mdl", 1.5);
+	BQA_ThrowDebris ("progs/q2debris2.mdl", 2);
+	BQA_ThrowDebris ("progs/q2debris2.mdl", 2);
+	BQA_ThrowDebris ("progs/q2debris2.mdl", 2);
+	BQA_ThrowDebris ("progs/q2debris3.mdl", 1.75);
+	BQA_ThrowDebris ("progs/q2debris3.mdl", 1.75);
+	BQA_ThrowDebris ("progs/q2debris3.mdl", 1.75);
+	BQA_ThrowDebris ("progs/q2debris3.mdl", 1.75);
+
+	self.origin_z = self.origin_z + 32;
+	BecomeExplosion ();
 };
 
 void() BQA_ProxExplode =

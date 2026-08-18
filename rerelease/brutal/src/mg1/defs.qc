@@ -383,6 +383,7 @@ float	TE_KNIGHTSPIKE	= 8;
 float	TE_LIGHTNING3	= 9;
 float	TE_LAVASPLASH	= 10;
 float	TE_TELEPORT		= 11;
+float	TE_EXPLOSION2	= 12;
 float	TE_BEAM		    = 13;
 
 // sound channels
@@ -628,6 +629,9 @@ void() MP_DoJump;
 void() MP_PostThink;
 void(float impact) MP_LandPunch;
 void() Q2_Precache;
+void(vector org, float style) Q2_Impact;
+void(vector org, vector vel, float color, float count) Q2_Sparks;
+void(entity atk) BQA_BarrelBoom;
 float() Q2_SetCurrentAmmo;
 float() Q2_Attack;
 void() Q2_Impulse;

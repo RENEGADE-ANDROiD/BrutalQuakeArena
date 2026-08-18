@@ -376,6 +376,7 @@ void() W_FireShotgun =
 	UpdateAmmoCounts(self);
 	dir = aim (self, 100000);
 	FireBullets (6, dir, '0.04 0.04 0');
+	Q2_Impact (trace_endpos, 0);
 };
 
 
@@ -405,6 +406,7 @@ void() W_FireSuperShotgun =
 	UpdateAmmoCounts(self);
 	dir = aim (self, 100000);
 	FireBullets (14, dir, '0.14 0.08 0');
+	Q2_Impact (trace_endpos, 0);
 };
 
 
@@ -465,6 +467,11 @@ void() T_MissileTouch =
 
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+	WriteCoord (MSG_BROADCAST, self.origin_x);
+	WriteCoord (MSG_BROADCAST, self.origin_y);
+	WriteCoord (MSG_BROADCAST, self.origin_z);
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_EXPLOSION2);
 	WriteCoord (MSG_BROADCAST, self.origin_x);
 	WriteCoord (MSG_BROADCAST, self.origin_y);
 	WriteCoord (MSG_BROADCAST, self.origin_z);
@@ -624,6 +631,7 @@ void() W_FireLightning =
 	WriteCoord (MSG_BROADCAST, trace_endpos_z);
 
 	LightningDamage (self.origin + '0 0 16', trace_endpos + v_forward*4, self, 30);
+	Q2_Sparks (trace_endpos, '0 0 80', COLOR_CYAN, 30);
 };
 
 
@@ -636,6 +644,11 @@ void() GrenadeExplode =
 
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+	WriteCoord (MSG_BROADCAST, self.origin_x);
+	WriteCoord (MSG_BROADCAST, self.origin_y);
+	WriteCoord (MSG_BROADCAST, self.origin_z);
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_EXPLOSION2);
 	WriteCoord (MSG_BROADCAST, self.origin_x);
 	WriteCoord (MSG_BROADCAST, self.origin_y);
 	WriteCoord (MSG_BROADCAST, self.origin_z);
@@ -833,6 +846,7 @@ local float rand;
 		WriteCoord (MSG_BROADCAST, self.origin_z);
 	}
 
+	Q2_Sparks (self.origin, '0 0 40', COLOR_YELLOW, 20);
 	remove(self);
 
 };
@@ -867,6 +881,7 @@ local float rand;
 		WriteCoord (MSG_BROADCAST, self.origin_z);
 	}
 
+	Q2_Sparks (self.origin, '0 0 40', COLOR_YELLOW, 20);
 	remove(self);
 
 };

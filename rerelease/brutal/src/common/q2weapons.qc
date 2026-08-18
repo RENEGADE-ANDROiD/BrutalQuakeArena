@@ -1,4 +1,4 @@
-// Quake 2 guns as extra Brutal slots (nails / cells). Centered view MDLs.
+// Quake 2 guns as extra Brutal slots (nails / cells). Right-hand view MDLs.
 
 float	Q2_MG = 1;
 float	Q2_CG = 2;
@@ -49,6 +49,10 @@ float(float bit) Q2_Has =
 
 void() Q2_Precache =
 {
+	precache_model ("progs/q2debris1.mdl");
+	precache_model ("progs/q2debris2.mdl");
+	precache_model ("progs/q2debris3.mdl");
+	precache_model ("progs/laser.mdl");
 	if (!Q2_ModelsOk ())
 		return;
 	precache_model ("progs/v_machn.mdl");
@@ -488,7 +492,7 @@ void() Q2_FireHyper =
 	newmis.ltime = time + 6;
 	newmis.think = Q2_BoltThink;
 	newmis.nextthink = time + 0.05;
-	setmodel (newmis, "progs/spike.mdl");
+	setmodel (newmis, "progs/laser.mdl");
 	setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
 	setorigin (newmis, org);
 	newmis.velocity = v_forward * 1000;
