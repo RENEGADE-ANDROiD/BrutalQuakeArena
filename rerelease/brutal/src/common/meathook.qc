@@ -45,6 +45,31 @@ void() MeatHookMiss =
 	MeatHookRemove ();
 };
 
+float(entity prey) MeatHookYankable =
+{
+	if (prey == world)
+		return FALSE;
+	if (!(prey.flags & FL_MONSTER))
+		return FALSE;
+	if (prey.health <= 0)
+		return FALSE;
+	if (prey.classname == "monster_oldone")
+		return FALSE;
+	if (prey.classname == "monster_boss")
+		return FALSE;
+	if (prey.classname == "monster_ogre")
+		return FALSE;
+	if (prey.classname == "monster_ogre_marksman")
+		return FALSE;
+	if (prey.classname == "monster_shambler")
+		return FALSE;
+	if (prey.classname == "monster_shalrath")
+		return FALSE;
+	if (prey.classname == "monster_q2tank")
+		return FALSE;
+	return TRUE;
+};
+
 void() MeatHookPull =
 {
 	local entity ply;
@@ -78,14 +103,8 @@ void() MeatHookPull =
 	}
 
 	yank = 0;
-	if (!deathmatch)
-	{
-		if (prey != world && (prey.flags & FL_MONSTER) && prey.health > 0)
-		{
-			if (prey.classname != "monster_oldone" && prey.classname != "monster_boss")
-				yank = 1;
-		}
-	}
+	if (!deathmatch && MeatHookYankable (prey))
+		yank = 1;
 
 	if (yank)
 	{
