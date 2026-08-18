@@ -67,6 +67,14 @@ float(entity prey) MeatHookYankable =
 		return FALSE;
 	if (prey.classname == "monster_q2tank")
 		return FALSE;
+	if (prey.classname == "monster_q2shamstr")
+		return FALSE;
+	if (prey.classname == "monster_q2shamacud")
+		return FALSE;
+	if (prey.classname == "monster_q2vorestr")
+		return FALSE;
+	if (prey.classname == "monster_q2ironvore")
+		return FALSE;
 	return TRUE;
 };
 

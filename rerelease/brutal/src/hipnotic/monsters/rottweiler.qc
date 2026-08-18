@@ -348,6 +348,11 @@ float()	DogCheckAttack =
 */
 void() monster_dog =
 {
+	if (Q2M_TryReplace (10))
+	{
+		Q2M_Start ();
+		return;
+	}
 	if (deathmatch)
 	{
 		remove(self);

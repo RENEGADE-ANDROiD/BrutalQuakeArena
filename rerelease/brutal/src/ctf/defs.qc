@@ -665,6 +665,7 @@ void() Q2_PlayerDied;
 void() Q2M_Precache;
 float() Q2M_ModelsOk;
 float(float slot) Q2M_TryReplace;
+float() Q2M_HordeMaybe;
 void() Q2M_Start;
 void() Q2M_ExtraGibs;
 void() weapon_q2machinegun;

@@ -512,6 +512,14 @@ when awakened by the player.
 */
 void() monster_zombie =
 {
+	if (!(self.spawnflags & SPAWN_CRUCIFIED))
+	{
+		if (Q2M_TryReplace (11))
+		{
+			Q2M_Start ();
+			return;
+		}
+	}
 	if (deathmatch)
 	{
 		remove(self);

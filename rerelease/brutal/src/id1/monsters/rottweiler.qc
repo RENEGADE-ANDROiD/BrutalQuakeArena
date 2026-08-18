@@ -347,6 +347,11 @@ float()	DogCheckAttack =
 /*QUAKED monster_dog (1 0 0) (-32 -32 -24) (32 32 40) Ambush*/
 void() monster_dog =
 {
+	if (Q2M_TryReplace (10))
+	{
+		Q2M_Start ();
+		return;
+	}
 	if (deathmatch)
 	{
 		remove(self);

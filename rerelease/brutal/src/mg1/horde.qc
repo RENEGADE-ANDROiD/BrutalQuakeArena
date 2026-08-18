@@ -606,8 +606,10 @@ entity(string class, vector org, vector temp_angles) SpawnMonster =
 	// temporarily swap self for next funcs
 	oself = self;
 	self = monster;
-	
-	if (class != "wizard")
+
+	Q2M_HordeMaybe ();
+
+	if (!(self.flags & FL_FLY))
 		droptofloor();
 	
 	if (!walkmove(0,0))

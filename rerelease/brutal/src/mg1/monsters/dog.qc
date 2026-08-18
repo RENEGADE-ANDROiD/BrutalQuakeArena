@@ -355,6 +355,11 @@ float()	DogCheckAttack =
 */
 void() monster_dog =
 {
+	if (Q2M_TryReplace (10))
+	{
+		Q2M_Start ();
+		return;
+	}
 	precache_model ("progs/h_dog.mdl");
 	precache_model ("progs/dog.mdl");
 

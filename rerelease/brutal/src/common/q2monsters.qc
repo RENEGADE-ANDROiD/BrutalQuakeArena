@@ -13,6 +13,26 @@ float	Q2M_CHICK = 10;
 float	Q2M_MUTANT = 11;
 float	Q2M_BRAIN = 12;
 float	Q2M_MEDIC = 13;
+float	Q2M_GRUNTSTR = 14;
+float	Q2M_ENFSTROGG = 15;
+float	Q2M_KNTSTROGG = 16;
+float	Q2M_HYPERKNT = 17;
+float	Q2M_HBERSTROGG = 18;
+float	Q2M_OGRE2STR = 19;
+float	Q2M_OGRESTR = 20;
+float	Q2M_FIENDSTR = 21;
+float	Q2M_SHAMSTR = 22;
+float	Q2M_SHAMACUD = 23;
+float	Q2M_WIZSTROGG = 24;
+float	Q2M_WIZCUDA = 25;
+float	Q2M_ZOMBSTR = 26;
+float	Q2M_DOGSTROGG = 27;
+float	Q2M_VORESTR = 28;
+float	Q2M_FISHGUN = 29;
+float	Q2M_ROTFLYER = 30;
+float	Q2M_IRONVORE = 31;
+float	Q2M_MUTSPAWN = 32;
+float	Q2M_INSANE = 33;
 
 float	Q2M_SLOT_GRUNT = 1;
 float	Q2M_SLOT_ENFORCER = 2;
@@ -23,6 +43,8 @@ float	Q2M_SLOT_FIEND = 6;
 float	Q2M_SLOT_SHAMBLER = 7;
 float	Q2M_SLOT_SCRAG = 8;
 float	Q2M_SLOT_VORE = 9;
+float	Q2M_SLOT_DOG = 10;
+float	Q2M_SLOT_ZOMBIE = 11;
 
 float	Q2M_ANIM_STAND = 1;
 float	Q2M_ANIM_WALK = 2;
@@ -65,6 +87,7 @@ float() crandom;
 void() SUB_Null;
 void() BQA_GibCorpse;
 void(entity attacker, float damage) BQA_CorpsePain;
+void() BQA_MaybeElite;
 #endif
 
 float() Q2M_ModelsOk =
@@ -194,13 +217,184 @@ void(float kind) Q2M_PrecacheKind =
 		precache_sound ("brain/melee1.wav");
 		precache_sound ("brain/brndeth1.wav");
 	}
-	else
+	else if (kind == Q2M_MEDIC)
 	{
 		precache_model ("progs/q2_medic.mdl");
 		precache_sound ("medic/medsght1.wav");
 		precache_sound ("medic/medpain1.wav");
 		precache_sound ("medic/medatck1.wav");
 		precache_sound ("medic/meddeth1.wav");
+	}
+	else if (kind == Q2M_GRUNTSTR)
+	{
+		precache_model ("progs/q2_gruntstr.mdl");
+		precache_sound ("soldier/sight1.wav");
+		precache_sound ("soldier/pain2.wav");
+		precache_sound ("soldier/sattck1.wav");
+		precache_sound ("soldier/death1.wav");
+	}
+	else if (kind == Q2M_ENFSTROGG)
+	{
+		precache_model ("progs/q2_enfstrogg.mdl");
+		precache_sound ("enforcer/sight1.wav");
+		precache_sound ("enforcer/pain1.wav");
+		precache_sound ("enforcer/enfire.wav");
+		precache_sound ("enforcer/death1.wav");
+		precache_model ("progs/laser.mdl");
+	}
+	else if (kind == Q2M_KNTSTROGG)
+	{
+		precache_model ("progs/q2_kntstrogg.mdl");
+		precache_sound ("knight/ksight.wav");
+		precache_sound ("knight/khurt.wav");
+		precache_sound ("knight/sword2.wav");
+		precache_sound ("knight/kdeath.wav");
+	}
+	else if (kind == Q2M_HYPERKNT)
+	{
+		precache_model ("progs/q2_hyperknt.mdl");
+		precache_sound ("hknight/sight1.wav");
+		precache_sound ("hknight/pain1.wav");
+		precache_sound ("hknight/attack1.wav");
+		precache_sound ("hknight/hit.wav");
+		precache_sound ("hknight/death1.wav");
+		precache_sound ("weapons/spike2.wav");
+	}
+	else if (kind == Q2M_HBERSTROGG)
+	{
+		precache_model ("progs/q2_hberstrogg.mdl");
+		precache_sound ("hknight/sight1.wav");
+		precache_sound ("hknight/pain1.wav");
+		precache_sound ("hknight/hit.wav");
+		precache_sound ("hknight/death1.wav");
+	}
+	else if (kind == Q2M_OGRE2STR)
+	{
+		precache_model ("progs/q2_ogre2str.mdl");
+		precache_sound ("ogre/ogwake.wav");
+		precache_sound ("ogre/ogpain1.wav");
+		precache_sound ("weapons/guncock.wav");
+		precache_sound ("ogre/ogdth.wav");
+	}
+	else if (kind == Q2M_OGRESTR)
+	{
+		precache_model ("progs/q2_ogrestr.mdl");
+		precache_sound ("ogre/ogwake.wav");
+		precache_sound ("ogre/ogpain1.wav");
+		precache_sound ("weapons/grenade.wav");
+		precache_sound ("ogre/ogdth.wav");
+	}
+	else if (kind == Q2M_FIENDSTR)
+	{
+		precache_model ("progs/q2_fiendstr.mdl");
+		precache_sound ("demon/sight2.wav");
+		precache_sound ("demon/dpain1.wav");
+		precache_sound ("demon/djump.wav");
+		precache_sound ("demon/dhit.wav");
+		precache_sound ("demon/ddeath.wav");
+	}
+	else if (kind == Q2M_SHAMSTR)
+	{
+		precache_model ("progs/q2_shamstr.mdl");
+		precache_sound ("shambler/ssight.wav");
+		precache_sound ("shambler/shurt2.wav");
+		precache_sound ("shambler/sattck1.wav");
+		precache_sound ("shambler/melee1.wav");
+		precache_sound ("shambler/sboom.wav");
+	}
+	else if (kind == Q2M_SHAMACUD)
+	{
+		precache_model ("progs/q2_shamacud.mdl");
+		precache_sound ("shambler/ssight.wav");
+		precache_sound ("shambler/shurt2.wav");
+		precache_sound ("shambler/sattck1.wav");
+		precache_sound ("shambler/melee1.wav");
+		precache_sound ("shambler/sboom.wav");
+	}
+	else if (kind == Q2M_WIZSTROGG)
+	{
+		precache_model ("progs/q2_wizstrogg.mdl");
+		precache_sound ("wizard/wsight.wav");
+		precache_sound ("wizard/wpain.wav");
+		precache_sound ("wizard/wattack.wav");
+		precache_sound ("wizard/wdeath.wav");
+	}
+	else if (kind == Q2M_WIZCUDA)
+	{
+		precache_model ("progs/q2_wizcuda.mdl");
+		precache_sound ("wizard/wsight.wav");
+		precache_sound ("wizard/wpain.wav");
+		precache_sound ("wizard/wattack.wav");
+		precache_sound ("wizard/wdeath.wav");
+	}
+	else if (kind == Q2M_ZOMBSTR)
+	{
+		precache_model ("progs/q2_zombstr.mdl");
+		precache_sound ("zombie/z_idle.wav");
+		precache_sound ("zombie/z_pain.wav");
+		precache_sound ("weapons/grenade.wav");
+		precache_sound ("zombie/z_gib.wav");
+	}
+	else if (kind == Q2M_DOGSTROGG)
+	{
+		precache_model ("progs/q2_dogstrogg.mdl");
+		precache_sound ("dog/dsight.wav");
+		precache_sound ("dog/dpain1.wav");
+		precache_sound ("dog/dattack1.wav");
+		precache_sound ("dog/ddeath.wav");
+	}
+	else if (kind == Q2M_VORESTR)
+	{
+		precache_model ("progs/q2_vorestr.mdl");
+		precache_model ("progs/q2_vorepod.mdl");
+		precache_sound ("shalrath/sight.wav");
+		precache_sound ("shalrath/pain.wav");
+		precache_sound ("shalrath/attack2.wav");
+		precache_sound ("shalrath/death.wav");
+	}
+	else if (kind == Q2M_FISHGUN)
+	{
+		precache_model ("progs/q2_fishgun.mdl");
+		precache_sound ("gunner/sight1.wav");
+		precache_sound ("gunner/gunpain1.wav");
+		precache_sound ("gunner/gunatck1.wav");
+		precache_sound ("gunner/gunatck2.wav");
+		precache_sound ("gunner/death1.wav");
+	}
+	else if (kind == Q2M_ROTFLYER)
+	{
+		precache_model ("progs/q2_rotflyer.mdl");
+		precache_sound ("flyer/flysght1.wav");
+		precache_sound ("flyer/flypain1.wav");
+		precache_sound ("flyer/flyatck2.wav");
+		precache_sound ("flyer/flydeth1.wav");
+	}
+	else if (kind == Q2M_IRONVORE)
+	{
+		precache_model ("progs/q2_ironvore.mdl");
+		precache_model ("progs/q2_vorepod.mdl");
+		precache_sound ("shalrath/sight.wav");
+		precache_sound ("shalrath/pain.wav");
+		precache_sound ("shalrath/attack2.wav");
+		precache_sound ("shalrath/death.wav");
+	}
+	else if (kind == Q2M_MUTSPAWN)
+	{
+		precache_model ("progs/q2_mutspawn.mdl");
+		precache_sound ("demon/sight2.wav");
+		precache_sound ("demon/dpain1.wav");
+		precache_sound ("demon/djump.wav");
+		precache_sound ("demon/dhit.wav");
+		precache_sound ("demon/ddeath.wav");
+	}
+	else
+	{
+		precache_model ("progs/q2_insane.mdl");
+		precache_sound ("insanespawn/insane1.wav");
+		precache_sound ("insanespawn/hit1.wav");
+		precache_sound ("demon/dpain1.wav");
+		precache_sound ("demon/dhit.wav");
+		precache_sound ("demon/ddeath.wav");
 	}
 };
 
@@ -338,7 +532,7 @@ void() Q2M_SetRange =
 		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 76; self.q2_fend = 88; }
 		else { self.q2_fstart = 89; self.q2_fend = 106; }
 	}
-	else
+	else if (k == Q2M_MEDIC)
 	{
 		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 12; self.q2_fend = 101; }
 		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 0; self.q2_fend = 11; }
@@ -346,6 +540,178 @@ void() Q2M_SetRange =
 		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 146; self.q2_fend = 169; self.q2_ffire = 157; self.q2_ffire2 = 157; }
 		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 108; self.q2_fend = 115; }
 		else { self.q2_fstart = 116; self.q2_fend = 145; }
+	}
+	else if (k == Q2M_GRUNTSTR)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 7; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 41; self.q2_fend = 64; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 24; self.q2_fend = 31; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 32; self.q2_fend = 40; self.q2_ffire = 36; self.q2_ffire2 = 36; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 18; self.q2_fend = 23; }
+		else { self.q2_fstart = 8; self.q2_fend = 17; }
+	}
+	else if (k == Q2M_ENFSTROGG)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 6; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 7; self.q2_fend = 22; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 23; self.q2_fend = 30; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 31; self.q2_fend = 40; self.q2_ffire = 36; self.q2_ffire2 = 36; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 55; self.q2_fend = 58; }
+		else { self.q2_fstart = 41; self.q2_fend = 54; }
+	}
+	else if (k == Q2M_KNTSTROGG)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 8; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 31; self.q2_fend = 44; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 9; self.q2_fend = 16; }
+		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 20; self.q2_fend = 30; self.q2_ffire = 25; self.q2_ffire2 = 25; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 17; self.q2_fend = 19; }
+		else { self.q2_fstart = 45; self.q2_fend = 54; }
+	}
+	else if (k == Q2M_HYPERKNT)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 8; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 9; self.q2_fend = 28; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 29; self.q2_fend = 36; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 64; self.q2_fend = 85; self.q2_ffire = 74; self.q2_ffire2 = 74; }
+		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 54; self.q2_fend = 63; self.q2_ffire = 59; self.q2_ffire2 = 59; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 37; self.q2_fend = 41; }
+		else { self.q2_fstart = 42; self.q2_fend = 53; }
+	}
+	else if (k == Q2M_HBERSTROGG)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 8; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 9; self.q2_fend = 28; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 29; self.q2_fend = 36; }
+		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 54; self.q2_fend = 64; self.q2_ffire = 59; self.q2_ffire2 = 59; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 37; self.q2_fend = 41; }
+		else { self.q2_fstart = 42; self.q2_fend = 53; }
+	}
+	else if (k == Q2M_OGRE2STR)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 8; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 9; self.q2_fend = 24; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 25; self.q2_fend = 32; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 47; self.q2_fend = 52; self.q2_ffire = 50; self.q2_ffire2 = 50; }
+		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 33; self.q2_fend = 46; self.q2_ffire = 40; self.q2_ffire2 = 40; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 53; self.q2_fend = 57; }
+		else { self.q2_fstart = 58; self.q2_fend = 71; }
+	}
+	else if (k == Q2M_OGRESTR)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 8; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 9; self.q2_fend = 24; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 25; self.q2_fend = 32; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 47; self.q2_fend = 52; self.q2_ffire = 50; self.q2_ffire2 = 50; }
+		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 33; self.q2_fend = 46; self.q2_ffire = 40; self.q2_ffire2 = 40; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 53; self.q2_fend = 57; }
+		else { self.q2_fstart = 58; self.q2_fend = 66; }
+	}
+	else if (k == Q2M_FIENDSTR)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 12; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 13; self.q2_fend = 20; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 21; self.q2_fend = 26; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 27; self.q2_fend = 38; self.q2_ffire = 31; self.q2_ffire2 = 31; }
+		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 54; self.q2_fend = 68; self.q2_ffire = 61; self.q2_ffire2 = 61; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 39; self.q2_fend = 44; }
+		else { self.q2_fstart = 45; self.q2_fend = 53; }
+	}
+	else if (k == Q2M_SHAMSTR || k == Q2M_SHAMACUD)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 16; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 17; self.q2_fend = 28; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 29; self.q2_fend = 34; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 47; self.q2_fend = 58; self.q2_ffire = 53; self.q2_ffire2 = 53; }
+		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 35; self.q2_fend = 46; self.q2_ffire = 41; self.q2_ffire2 = 41; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 59; self.q2_fend = 64; }
+		else { self.q2_fstart = 65; self.q2_fend = 75; }
+	}
+	else if (k == Q2M_WIZSTROGG || k == Q2M_WIZCUDA)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 14; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 15; self.q2_fend = 28; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 15; self.q2_fend = 28; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 29; self.q2_fend = 41; self.q2_ffire = 35; self.q2_ffire2 = 35; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 42; self.q2_fend = 45; }
+		else { self.q2_fstart = 46; self.q2_fend = 53; }
+	}
+	else if (k == Q2M_ZOMBSTR)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 14; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 15; self.q2_fend = 33; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 34; self.q2_fend = 51; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 52; self.q2_fend = 64; self.q2_ffire = 58; self.q2_ffire2 = 58; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 65; self.q2_fend = 76; }
+		else { self.q2_fstart = 77; self.q2_fend = 104; }
+	}
+	else if (k == Q2M_DOGSTROGG)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 44; self.q2_fend = 52; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 53; self.q2_fend = 60; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 23; self.q2_fend = 34; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 35; self.q2_fend = 43; self.q2_ffire = 39; self.q2_ffire2 = 39; }
+		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 0; self.q2_fend = 7; self.q2_ffire = 4; self.q2_ffire2 = 4; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 17; self.q2_fend = 22; }
+		else { self.q2_fstart = 8; self.q2_fend = 16; }
+	}
+	else if (k == Q2M_VORESTR)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 23; self.q2_fend = 34; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 23; self.q2_fend = 34; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 23; self.q2_fend = 34; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 0; self.q2_fend = 10; self.q2_ffire = 6; self.q2_ffire2 = 6; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 11; self.q2_fend = 15; }
+		else { self.q2_fstart = 16; self.q2_fend = 22; }
+	}
+	else if (k == Q2M_FISHGUN)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 69; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 70; self.q2_fend = 93; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 94; self.q2_fend = 101; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 102; self.q2_fend = 134; self.q2_ffire = 114; self.q2_ffire2 = 121; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 135; self.q2_fend = 146; }
+		else { self.q2_fstart = 147; self.q2_fend = 157; }
+	}
+	else if (k == Q2M_ROTFLYER)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 44; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 0; self.q2_fend = 44; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 0; self.q2_fend = 44; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 45; self.q2_fend = 67; self.q2_ffire = 55; self.q2_ffire2 = 55; }
+		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 45; self.q2_fend = 67; self.q2_ffire = 55; self.q2_ffire2 = 55; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 68; self.q2_fend = 76; }
+		else { self.q2_fstart = 68; self.q2_fend = 84; }
+	}
+	else if (k == Q2M_IRONVORE)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 29; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 30; self.q2_fend = 59; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 30; self.q2_fend = 59; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 60; self.q2_fend = 89; self.q2_ffire = 75; self.q2_ffire2 = 75; }
+		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 90; self.q2_fend = 119; self.q2_ffire = 105; self.q2_ffire2 = 105; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 120; self.q2_fend = 139; }
+		else { self.q2_fstart = 140; self.q2_fend = 177; }
+	}
+	else if (k == Q2M_MUTSPAWN)
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 52; self.q2_fend = 115; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 116; self.q2_fend = 138; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 46; self.q2_fend = 51; }
+		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 0; self.q2_fend = 14; self.q2_ffire = 7; self.q2_ffire2 = 7; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 0; self.q2_fend = 14; self.q2_ffire = 7; self.q2_ffire2 = 7; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 34; self.q2_fend = 45; }
+		else { self.q2_fstart = 15; self.q2_fend = 33; }
+	}
+	else
+	{
+		if (a == Q2M_ANIM_STAND) { self.q2_fstart = 0; self.q2_fend = 29; }
+		else if (a == Q2M_ANIM_WALK) { self.q2_fstart = 30; self.q2_fend = 59; }
+		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 60; self.q2_fend = 79; }
+		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 80; self.q2_fend = 99; self.q2_ffire = 90; self.q2_ffire2 = 90; }
+		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 80; self.q2_fend = 99; self.q2_ffire = 90; self.q2_ffire2 = 90; }
+		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 100; self.q2_fend = 119; }
+		else { self.q2_fstart = 120; self.q2_fend = 151; }
 	}
 };
 
@@ -365,6 +731,35 @@ void() Q2M_RocketTouch =
 	T_MissileTouch ();
 };
 
+void() Q2M_VoreHome =
+{
+	local vector dir;
+
+	if (self.enemy == world || self.enemy.health < 1)
+	{
+		remove (self);
+		return;
+	}
+	dir = normalize ((self.enemy.origin + '0 0 10') - self.origin);
+	self.velocity = dir * 250;
+	self.nextthink = time + 0.2;
+	self.think = Q2M_VoreHome;
+};
+
+void() Q2M_VoreTouch =
+{
+	if (other == self.owner)
+		return;
+	T_RadiusDamage (self, self.owner, 40, world);
+	sound (self, CHAN_WEAPON, "weapons/r_exp3.wav", 1, ATTN_NORM);
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+	WriteCoord (MSG_BROADCAST, self.origin_x);
+	WriteCoord (MSG_BROADCAST, self.origin_y);
+	WriteCoord (MSG_BROADCAST, self.origin_z);
+	remove (self);
+};
+
 void() Q2M_FireShot =
 {
 	local vector dir, org;
@@ -382,12 +777,15 @@ void() Q2M_FireShot =
 		dir = normalize ((self.enemy.origin + '0 0 16') - org);
 	else
 		dir = v_forward;
-	if (self.q2_kind == Q2M_GUNNER && self.q2_alt)
+	if ((self.q2_kind == Q2M_GUNNER || self.q2_kind == Q2M_FISHGUN || self.q2_kind == Q2M_OGRESTR || self.q2_kind == Q2M_ZOMBSTR) && self.q2_alt)
 	{
 		if (self.frame == self.q2_ffire)
 		{
 			Q2_Muzzle (self, 0);
-			sound (self, CHAN_WEAPON, "gunner/gunatck1.wav", 1, ATTN_NORM);
+			if (self.q2_kind == Q2M_GUNNER || self.q2_kind == Q2M_FISHGUN)
+				sound (self, CHAN_WEAPON, "gunner/gunatck1.wav", 1, ATTN_NORM);
+			else
+				sound (self, CHAN_WEAPON, "weapons/grenade.wav", 1, ATTN_NORM);
 			n = 2 + floor (random () * 3);
 			while (n > 0)
 			{
@@ -434,7 +832,7 @@ void() Q2M_FireShot =
 		if (trace_fraction < 1)
 			Q2_Impact (trace_endpos, 0);
 	}
-	else if (self.q2_kind == Q2M_GUNNER)
+	else if (self.q2_kind == Q2M_GUNNER || self.q2_kind == Q2M_FISHGUN)
 	{
 		sound (self, CHAN_WEAPON, "gunner/gunatck2.wav", 1, ATTN_NORM);
 		traceline (org, org + (dir + v_right * crandom () * 0.08) * 2048, FALSE, self);
@@ -442,6 +840,95 @@ void() Q2M_FireShot =
 			T_Damage (trace_ent, self, self, 4);
 		if (trace_fraction < 1)
 			Q2_Impact (trace_endpos, 0);
+	}
+	else if (self.q2_kind == Q2M_OGRE2STR)
+	{
+		sound (self, CHAN_WEAPON, "weapons/guncock.wav", 1, ATTN_NORM);
+		n = 0;
+		while (n < 6)
+		{
+			traceline (org, org + (dir + v_right * crandom () * 0.12 + v_up * crandom () * 0.12) * 2048, FALSE, self);
+			if (trace_ent.takedamage)
+				T_Damage (trace_ent, self, self, 4);
+			if (trace_fraction < 1)
+				Q2_Impact (trace_endpos, 0);
+			n = n + 1;
+		}
+	}
+	else if (self.q2_kind == Q2M_GRUNTSTR || self.q2_kind == Q2M_HYPERKNT)
+	{
+		sound (self, CHAN_WEAPON, "weapons/spike2.wav", 1, ATTN_NORM);
+		newmis = spawn ();
+		newmis.owner = self;
+		newmis.movetype = MOVETYPE_FLYMISSILE;
+		newmis.solid = SOLID_BBOX;
+		newmis.touch = spike_touch;
+		newmis.classname = "spike";
+		setmodel (newmis, "progs/spike.mdl");
+		setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
+		setorigin (newmis, org);
+		newmis.velocity = dir * 1000;
+		newmis.angles = vectoangles (newmis.velocity);
+	}
+	else if (self.q2_kind == Q2M_ENFSTROGG)
+	{
+		sound (self, CHAN_WEAPON, "enforcer/enfire.wav", 1, ATTN_NORM);
+		newmis = spawn ();
+		newmis.owner = self;
+		newmis.movetype = MOVETYPE_FLYMISSILE;
+		newmis.solid = SOLID_BBOX;
+		newmis.classname = "q2_blaster";
+		newmis.touch = Q2_BlasterTouch;
+		newmis.effects = EF_DIMLIGHT;
+		newmis.ltime = time + 6;
+		newmis.think = Q2_BoltThink;
+		newmis.nextthink = time + 0.05;
+		setmodel (newmis, "progs/laser.mdl");
+		setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
+		setorigin (newmis, org);
+		newmis.velocity = dir * 1000;
+		newmis.angles = vectoangles (newmis.velocity);
+	}
+	else if (self.q2_kind == Q2M_SHAMSTR || self.q2_kind == Q2M_SHAMACUD)
+	{
+		sound (self, CHAN_WEAPON, "shambler/sattck1.wav", 1, ATTN_NORM);
+		traceline (org, org + dir * 600, FALSE, self);
+		WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+		WriteByte (MSG_BROADCAST, TE_LIGHTNING2);
+		WriteEntity (MSG_BROADCAST, self);
+		WriteCoord (MSG_BROADCAST, org_x);
+		WriteCoord (MSG_BROADCAST, org_y);
+		WriteCoord (MSG_BROADCAST, org_z);
+		WriteCoord (MSG_BROADCAST, trace_endpos_x);
+		WriteCoord (MSG_BROADCAST, trace_endpos_y);
+		WriteCoord (MSG_BROADCAST, trace_endpos_z);
+		if (trace_ent.takedamage)
+			T_Damage (trace_ent, self, self, 10);
+		if (trace_fraction < 1)
+			Q2_Impact (trace_endpos, 2);
+	}
+	else if (self.q2_kind == Q2M_VORESTR || self.q2_kind == Q2M_IRONVORE)
+	{
+		if (self.enemy == world)
+			return;
+		sound (self, CHAN_WEAPON, "shalrath/attack2.wav", 1, ATTN_NORM);
+		newmis = spawn ();
+		newmis.owner = self;
+		newmis.movetype = MOVETYPE_FLYMISSILE;
+		newmis.solid = SOLID_BBOX;
+		newmis.classname = "vore_ball";
+		newmis.touch = Q2M_VoreTouch;
+		newmis.enemy = self.enemy;
+		newmis.think = Q2M_VoreHome;
+		dist = vlen (self.enemy.origin - self.origin) * 0.002;
+		if (dist < 0.1)
+			dist = 0.1;
+		newmis.nextthink = time + dist;
+		setmodel (newmis, "progs/q2_vorepod.mdl");
+		setsize (newmis, VEC_ORIGIN, VEC_ORIGIN);
+		setorigin (newmis, org);
+		newmis.velocity = dir * 400;
+		newmis.avelocity = '300 300 300';
 	}
 	else if (self.q2_kind == Q2M_GLADIATOR)
 	{
@@ -531,10 +1018,12 @@ void() Q2M_FireShot =
 	}
 	else
 	{
-		if (self.q2_kind == Q2M_FLYER)
+		if (self.q2_kind == Q2M_FLYER || self.q2_kind == Q2M_ROTFLYER)
 			sound (self, CHAN_WEAPON, "flyer/flyatck2.wav", 1, ATTN_NORM);
 		else if (self.q2_kind == Q2M_FLOAT)
 			sound (self, CHAN_WEAPON, "floater/fltatck2.wav", 1, ATTN_NORM);
+		else if (self.q2_kind == Q2M_WIZSTROGG || self.q2_kind == Q2M_WIZCUDA)
+			sound (self, CHAN_WEAPON, "wizard/wattack.wav", 1, ATTN_NORM);
 		else
 			sound (self, CHAN_WEAPON, "hover/hovatck1.wav", 1, ATTN_NORM);
 		newmis = spawn ();
@@ -567,20 +1056,45 @@ void() Q2M_FireMelee =
 		return;
 	if (vlen (self.enemy.origin - self.origin) > 80)
 		return;
-	if (self.q2_kind == Q2M_BERSERK)
+	if (self.q2_kind == Q2M_BERSERK || self.q2_kind == Q2M_HBERSTROGG)
 	{
 		sound (self, CHAN_WEAPON, "berserk/attack.wav", 1, ATTN_NORM);
 		dmg = 25;
 	}
-	else if (self.q2_kind == Q2M_MUTANT)
+	else if (self.q2_kind == Q2M_MUTANT || self.q2_kind == Q2M_FIENDSTR || self.q2_kind == Q2M_MUTSPAWN)
 	{
-		sound (self, CHAN_WEAPON, "mutant/mutatck1.wav", 1, ATTN_NORM);
+		sound (self, CHAN_WEAPON, "demon/dhit.wav", 1, ATTN_NORM);
 		dmg = 35;
 	}
-	else if (self.q2_kind == Q2M_BRAIN)
+	else if (self.q2_kind == Q2M_BRAIN || self.q2_kind == Q2M_SHAMSTR || self.q2_kind == Q2M_SHAMACUD)
 	{
-		sound (self, CHAN_WEAPON, "brain/melee1.wav", 1, ATTN_NORM);
+		sound (self, CHAN_WEAPON, "shambler/melee1.wav", 1, ATTN_NORM);
 		dmg = 40;
+	}
+	else if (self.q2_kind == Q2M_DOGSTROGG)
+	{
+		sound (self, CHAN_WEAPON, "dog/dattack1.wav", 1, ATTN_NORM);
+		dmg = 10;
+	}
+	else if (self.q2_kind == Q2M_KNTSTROGG)
+	{
+		sound (self, CHAN_WEAPON, "knight/sword2.wav", 1, ATTN_NORM);
+		dmg = 20;
+	}
+	else if (self.q2_kind == Q2M_HYPERKNT)
+	{
+		sound (self, CHAN_WEAPON, "hknight/hit.wav", 1, ATTN_NORM);
+		dmg = 25;
+	}
+	else if (self.q2_kind == Q2M_ROTFLYER)
+	{
+		sound (self, CHAN_WEAPON, "flyer/flyatck2.wav", 1, ATTN_NORM);
+		dmg = 15;
+	}
+	else if (self.q2_kind == Q2M_INSANE)
+	{
+		sound (self, CHAN_WEAPON, "insanespawn/hit1.wav", 1, ATTN_NORM);
+		dmg = 35;
 	}
 	else
 	{
@@ -628,13 +1142,13 @@ float() Q2M_CheckAttack =
 		return FALSE;
 	if (r == RANGE_MELEE)
 	{
-		if (self.q2_kind == Q2M_BERSERK || self.q2_kind == Q2M_BRAIN || self.q2_kind == Q2M_GLADIATOR)
+		if (self.q2_kind == Q2M_BERSERK || self.q2_kind == Q2M_BRAIN || self.q2_kind == Q2M_GLADIATOR || self.q2_kind == Q2M_KNTSTROGG || self.q2_kind == Q2M_HBERSTROGG || self.q2_kind == Q2M_HYPERKNT || self.q2_kind == Q2M_SHAMSTR || self.q2_kind == Q2M_SHAMACUD || self.q2_kind == Q2M_OGRE2STR || self.q2_kind == Q2M_OGRESTR || self.q2_kind == Q2M_IRONVORE || self.q2_kind == Q2M_ROTFLYER)
 		{
 			Q2M_Melee ();
 			SUB_AttackFinished (0.5);
 			return TRUE;
 		}
-		if (self.q2_kind == Q2M_MUTANT)
+		if (self.q2_kind == Q2M_MUTANT || self.q2_kind == Q2M_FIENDSTR || self.q2_kind == Q2M_MUTSPAWN || self.q2_kind == Q2M_INSANE || self.q2_kind == Q2M_DOGSTROGG)
 		{
 			Q2M_Leap ();
 			SUB_AttackFinished (1);
@@ -655,27 +1169,29 @@ float() Q2M_CheckAttack =
 		chance = chance * 2;
 	if (random () >= chance)
 		return FALSE;
-	if (self.q2_kind == Q2M_MUTANT)
+	if (self.q2_kind == Q2M_MUTANT || self.q2_kind == Q2M_FIENDSTR || self.q2_kind == Q2M_MUTSPAWN || self.q2_kind == Q2M_INSANE || self.q2_kind == Q2M_DOGSTROGG)
 	{
 		Q2M_Leap ();
 		SUB_AttackFinished (1);
 		return TRUE;
 	}
-	if (self.q2_kind == Q2M_BERSERK || self.q2_kind == Q2M_BRAIN)
+	if (self.q2_kind == Q2M_BERSERK || self.q2_kind == Q2M_BRAIN || self.q2_kind == Q2M_KNTSTROGG || self.q2_kind == Q2M_HBERSTROGG)
 		return FALSE;
-	if (self.q2_kind == Q2M_GLADIATOR && vlen (self.enemy.origin - self.origin) <= 112)
+	if ((self.q2_kind == Q2M_GLADIATOR || self.q2_kind == Q2M_HYPERKNT) && vlen (self.enemy.origin - self.origin) <= 112)
 	{
 		Q2M_Melee ();
 		SUB_AttackFinished (0.5);
 		return TRUE;
 	}
-	if (self.q2_kind == Q2M_GUNNER)
+	if (self.q2_kind == Q2M_GUNNER || self.q2_kind == Q2M_FISHGUN)
 	{
 		if (random () < 0.5)
 			self.q2_alt = 1;
 		else
 			self.q2_alt = 0;
 	}
+	if (self.q2_kind == Q2M_OGRESTR || self.q2_kind == Q2M_ZOMBSTR)
+		self.q2_alt = 1;
 	Q2M_Missile ();
 	SUB_AttackFinished (0.5 + random ());
 	return TRUE;
@@ -712,7 +1228,7 @@ void() Q2M_Think =
 		self.frame = self.frame + 1;
 	else
 	{
-		if (self.q2_anim == Q2M_ANIM_ATK && self.q2_kind == Q2M_GUNNER && !self.q2_alt && visible (self.enemy) && random () < 0.5)
+		if (self.q2_anim == Q2M_ANIM_ATK && (self.q2_kind == Q2M_GUNNER || self.q2_kind == Q2M_FISHGUN) && !self.q2_alt && visible (self.enemy) && random () < 0.5)
 		{
 			self.frame = self.q2_ffire;
 		}
@@ -848,8 +1364,16 @@ void() Q2M_Leap =
 		return;
 	if (self.enemy == world)
 		return;
-	sound (self, CHAN_VOICE, "mutant/mutatck1.wav", 1, ATTN_NORM);
-	self.q2_anim = Q2M_ANIM_MELEE;
+	if (self.q2_kind == Q2M_DOGSTROGG)
+		sound (self, CHAN_VOICE, "dog/dattack1.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_MUTANT)
+		sound (self, CHAN_VOICE, "mutant/mutatck1.wav", 1, ATTN_NORM);
+	else
+		sound (self, CHAN_VOICE, "demon/djump.wav", 1, ATTN_NORM);
+	if (self.q2_kind == Q2M_FIENDSTR || self.q2_kind == Q2M_DOGSTROGG)
+		self.q2_anim = Q2M_ANIM_ATK;
+	else
+		self.q2_anim = Q2M_ANIM_MELEE;
 	Q2M_SetRange ();
 	self.frame = self.q2_fstart;
 	d = normalize (self.enemy.origin - self.origin);
@@ -933,6 +1457,34 @@ void(entity attacker, float damage) Q2M_Pain =
 		sound (self, CHAN_VOICE, "mutant/mutpain1.wav", 1, ATTN_NORM);
 	else if (self.q2_kind == Q2M_BRAIN)
 		sound (self, CHAN_VOICE, "brain/brnpain1.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_GRUNTSTR)
+		sound (self, CHAN_VOICE, "soldier/pain2.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_ENFSTROGG)
+		sound (self, CHAN_VOICE, "enforcer/pain1.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_KNTSTROGG)
+		sound (self, CHAN_VOICE, "knight/khurt.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_HYPERKNT || self.q2_kind == Q2M_HBERSTROGG)
+		sound (self, CHAN_VOICE, "hknight/pain1.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_OGRE2STR || self.q2_kind == Q2M_OGRESTR)
+		sound (self, CHAN_VOICE, "ogre/ogpain1.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_FIENDSTR || self.q2_kind == Q2M_MUTSPAWN)
+		sound (self, CHAN_VOICE, "demon/dpain1.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_SHAMSTR || self.q2_kind == Q2M_SHAMACUD)
+		sound (self, CHAN_VOICE, "shambler/shurt2.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_WIZSTROGG || self.q2_kind == Q2M_WIZCUDA)
+		sound (self, CHAN_VOICE, "wizard/wpain.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_ZOMBSTR)
+		sound (self, CHAN_VOICE, "zombie/z_pain.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_DOGSTROGG)
+		sound (self, CHAN_VOICE, "dog/dpain1.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_VORESTR || self.q2_kind == Q2M_IRONVORE)
+		sound (self, CHAN_VOICE, "shalrath/pain.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_FISHGUN)
+		sound (self, CHAN_VOICE, "gunner/gunpain1.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_ROTFLYER)
+		sound (self, CHAN_VOICE, "flyer/flypain1.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_INSANE)
+		sound (self, CHAN_VOICE, "demon/dpain1.wav", 1, ATTN_NORM);
 	else
 		sound (self, CHAN_VOICE, "medic/medpain1.wav", 1, ATTN_NORM);
 	self.q2_anim = Q2M_ANIM_PAIN;
@@ -1003,6 +1555,32 @@ void() Q2M_Die =
 		sound (self, CHAN_VOICE, "mutant/mutdeth1.wav", 1, ATTN_NORM);
 	else if (self.q2_kind == Q2M_BRAIN)
 		sound (self, CHAN_VOICE, "brain/brndeth1.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_GRUNTSTR)
+		sound (self, CHAN_VOICE, "soldier/death1.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_ENFSTROGG)
+		sound (self, CHAN_VOICE, "enforcer/death1.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_KNTSTROGG)
+		sound (self, CHAN_VOICE, "knight/kdeath.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_HYPERKNT || self.q2_kind == Q2M_HBERSTROGG)
+		sound (self, CHAN_VOICE, "hknight/death1.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_OGRE2STR || self.q2_kind == Q2M_OGRESTR)
+		sound (self, CHAN_VOICE, "ogre/ogdth.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_FIENDSTR || self.q2_kind == Q2M_MUTSPAWN || self.q2_kind == Q2M_INSANE)
+		sound (self, CHAN_VOICE, "demon/ddeath.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_SHAMSTR || self.q2_kind == Q2M_SHAMACUD)
+		sound (self, CHAN_VOICE, "shambler/sboom.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_WIZSTROGG || self.q2_kind == Q2M_WIZCUDA)
+		sound (self, CHAN_VOICE, "wizard/wdeath.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_ZOMBSTR)
+		sound (self, CHAN_VOICE, "zombie/z_gib.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_DOGSTROGG)
+		sound (self, CHAN_VOICE, "dog/ddeath.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_VORESTR || self.q2_kind == Q2M_IRONVORE)
+		sound (self, CHAN_VOICE, "shalrath/death.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_FISHGUN)
+		sound (self, CHAN_VOICE, "gunner/death1.wav", 1, ATTN_NORM);
+	else if (self.q2_kind == Q2M_ROTFLYER)
+		sound (self, CHAN_VOICE, "flyer/flydeth1.wav", 1, ATTN_NORM);
 	else
 		sound (self, CHAN_VOICE, "medic/meddeth1.wav", 1, ATTN_NORM);
 	if (self.q2_kind == Q2M_SOLDIER || self.q2_kind == Q2M_INFANTRY)
@@ -1176,7 +1754,7 @@ void(float kind) Q2M_Setup =
 		self.th_melee = Q2M_Melee;
 		self.combat_style = CS_MELEE;
 	}
-	else
+	else if (kind == Q2M_MEDIC)
 	{
 		mdl = "progs/q2_medic.mdl";
 		self.classname = "monster_q2medic";
@@ -1186,9 +1764,239 @@ void(float kind) Q2M_Setup =
 		self.q2_gibhealth = -130;
 		self.th_missile = Q2M_Missile;
 	}
+	else if (kind == Q2M_GRUNTSTR)
+	{
+		mdl = "progs/q2_gruntstr.mdl";
+		self.classname = "monster_q2gruntstr";
+		self.noise = "soldier/sight1.wav";
+		self.health = 30;
+		self.q2_runspeed = 12;
+		self.q2_gibhealth = -30;
+		self.th_missile = Q2M_Missile;
+	}
+	else if (kind == Q2M_ENFSTROGG)
+	{
+		mdl = "progs/q2_enfstrogg.mdl";
+		self.classname = "monster_q2enfstrogg";
+		self.noise = "enforcer/sight1.wav";
+		self.health = 80;
+		self.q2_runspeed = 10;
+		self.q2_gibhealth = -40;
+		self.th_missile = Q2M_Missile;
+	}
+	else if (kind == Q2M_KNTSTROGG)
+	{
+		mdl = "progs/q2_kntstrogg.mdl";
+		self.classname = "monster_q2kntstrogg";
+		self.noise = "knight/ksight.wav";
+		self.health = 75;
+		self.q2_runspeed = 10;
+		self.q2_gibhealth = -40;
+		self.th_melee = Q2M_Melee;
+		self.combat_style = CS_MELEE;
+	}
+	else if (kind == Q2M_HYPERKNT)
+	{
+		mdl = "progs/q2_hyperknt.mdl";
+		self.classname = "monster_q2hyperknt";
+		self.noise = "hknight/sight1.wav";
+		self.health = 250;
+		self.q2_runspeed = 20;
+		self.q2_gibhealth = -40;
+		self.th_missile = Q2M_Missile;
+		self.th_melee = Q2M_Melee;
+		self.combat_style = CS_MIXED;
+	}
+	else if (kind == Q2M_HBERSTROGG)
+	{
+		mdl = "progs/q2_hberstrogg.mdl";
+		self.classname = "monster_q2hberstrogg";
+		self.noise = "hknight/sight1.wav";
+		self.health = 250;
+		self.q2_runspeed = 20;
+		self.q2_gibhealth = -40;
+		self.th_melee = Q2M_Melee;
+		self.combat_style = CS_MELEE;
+	}
+	else if (kind == Q2M_OGRE2STR)
+	{
+		mdl = "progs/q2_ogre2str.mdl";
+		self.classname = "monster_q2ogre2str";
+		self.noise = "ogre/ogwake.wav";
+		self.health = 200;
+		self.q2_runspeed = 12;
+		self.q2_gibhealth = -80;
+		self.th_missile = Q2M_Missile;
+		self.th_melee = Q2M_Melee;
+		self.combat_style = CS_MIXED;
+	}
+	else if (kind == Q2M_OGRESTR)
+	{
+		mdl = "progs/q2_ogrestr.mdl";
+		self.classname = "monster_q2ogrestr";
+		self.noise = "ogre/ogwake.wav";
+		self.health = 200;
+		self.q2_runspeed = 12;
+		self.q2_gibhealth = -80;
+		self.th_missile = Q2M_Missile;
+		self.th_melee = Q2M_Melee;
+		self.combat_style = CS_MIXED;
+	}
+	else if (kind == Q2M_FIENDSTR)
+	{
+		mdl = "progs/q2_fiendstr.mdl";
+		self.classname = "monster_q2fiendstr";
+		self.noise = "demon/sight2.wav";
+		self.health = 300;
+		self.q2_runspeed = 20;
+		self.q2_gibhealth = -80;
+		self.th_melee = Q2M_Melee;
+		self.th_missile = Q2M_Leap;
+		self.combat_style = CS_MIXED;
+	}
+	else if (kind == Q2M_SHAMSTR)
+	{
+		mdl = "progs/q2_shamstr.mdl";
+		self.classname = "monster_q2shamstr";
+		self.noise = "shambler/ssight.wav";
+		self.health = 600;
+		self.q2_runspeed = 12;
+		self.q2_gibhealth = -60;
+		self.th_missile = Q2M_Missile;
+		self.th_melee = Q2M_Melee;
+		self.combat_style = CS_MIXED;
+	}
+	else if (kind == Q2M_SHAMACUD)
+	{
+		mdl = "progs/q2_shamacud.mdl";
+		self.classname = "monster_q2shamacud";
+		self.noise = "shambler/ssight.wav";
+		self.health = 600;
+		self.q2_runspeed = 12;
+		self.q2_gibhealth = -60;
+		self.th_missile = Q2M_Missile;
+		self.th_melee = Q2M_Melee;
+		self.combat_style = CS_MIXED;
+	}
+	else if (kind == Q2M_WIZSTROGG)
+	{
+		mdl = "progs/q2_wizstrogg.mdl";
+		self.classname = "monster_q2wizstrogg";
+		self.noise = "wizard/wsight.wav";
+		self.health = 80;
+		self.q2_runspeed = 12;
+		self.q2_gibhealth = -40;
+		self.movetype = MOVETYPE_FLY;
+		self.flags = self.flags | FL_FLY;
+		self.th_missile = Q2M_Missile;
+	}
+	else if (kind == Q2M_WIZCUDA)
+	{
+		mdl = "progs/q2_wizcuda.mdl";
+		self.classname = "monster_q2wizcuda";
+		self.noise = "wizard/wsight.wav";
+		self.health = 80;
+		self.q2_runspeed = 12;
+		self.q2_gibhealth = -40;
+		self.movetype = MOVETYPE_FLY;
+		self.flags = self.flags | FL_FLY;
+		self.th_missile = Q2M_Missile;
+	}
+	else if (kind == Q2M_ZOMBSTR)
+	{
+		mdl = "progs/q2_zombstr.mdl";
+		self.classname = "monster_q2zombstr";
+		self.noise = "zombie/z_idle.wav";
+		self.health = 60;
+		self.q2_runspeed = 8;
+		self.q2_gibhealth = -40;
+		self.th_missile = Q2M_Missile;
+	}
+	else if (kind == Q2M_DOGSTROGG)
+	{
+		mdl = "progs/q2_dogstrogg.mdl";
+		self.classname = "monster_q2dogstrogg";
+		self.noise = "dog/dsight.wav";
+		self.health = 25;
+		self.q2_runspeed = 16;
+		self.q2_gibhealth = -35;
+		self.th_melee = Q2M_Melee;
+		self.th_missile = Q2M_Leap;
+		self.combat_style = CS_MIXED;
+	}
+	else if (kind == Q2M_VORESTR)
+	{
+		mdl = "progs/q2_vorestr.mdl";
+		self.classname = "monster_q2vorestr";
+		self.noise = "shalrath/sight.wav";
+		self.health = 400;
+		self.q2_runspeed = 12;
+		self.q2_gibhealth = -90;
+		self.th_missile = Q2M_Missile;
+	}
+	else if (kind == Q2M_FISHGUN)
+	{
+		mdl = "progs/q2_fishgun.mdl";
+		self.classname = "monster_q2fishgun";
+		self.noise = "gunner/sight1.wav";
+		self.health = 200;
+		self.q2_runspeed = 12;
+		self.q2_gibhealth = -70;
+		self.th_missile = Q2M_Missile;
+	}
+	else if (kind == Q2M_ROTFLYER)
+	{
+		mdl = "progs/q2_rotflyer.mdl";
+		self.classname = "monster_q2rotflyer";
+		self.noise = "flyer/flysght1.wav";
+		self.health = 80;
+		self.q2_runspeed = 12;
+		self.q2_gibhealth = -40;
+		self.movetype = MOVETYPE_FLY;
+		self.flags = self.flags | FL_FLY;
+		self.th_missile = Q2M_Missile;
+		self.th_melee = Q2M_Melee;
+		self.combat_style = CS_MIXED;
+	}
+	else if (kind == Q2M_IRONVORE)
+	{
+		mdl = "progs/q2_ironvore.mdl";
+		self.classname = "monster_q2ironvore";
+		self.noise = "shalrath/sight.wav";
+		self.health = 400;
+		self.q2_runspeed = 12;
+		self.q2_gibhealth = -90;
+		self.th_missile = Q2M_Missile;
+		self.th_melee = Q2M_Melee;
+		self.combat_style = CS_MIXED;
+	}
+	else if (kind == Q2M_MUTSPAWN)
+	{
+		mdl = "progs/q2_mutspawn.mdl";
+		self.classname = "monster_q2mutspawn";
+		self.noise = "demon/sight2.wav";
+		self.health = 300;
+		self.q2_runspeed = 20;
+		self.q2_gibhealth = -80;
+		self.th_melee = Q2M_Melee;
+		self.th_missile = Q2M_Leap;
+		self.combat_style = CS_MIXED;
+	}
+	else
+	{
+		mdl = "progs/q2_insane.mdl";
+		self.classname = "monster_q2insane";
+		self.noise = "insanespawn/insane1.wav";
+		self.health = 300;
+		self.q2_runspeed = 16;
+		self.q2_gibhealth = -80;
+		self.th_melee = Q2M_Melee;
+		self.th_missile = Q2M_Leap;
+		self.combat_style = CS_MIXED;
+	}
 	self.max_health = self.health;
 	setmodel (self, mdl);
-	if (kind == Q2M_TANK || kind == Q2M_MUTANT)
+	if (kind == Q2M_TANK || kind == Q2M_MUTANT || kind == Q2M_SHAMSTR || kind == Q2M_SHAMACUD || kind == Q2M_FIENDSTR || kind == Q2M_MUTSPAWN || kind == Q2M_INSANE || kind == Q2M_VORESTR || kind == Q2M_IRONVORE)
 		setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	else if (kind == Q2M_CHICK)
 		setsize (self, '-16 -16 0', '16 16 56');
@@ -1200,46 +2008,132 @@ float(float slot) Q2M_PickKind =
 {
 	local float r;
 
+	r = random ();
 	if (slot == Q2M_SLOT_GRUNT)
-		return Q2M_SOLDIER;
+	{
+		if (r < 0.5)
+			return Q2M_SOLDIER;
+		return Q2M_GRUNTSTR;
+	}
 	if (slot == Q2M_SLOT_ENFORCER)
-		return Q2M_INFANTRY;
+	{
+		if (r < 0.5)
+			return Q2M_INFANTRY;
+		return Q2M_ENFSTROGG;
+	}
 	if (slot == Q2M_SLOT_KNIGHT)
-		return Q2M_BERSERK;
+	{
+		if (r < 0.5)
+			return Q2M_BERSERK;
+		return Q2M_KNTSTROGG;
+	}
 	if (slot == Q2M_SLOT_HKNIGHT)
-		return Q2M_GLADIATOR;
+	{
+		if (r < 0.34)
+			return Q2M_GLADIATOR;
+		if (r < 0.67)
+			return Q2M_HYPERKNT;
+		return Q2M_HBERSTROGG;
+	}
 	if (slot == Q2M_SLOT_OGRE)
-		return Q2M_GUNNER;
+	{
+		if (r < 0.25)
+			return Q2M_GUNNER;
+		if (r < 0.5)
+			return Q2M_OGRESTR;
+		if (r < 0.75)
+			return Q2M_OGRE2STR;
+		return Q2M_FISHGUN;
+	}
 	if (slot == Q2M_SLOT_FIEND)
-		return Q2M_MUTANT;
+	{
+		if (r < 0.25)
+			return Q2M_MUTANT;
+		if (r < 0.5)
+			return Q2M_FIENDSTR;
+		if (r < 0.75)
+			return Q2M_MUTSPAWN;
+		return Q2M_INSANE;
+	}
 	if (slot == Q2M_SLOT_SHAMBLER)
 	{
-		if (random () < 0.5)
+		if (r < 0.25)
 			return Q2M_TANK;
-		return Q2M_BRAIN;
+		if (r < 0.5)
+			return Q2M_BRAIN;
+		if (r < 0.75)
+			return Q2M_SHAMSTR;
+		return Q2M_SHAMACUD;
 	}
 	if (slot == Q2M_SLOT_SCRAG)
 	{
-		r = random ();
-		if (r < 0.34)
+		if (r < 0.17)
 			return Q2M_FLYER;
-		if (r < 0.67)
+		if (r < 0.34)
 			return Q2M_FLOAT;
-		return Q2M_HOVER;
+		if (r < 0.5)
+			return Q2M_HOVER;
+		if (r < 0.67)
+			return Q2M_WIZSTROGG;
+		if (r < 0.84)
+			return Q2M_WIZCUDA;
+		return Q2M_ROTFLYER;
 	}
-	if (random () < 0.5)
-		return Q2M_CHICK;
-	return Q2M_MEDIC;
+	if (slot == Q2M_SLOT_VORE)
+	{
+		if (r < 0.25)
+			return Q2M_CHICK;
+		if (r < 0.5)
+			return Q2M_MEDIC;
+		if (r < 0.75)
+			return Q2M_VORESTR;
+		return Q2M_IRONVORE;
+	}
+	if (slot == Q2M_SLOT_DOG)
+		return Q2M_DOGSTROGG;
+	return Q2M_ZOMBSTR;
 };
 
 float(float slot) Q2M_TryReplace =
 {
 	if (!Q2M_PoolReplaceOk ())
 		return FALSE;
-	if (random () >= 0.45)
+	if (random () >= 0.5)
 		return FALSE;
 	Q2M_Setup (Q2M_PickKind (slot));
 	return TRUE;
+};
+
+float() Q2M_HordeMaybe =
+{
+	local float slot;
+
+	slot = 0;
+	if (self.classname == "monster_army")
+		slot = Q2M_SLOT_GRUNT;
+	else if (self.classname == "monster_enforcer")
+		slot = Q2M_SLOT_ENFORCER;
+	else if (self.classname == "monster_knight")
+		slot = Q2M_SLOT_KNIGHT;
+	else if (self.classname == "monster_hell_knight")
+		slot = Q2M_SLOT_HKNIGHT;
+	else if (self.classname == "monster_ogre")
+		slot = Q2M_SLOT_OGRE;
+	else if (self.classname == "monster_demon1")
+		slot = Q2M_SLOT_FIEND;
+	else if (self.classname == "monster_shambler")
+		slot = Q2M_SLOT_SHAMBLER;
+	else if (self.classname == "monster_wizard")
+		slot = Q2M_SLOT_SCRAG;
+	else if (self.classname == "monster_shalrath")
+		slot = Q2M_SLOT_VORE;
+	else if (self.classname == "monster_dog")
+		slot = Q2M_SLOT_DOG;
+	else if (self.classname == "monster_zombie")
+		slot = Q2M_SLOT_ZOMBIE;
+	if (slot == 0)
+		return FALSE;
+	return Q2M_TryReplace (slot);
 };
 
 void() Q2M_StartGo =
@@ -1313,10 +2207,35 @@ void() monster_q2chick = { if (deathmatch) { remove(self); return; } Q2M_Setup (
 void() monster_q2mutant = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_MUTANT); Q2M_Start (); };
 void() monster_q2brain = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_BRAIN); Q2M_Start (); };
 void() monster_q2medic = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_MEDIC); Q2M_Start (); };
+void() monster_q2gruntstr = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_GRUNTSTR); Q2M_Start (); };
+void() monster_q2enfstrogg = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_ENFSTROGG); Q2M_Start (); };
+void() monster_q2kntstrogg = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_KNTSTROGG); Q2M_Start (); };
+void() monster_q2hyperknt = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_HYPERKNT); Q2M_Start (); };
+void() monster_q2hberstrogg = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_HBERSTROGG); Q2M_Start (); };
+void() monster_q2ogre2str = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_OGRE2STR); Q2M_Start (); };
+void() monster_q2ogrestr = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_OGRESTR); Q2M_Start (); };
+void() monster_q2fiendstr = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_FIENDSTR); Q2M_Start (); };
+void() monster_q2shamstr = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_SHAMSTR); Q2M_Start (); };
+void() monster_q2shamacud = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_SHAMACUD); Q2M_Start (); };
+void() monster_q2wizstrogg = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_WIZSTROGG); Q2M_Start (); };
+void() monster_q2wizcuda = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_WIZCUDA); Q2M_Start (); };
+void() monster_q2zombstr = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_ZOMBSTR); Q2M_Start (); };
+void() monster_q2dogstrogg = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_DOGSTROGG); Q2M_Start (); };
+void() monster_q2vorestr = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_VORESTR); Q2M_Start (); };
+void() monster_q2fishgun = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_FISHGUN); Q2M_Start (); };
+void() monster_q2rotflyer = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_ROTFLYER); Q2M_Start (); };
+void() monster_q2ironvore = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_IRONVORE); Q2M_Start (); };
+void() monster_q2mutspawn = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_MUTSPAWN); Q2M_Start (); };
+void() monster_q2insane = { if (deathmatch) { remove(self); return; } Q2M_Setup (Q2M_INSANE); Q2M_Start (); };
 
 #else
 
 float(float slot) Q2M_TryReplace =
+{
+	return FALSE;
+};
+
+float() Q2M_HordeMaybe =
 {
 	return FALSE;
 };
@@ -1338,5 +2257,25 @@ void() monster_q2chick = { remove(self); };
 void() monster_q2mutant = { remove(self); };
 void() monster_q2brain = { remove(self); };
 void() monster_q2medic = { remove(self); };
+void() monster_q2gruntstr = { remove(self); };
+void() monster_q2enfstrogg = { remove(self); };
+void() monster_q2kntstrogg = { remove(self); };
+void() monster_q2hyperknt = { remove(self); };
+void() monster_q2hberstrogg = { remove(self); };
+void() monster_q2ogre2str = { remove(self); };
+void() monster_q2ogrestr = { remove(self); };
+void() monster_q2fiendstr = { remove(self); };
+void() monster_q2shamstr = { remove(self); };
+void() monster_q2shamacud = { remove(self); };
+void() monster_q2wizstrogg = { remove(self); };
+void() monster_q2wizcuda = { remove(self); };
+void() monster_q2zombstr = { remove(self); };
+void() monster_q2dogstrogg = { remove(self); };
+void() monster_q2vorestr = { remove(self); };
+void() monster_q2fishgun = { remove(self); };
+void() monster_q2rotflyer = { remove(self); };
+void() monster_q2ironvore = { remove(self); };
+void() monster_q2mutspawn = { remove(self); };
+void() monster_q2insane = { remove(self); };
 
 #endif
