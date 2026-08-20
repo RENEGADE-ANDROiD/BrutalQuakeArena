@@ -1,0 +1,42 @@
+{
+  "episodes": [
+    {
+      "dir": "tremor",
+      "name": "Tremor"
+    }
+  ],
+  "maps": [
+    {"title": "Introduction", "bsp": "start", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Satellite Relay", "bsp": "e1m1", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Blackwater Bastion", "bsp": "e1m2", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Burial Spire", "bsp": "e1m3", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Swallowed Sanctuary", "bsp": "e1m4", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Redoubt", "bsp": "e1m5", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Path to Darkness", "bsp": "e1m6", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Chthon's Overlook", "bsp": "e1m7", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Pyramidal Dementia", "bsp": "e1m8", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Submerged Station", "bsp": "e2m1", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Claw of the Oppressor", "bsp": "e2m2", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Blade of the Torturer", "bsp": "e2m3", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Defiled Abattoir", "bsp": "e2m4", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Obsidian Parapets", "bsp": "e2m5", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Autarch's Throne", "bsp": "e2m6", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Stygian Depths", "bsp": "e2m7", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Calamity Control", "bsp": "e3m1", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Black Threshold", "bsp": "e3m2", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Death of Valor", "bsp": "e3m3", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Tower of Koth", "bsp": "e3m4", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Infernophilia", "bsp": "e3m5", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Abyssal Idolatry", "bsp": "e3m6", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Respiratory Fissures", "bsp": "e3m7", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Flow Maintenance", "bsp": "e4m1", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Yellow Sign", "bsp": "e4m2", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Slumbering Slough", "bsp": "e4m3", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Horror in Clay", "bsp": "e4m4", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Lair of Leviathan", "bsp": "e4m5", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Three Beggars", "bsp": "e4m6", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Scarlet Circle", "bsp": "e4m7", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Lurking Fear", "bsp": "e4m8", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Beyond Life and Death", "bsp": "end", "episode": "tremor", "game": "tremor", "dm": true, "coop": true, "bots": false, "sp": true}
+  ]
+}

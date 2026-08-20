@@ -1,10 +1,10 @@
-﻿Brutal Quake Arena — Quick melee, meathook, extra gore, enemy elites and Glory Kill rewards for Quake 2021 Re-Release, including 1997 Rocket Arena with local and invite play.
+﻿Brutal Quake Arena — Quick melee, meathook, extra gore, enemy elites and Glory Kill rewards for Quake 2021 Re-Release, including 1997 Rocket Arena with local and invite play + optional Quake 2 Enemies (Q2 Rerelease/Call of the Void) mix.
 
-Copy contents to your Steam Quake install directory. Campaign overlays load automatically — do **not** put `game brutal` in Steam Launch Options.
+Campaign overlays load automatically — do **not** put `game brutal` in Steam Launch Options.  **INSTALLATION** instructions located below.
 
 See Options > Input to bind Axe for Quick Melee and Grapple Hook for Meathook. Arena and prox keys are in `default.cfg`. Rebind in the console: `bind p "impulse 71"`.
 
-Turn **Enhanced Models** off under Options > Display so Authentic Models show. Ammo, health, and exploding boxes still replace with Enhanced Models on.
+Turn **Enhanced Models** off under Options > Display so Authentic Models & Quake 2 Enemy models show. Authentic Models ammo, health, and exploding boxes still replace with Enhanced Models on.
 
 Steam achievements: Single Player → **New Game** → official episode. Do not use Level Select. Rocket Arena maps are Deathmatch-only and do not grant campaign achievements.
 
@@ -40,6 +40,7 @@ Steam achievements: Single Player → **New Game** → official episode. Do not 
 * Scourge of Armagon and Dissolution extras (prox, hammer, Rogue guns/boxes)
 
 **Gore**
+* Q2 Gore Mix
 * Heavier blood sprays on hits and deaths
 * Extra meat chunks on hard hits
 * More gibs that last longer
@@ -69,7 +70,7 @@ Steam achievements: Single Player → **New Game** → official episode. Do not 
 Final Arena 1.20 maps and sounds are included. Every player needs this mod installed. Custom matches do not appear in Find Match / the public browser — invite friends.
 * **Local Play:** Multiplayer → Local Play → Deathmatch → episode **Quake** → Arena maps (ArenaX and the rest). Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Add QC bots with **P**.
 * **Online host:** Multiplayer → Start Match → Deathmatch → episode **Quake** → Arena map → start → invite. Same bot rule. Joiners need this mod.
-* Console: `game brutal` then `exec arena.cfg` (put `arena.cfg` in `Users\<UserName>\Saved Games\Nightdive Studios\Quake\`).
+* Console: `game brutal` then `exec arena.cfg` (put `arena.cfg` in `Users\<UserName>\Saved Games\Nightdive Studios\Quake\`). Linux / Proton: `steamapps/compatdata/2310/pfx/drive_c/users/steamuser/Saved Games/Nightdive Studios/Quake/`. Fully quit after — New Game only shows Rocket Arena.
 * Deathmatch episode **Quake** — 46 classic arenas in the map list (not New Game)
 * Alone: full loadout practice (100 HP, 200 armor, all guns)
 * Two or more: 1v1, 10-second lock, FIGHT, winner stays
@@ -78,8 +79,27 @@ Final Arena 1.20 maps and sounds are included. Every player needs this mod insta
 
 See `farena_readme.txt` for the original map list and authors.
 
-**Credit**: **RENEGADE ANDROiD**
+**INSTALLATION**
+Be sure the contents in the 'rerelease' folder are copied to your 'rerelease' folder!  Not in Quake\id1
 
-Monster, weapon, player, and pickup models: [Authentic Models for Quake](https://github.com/NightFright2k19/quake_authmdl) (NightFright and contributors). See `auth_mdl.txt`.
+Copy the arena.cfg to:
+
+Steam → Quake → Properties → Installed Files → Browse → open `rerelease`. 
+On SteamOS, copy files in Desktop Mode. 
+On Bazzite, show hidden files to see `~/.local`. Typical `rerelease` roots:
+
+* Internal: `~/.local/share/Steam/steamapps/common/Quake/rerelease/`
+* SD / extra disk: `/run/media/<user-or-system>/<LABEL>/steamapps/common/Quake/rerelease/`
+* Flatpak Steam: `~/.var/app/com.valvesoftware.Steam/.local/share/Steam/steamapps/common/Quake/rerelease/`
+
+**Credit**:
+
+Q1 Monster, weapon, player, and pickup models: [Authentic Models for Quake](https://github.com/NightFright2k19/quake_authmdl) (NightFright and contributors). See `auth_mdl.txt`.
+
+Quake 2 Enemy extras from Quake 2 Rerelease, & Call of the Void (https://www.moddb.com/mods/quake-ii-call-of-the-void) created by Rest in Pixels (00_Zombie_00, Raton and Drugod)
 
 Rocket Arena / Final Arena 1.20: David “crt” Wright and PlanetQuake (1997). Greg “TerMy” Wiles, Andrew “Kolinahr” Wu (sounds), Matt “WhiteFang” Ayres (NetQuake port), Telefragged Arena and the map authors listed in `farena_readme.txt`. Rules recreated in new QuakeC with credit; original RA server progs are not shipped.
+
+
+Brutal Sprite enhancements from the Doom community!
+Gore: Nashgore Addons: Damage Numbers

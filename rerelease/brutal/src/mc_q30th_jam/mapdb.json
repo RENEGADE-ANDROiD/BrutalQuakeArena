@@ -1,0 +1,40 @@
+{
+  "episodes": [
+    {
+      "dir": "mc_q30th_jam",
+      "name": "Map-Center Q30th Jam"
+    }
+  ],
+  "maps": [
+    {"title": "Thirtieth Gate", "bsp": "start", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Pulsating Lights", "bsp": "mc_q30th_alexunder", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "A Quake Tour", "bsp": "mc_q30th_atom1k", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Instantaneous Impulse", "bsp": "mc_q30th_beeache", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Straightforward Scalding Slime", "bsp": "mc_q30th_caffeinefreak", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Port Insomnius", "bsp": "mc_q30th_chnuckierdbeer", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Deserted fortress", "bsp": "mc_q30th_coce", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Origins", "bsp": "mc_q30th_dh", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Toxic Facility", "bsp": "mc_q30th_dh2", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Dimension of the Dank", "bsp": "mc_q30th_doritos420", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Twisted Tabernacle", "bsp": "mc_q30th_eltangente", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Blood Moon", "bsp": "mc_q30th_giftmacher", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Danse Macabre", "bsp": "mc_q30th_grue", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Stranded", "bsp": "mc_q30th_jcr", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Aleister's Lockbox", "bsp": "mc_q30th_jerry", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Ebonistic Pantheon", "bsp": "mc_q30th_il8r", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Deadmans Passage", "bsp": "mc_q30th_ish", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Seep Into the Soul", "bsp": "mc_q30th_iyago", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Fractured Dreams", "bsp": "mc_q30th_kerrash", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Final Sun", "bsp": "mc_q30th_konig", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Forsaken Monastery", "bsp": "mc_q30th_moko", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Rogue Transmission", "bsp": "mc_q30th_nosick", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "They Will Never Understand", "bsp": "mc_q30th_rj", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Monolith", "bsp": "mc_q30th_salivanbufrat", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Lightning from the Void", "bsp": "mc_q30th_shartuterie", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Tomb of the Barbarian King", "bsp": "mc_q30th_simonn", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Halls of Misanthropy", "bsp": "mc_q30th_static_fiend", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Sigildur's Forge", "bsp": "mc_q30th_textfish", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Citadel of Gnhafst Koost", "bsp": "mc_q30th_thundergoose", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": true, "sp": true},
+    {"title": "Deicidal Descent", "bsp": "end", "episode": "mc_q30th_jam", "game": "mc_q30th_jam", "dm": true, "coop": true, "bots": false, "sp": true}
+  ]
+}
