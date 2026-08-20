@@ -1,0 +1,49 @@
+{
+  "episodes": [
+    {
+      "dir": "ad",
+      "name": "Arcane Dimensions"
+    }
+  ],
+  "maps": [
+    {"title": "Hodgepodge of themes and portals", "bsp": "start", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Lava caves and industrial complex", "bsp": "ad_cruical", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Place of Many Deaths", "bsp": "ad_dm1", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Stone city gradually sinking into lava", "bsp": "ad_lavatomb", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Dark stone mountain prison", "bsp": "ad_mountain", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Necromancer Keep!", "bsp": "ad_necrokeep", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "A giant pile of neatly stacked bricks", "bsp": "ad_obd", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Gigantic interconnected medieval town", "bsp": "ad_swampy", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Final destination for AD travellers", "bsp": "ad_end", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "More themes and portals", "bsp": "ad_chapters", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Realm of Enceladus", "bsp": "ad_azad", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Terror Fuma", "bsp": "ad_tfuma", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Leptis Magna", "bsp": "ad_magna", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Arcane Monstrosity", "bsp": "ad_metmon", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Horde of Zendar", "bsp": "ad_zendar", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Forgotten Sepulcher", "bsp": "ad_sepulcher", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Arcane Adamantine", "bsp": "ad_ac", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Slipgate Conundrum", "bsp": "ad_s1m1", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Ak-Alakha", "bsp": "ad_akalakha", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Grendels' Blade", "bsp": "ad_grendel", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Nyarlathoteps Sand Castle", "bsp": "ad_scastle", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Tears of the False God", "bsp": "ad_tears", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Mire", "bsp": "ad_dm5", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Hangar 16", "bsp": "ad_e1m1", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Ogre Bastille", "bsp": "ad_e2m2", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "The Underearth", "bsp": "ad_e2m7", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Round brick hub map with portals", "bsp": "start_test", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Breakables and monster reactions", "bsp": "ad_test1", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Egyptian blast haunted by Wraiths", "bsp": "ad_test2", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Hipnotic rotation test", "bsp": "ad_test3", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Small medieval courtyard with Golems", "bsp": "ad_test4", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Village square guarded by Minotaurs", "bsp": "ad_test5", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Tall courtyard of knights and ogres", "bsp": "ad_test6", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Library of teleporting skull wizards", "bsp": "ad_test7", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Runic room of gaunts and droles", "bsp": "ad_test8", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Chamber guarded by hammer ogres", "bsp": "ad_test9", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Plasma gun carnage box", "bsp": "ad_test10", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Projectile weapons shooting range", "bsp": "ad_test11", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true},
+    {"title": "Does not exist!!! or does it ...", "bsp": "ad_test12", "episode": "ad", "game": "ad", "dm": true, "coop": true, "bots": false, "sp": true}
+  ]
+}

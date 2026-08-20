@@ -1,0 +1,35 @@
+{
+  "episodes": [
+    {
+      "dir": "limjam",
+      "name": "Liminal Spaces Jam"
+    }
+  ],
+  "maps": [
+    {"title": "The Way The World Begins And Ends", "bsp": "start", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "The Absolute Decadence of Cursed Architecture", "bsp": "lim_4lt", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Reasons To Go On", "bsp": "lim_66ppt99", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Musings of Gibraltar Mick and Fat Nuts Fred", "bsp": "lim_cc", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Palace of the Liminal Men", "bsp": "lim_cc2", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Anomalous Sunshine of an Alternate Timeline", "bsp": "lim_chuma", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Silent Hall Dim City", "bsp": "lim_colossus", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Forgotten Dreams", "bsp": "lim_daviddg", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "the Liminal Age", "bsp": "lim_dooplon", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Limmin", "bsp": "lim_draqu", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "The Poolrooms", "bsp": "lim_haikids", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Olympic", "bsp": "lim_infront95", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "The Rackbooms", "bsp": "lim_jitspoe", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Salt Between Teeth", "bsp": "lim_joymodulo", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Restless Sentimentality", "bsp": "lim_makkon", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Limbo Station", "bsp": "lim_mrtaufner", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Origin", "bsp": "lim_nh", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Down The Drain", "bsp": "lim_nolcoz", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Fall Out", "bsp": "lim_pinchy", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "fur the color", "bsp": "lim_rabbit", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Internal Infinitude", "bsp": "lim_riktoi", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "harmless coloring for culinary purposes", "bsp": "lim_scampie", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Dude, Where's My Car?", "bsp": "lim_simonn", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Last Warehouse", "bsp": "lim_tei", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true},
+    {"title": "Fake Depth", "bsp": "lim_tei2", "episode": "limjam", "game": "limjam", "dm": true, "coop": false, "bots": false, "sp": true}
+  ]
+}

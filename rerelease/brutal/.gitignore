@@ -1,0 +1,11 @@
+vendor/
+tools/
+dist/
+src/tremor/_gen/
+src/tremor/progs.overlay.src
+src/tremor/progs.lno
+src/tremor/qcc.log
+src/limjam/progs.lno
+src/limjam/qcc.log
+src/ad/progs.lno
+src/ad/qcc.log
