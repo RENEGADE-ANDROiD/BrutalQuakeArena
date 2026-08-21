@@ -518,7 +518,7 @@ void() RA_SpawnBot =
 	e.classname = "player";
 	e.netname = RA_BotName (id);
 	e.ra_bot = id;
-	e.flags = FL_CLIENT;
+	e.flags = 0;
 	e.th_die = PlayerDie;
 	e.th_pain = player_pain;
 	e.health = 100;
@@ -540,6 +540,7 @@ void() RA_SpawnBot =
 	bprint ("Arena bot ");
 	bprint (e.netname);
 	bprint (" joined the line.\n");
+	centerprint (self, "Arena bot added. Get ready...\n");
 	RA_TryStart ();
 };
 

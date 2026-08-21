@@ -228,7 +228,7 @@ entity() W_MeleeFindLungeTarget =
 
 		if (e != self && e.health > 0 && !RA_IsGhost (e))
 		{
-			if ((e.flags & FL_MONSTER) || (e.flags & FL_CLIENT))
+			if ((e.flags & FL_MONSTER) || (e.flags & FL_CLIENT) || e.ra_bot)
 			{
 				if (!(teamplay && (e.flags & FL_CLIENT) && e.team > 0 && e.team == self.team))
 				{

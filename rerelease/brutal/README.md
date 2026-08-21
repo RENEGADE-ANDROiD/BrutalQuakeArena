@@ -2,7 +2,7 @@
 
 Campaign overlays load automatically — do **not** put `game brutal` in Steam Launch Options (New Game would only show Rocket Arena). Rocket Arena itself uses the `brutal` gamedir from the Deathmatch episode list. **INSTALLATION** instructions located below.
 
-See Options > Input to bind Axe for Quick Melee and Grapple Hook for Meathook. Arena and prox keys are in `default.cfg`. Rebind in the console: `bind p "impulse 71"`.
+See Options > Input to bind Axe for Quick Melee and Grapple Hook for Meathook. Arena keys are in `ra_binds.cfg` (applied on Arena spawn). Rebind in the console: `bind f7 "impulse 71"`.
 
 Turn **Enhanced Models** off under Options > Display so Authentic Models & Quake 2 Enemy models show. Authentic Models ammo, health, and exploding boxes still replace with Enhanced Models on.
 
@@ -25,7 +25,7 @@ Steam achievements: Single Player → **New Game** → official episode. Do not 
 * Impulse 68 / I — Rocket Arena wins / losses / skill
 * Impulse 69 / O — Rocket Arena line position (or practice / break)
 * Impulse 70 / B — Rocket Arena take a break or return to the line
-* Impulse 71 / P — add an Arena bot (max 3)
+* Impulse 71 / **F7** or **P** — add an Arena bot (max 3). If P pauses, use F7 or type `impulse 71`.
 * Impulse 72 / K — remove Arena bots
 
 **Custom Weapon Models**
@@ -74,14 +74,14 @@ Authentic Models +
 
 **Rocket Arena**
 Final Arena 1.20 maps and sounds are included. Every player needs this mod installed. Custom matches do not appear in Find Match / the public browser — invite friends.
-* **Local Play:** Multiplayer → Local Play → Deathmatch → episode **Rocket Arena** (next to Quake). Deploy writes Brutal `progs.dat` and overlay paks into the `brutal` folder. Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Add QC bots with **P**.
+* **Local Play:** Multiplayer → Local Play → Deathmatch → episode **Rocket Arena** (next to Quake). Do **not** type `game brutal` in the console or Steam Launch Options. Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Alone is practice until a second fighter. Add a QC bot with **F7**, **P**, or `impulse 71`.
 * **Online host:** Multiplayer → Start Match → Deathmatch → episode **Rocket Arena** → map → start → invite. Same bot rule. Joiners need this mod.
-* Console: `game brutal` then `exec arena.cfg` (put `arena.cfg` in `Users\<UserName>\Saved Games\Nightdive Studios\Quake\`). Linux / Proton: `steamapps/compatdata/2310/pfx/drive_c/users/steamuser/Saved Games/Nightdive Studios/Quake/`. Fully quit after — New Game only shows Rocket Arena.
+* Optional console shortcut only: `game brutal` then `exec arena.cfg` (put `arena.cfg` in `Users\<UserName>\Saved Games\Nightdive Studios\Quake\`). Linux / Proton: `steamapps/compatdata/2310/pfx/drive_c/users/steamuser/Saved Games/Nightdive Studios/Quake/`. Fully quit after — New Game only shows Rocket Arena.
 * Deathmatch episode **Rocket Arena** — 46 classic arenas in the map list (not New Game)
-* Alone: full loadout practice (100 HP, 200 armor, all guns)
+* Alone: full loadout practice (100 HP, 200 armor, all guns) until a second player or bot joins
 * Two or more: 1v1, 10-second lock (fire / melee / hook / prox blocked), 3-2-1, FIGHT, winner stays. Suicide or disconnect counts as a loss. Quick melee and meathook work after FIGHT. Glory kill is campaign/coop only.
 * Impulse 68 stats, 69 line position, 70 break
-* Impulse 71 / **P** adds a mid-to-hard named bot (Crush, Nailer, Bolt, Hopper, Sawbone, Vault, blunt, GrendelKhan, Godavine, Makavelli, Immortal, Thresh, JohnCarmack, JohnRomero, DrDeath, h0s3r, PiLL). Impulse 72 / **K** removes them. None have perfect aim.
+* Impulse 71 / **F7** or **P** adds a mid-to-hard named bot (Crush, Nailer, Bolt, Hopper, Sawbone, Vault, blunt, GrendelKhan, Godavine, Makavelli, Immortal, Thresh, JohnCarmack, JohnRomero, DrDeath, h0s3r, PiLL). If P pauses, use F7 or type `impulse 71`. Impulse 72 / **K** removes them. None have perfect aim.
 * CTF: impulse 22 is the Brutal meathook. Cycle to the original CTF hook with impulse 10.
 
 See `farena_readme.txt` for the original map list and authors.
