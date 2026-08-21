@@ -50,13 +50,14 @@ void() BQA_TryVorelings =
 	local entity oself;
 	local float i;
 	local vector org;
+	local vector dest;
 	local vector ang;
 
 	if (self.bqa_spawned_lings)
 		return;
-	self.bqa_spawned_lings = 1;
 	if (random() > 0.1)
 		return;
+	self.bqa_spawned_lings = 1;
 
 	org = self.origin;
 	ang = self.angles;
@@ -64,14 +65,18 @@ void() BQA_TryVorelings =
 	i = 0;
 	while (i < 2)
 	{
+		dest = org;
+		if (i == 0)
+			dest_x = dest_x + 40;
+		else
+			dest_x = dest_x - 40;
+		dest_z = dest_z + 16;
+		traceline (org + '0 0 16', dest, FALSE, oself);
+		if (trace_fraction < 1)
+			dest = org + '0 0 16';
 		self = spawn ();
 		self.classname = "monster_tarbaby";
-		self.origin = org;
-		if (i == 0)
-			self.origin_x = self.origin_x + 40;
-		else
-			self.origin_x = self.origin_x - 40;
-		self.origin_z = self.origin_z + 16;
+		self.origin = dest;
 		self.angles = ang;
 		monster_tarbaby ();
 		if (oself.enemy != world)

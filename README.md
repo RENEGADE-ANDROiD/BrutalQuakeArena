@@ -28,6 +28,12 @@ Steam achievements: Single Player → **New Game** → official episode. Do not 
 * Impulse 71 / P — add an Arena bot (max 3)
 * Impulse 72 / K — remove Arena bots
 
+**Custom Weapon Models**
+Authentic Models +
+* Bloody Axe, created by PrimeviL
+* Pump Shotgun created by Barnaby.
+* Oscillator replaces Nailgun, created by metroid24242/king0pa1n/Turduckens
+
 **Melee and hook**
 * Quick axe melee with lock-on lunge (128 unit range)
 * Glory kill on wounded campaign monsters: extra gibs, slow-mo, +10 health (not above max)

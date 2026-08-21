@@ -10,6 +10,7 @@ void(entity targ) W_MeleeStartLunge;
 void(entity ply, entity targ) W_MeleeAimYaw;
 void(entity ply, entity targ) W_MeleeLungeDash;
 entity() W_MeleeFindLungeTarget;
+float(entity e) RA_IsGhost;
 
 void(entity ply) W_MeleeHitFeel =
 {
@@ -95,7 +96,7 @@ float(entity targ, float dmg) W_MeleeHitDamage =
 
 	if (self.melee_glory)
 	{
-		if (targ != world && (targ.flags & FL_MONSTER) && targ.health > 0)
+		if (targ != world && targ == self.melee_target && (targ.flags & FL_MONSTER) && targ.health > 0)
 		{
 			if (dmg < targ.health + 55)
 				dmg = targ.health + 55;
@@ -113,7 +114,7 @@ float(entity targ, float dmg) W_MeleeHitDamage =
 	return dmg;
 };
 
-void() W_MeleeRestore =
+void() W_MeleeClear =
 {
 	if (!self.melee_active)
 		return;
@@ -123,8 +124,17 @@ void() W_MeleeRestore =
 	self.melee_target = world;
 	self.melee_glory = 0;
 	self.melee_style = 0;
-	self.weapon = self.melee_restore;
+	if (self.melee_restore)
+		self.weapon = self.melee_restore;
 	self.melee_restore = 0;
+};
+
+void() W_MeleeRestore =
+{
+	if (!self.melee_active)
+		return;
+
+	W_MeleeClear ();
 	W_SetCurrentAmmo ();
 };
 
@@ -213,7 +223,7 @@ entity() W_MeleeFindLungeTarget =
 		e = head;
 		head = head.chain;
 
-		if (e != self && e.health > 0)
+		if (e != self && e.health > 0 && !RA_IsGhost (e))
 		{
 			if ((e.flags & FL_MONSTER) || (e.flags & FL_CLIENT))
 			{
@@ -348,24 +358,19 @@ void() W_QuickMelee =
 		return;
 	if (self.deadflag)
 		return;
-	if (self.melee_active)
-		return;
 	if (self.melee_lunge)
 		return;
-
-	if (self.weapon == IT_AXE)
+	if (self.melee_active)
 	{
-		targ = W_MeleeFindLungeTarget ();
-		self.melee_target = targ;
-		if (W_MeleeIsGlory (targ))
-			self.melee_glory = 1;
-		else
-			self.melee_glory = 0;
-		W_MeleeDoSwing ();
-		return;
+		if (time < self.attack_finished)
+			return;
+		W_MeleeRestore ();
 	}
 
-	self.melee_restore = self.weapon;
+	if (self.weapon == IT_AXE)
+		self.melee_restore = IT_AXE;
+	else
+		self.melee_restore = self.weapon;
 	self.melee_active = 1;
 	self.weapon = IT_AXE;
 	self.weaponmodel = "progs/v_axe.mdl";

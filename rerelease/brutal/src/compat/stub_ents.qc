@@ -97,7 +97,7 @@ void() func_breakable_wall =
 
 void() func_breakable_spawner =
 {
-	remove (self);
+	func_breakable ();
 };
 
 //=============================================================================
@@ -218,9 +218,24 @@ void() weapon_shotgun =
 	weapon_supershotgun ();
 };
 
+void() BQA_AxeStubTouch =
+{
+	if (other.classname != "player")
+		return;
+	if (other.health <= 0)
+		return;
+	sound (other, CHAN_ITEM, "weapons/lock4.wav", 1, ATTN_NORM);
+	remove (self);
+};
+
 void() weapon_axe =
 {
-	remove (self);
+	precache_sound ("weapons/lock4.wav");
+	self.solid = SOLID_TRIGGER;
+	self.movetype = MOVETYPE_NONE;
+	setmodel (self, string_null);
+	setsize (self, '-16 -16 0', '16 16 56');
+	self.touch = BQA_AxeStubTouch;
 };
 
 void() weapon_chainsaw =

@@ -609,6 +609,10 @@ Player entered the suicide command
 void() ClientKill =
 {
 	bprint("$qc_suicides", self.netname);
+	if (RA_Active () && self.ra_role == 2)
+		RA_PlayerDied (world);
+	W_MeathookRelease ();
+	BQA_ClearSlowmo ();
 	set_suicide_frame ();
 	self.modelindex = modelindex_player;
 	self.frags = self.frags - 2;	// extra penalty
@@ -690,7 +694,7 @@ entity SelectSpawnPoint(float forceSpawn) {
 			pcount = 0;               
 
 			while( thing ) {
-				if ( thing.classname == "player" && thing.health > 0 ) {
+				if ( thing.classname == "player" && thing.health > 0 && !RA_IsGhost (thing) ) {
 					pcount = pcount + 1;                      
 				}
 
@@ -726,7 +730,7 @@ entity SelectSpawnPoint(float forceSpawn) {
 				pcount = 0;               
 
 				while( thing ) {
-					if ( thing.classname == "player" && thing.health > 0 ) {
+					if ( thing.classname == "player" && thing.health > 0 && !RA_IsGhost (thing) ) {
 						pcount = pcount + 1;                      
 					}
 
@@ -891,7 +895,8 @@ void() PutClientInServer =
 		spawn_tfog (self.origin + v_forward*20);
 	}
 
-	spawn_tdeath (self.origin, self);
+	if (RA_WillOccupySpawn ())
+		spawn_tdeath (self.origin, self);
     
     stuffcmd(self, "-attack\n"); // prevent shooting after respawning
 	RA_OnSpawn ();
@@ -1030,6 +1035,8 @@ void() CheckRules =
 	local	float		timelimit;
 	local	float		fraglimit;
 
+	if (RA_Active ())
+		return;
 	if (gameover)	// someone else quit the game already
 		return;
 

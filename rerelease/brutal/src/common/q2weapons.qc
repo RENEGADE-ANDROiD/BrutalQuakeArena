@@ -235,14 +235,27 @@ float(float dir) Q2_Cycle =
 	if (dir >= 0)
 	{
 #ifdef BQA_HAS_IT_MJOLNIR
+		if (self.weapon == IT_AXE)
+		{
+			if (self.melee_held == 0 && self.has_mjolnir)
+			{
+				Q2_SelectMelee (1);
+				return TRUE;
+			}
+			if (self.melee_held <= 1 && self.has_chainsaw)
+			{
+				Q2_SelectMelee (2);
+				return TRUE;
+			}
+			if (self.melee_held == 2)
+			{
+				Q2_SelectMelee (0);
+				return TRUE;
+			}
+		}
 		if (self.weapon == IT_MJOLNIR && self.has_chainsaw)
 		{
 			Q2_SelectMelee (2);
-			return TRUE;
-		}
-		if (self.weapon == IT_AXE && self.melee_held == 2)
-		{
-			Q2_SelectMelee (0);
 			return TRUE;
 		}
 #else
@@ -277,13 +290,33 @@ float(float dir) Q2_Cycle =
 		}
 		if (self.melee_held == 2)
 		{
+			if (self.has_mjolnir)
+			{
+				Q2_SelectMelee (1);
+				return TRUE;
+			}
 			self.q2_held = 0;
 			self.melee_held = 0;
 			self.weapon = IT_MJOLNIR;
 			W_SetCurrentAmmo ();
 			return TRUE;
 		}
+		if (self.melee_held == 1)
+		{
+			Q2_SelectMelee (0);
+			return TRUE;
+		}
 		return FALSE;
+	}
+	if (self.weapon == IT_MJOLNIR)
+	{
+		if (self.has_mjolnir)
+		{
+			Q2_SelectMelee (1);
+			return TRUE;
+		}
+		Q2_SelectMelee (0);
+		return TRUE;
 	}
 #else
 	if (self.weapon == IT_SHOTGUN)

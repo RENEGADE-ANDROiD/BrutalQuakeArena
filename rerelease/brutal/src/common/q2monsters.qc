@@ -89,6 +89,10 @@ void() SUB_Null;
 void() BQA_GibCorpse;
 void(entity attacker, float damage) BQA_CorpsePain;
 void() BQA_MaybeElite;
+void() BQA_TryVorelings;
+void() BQA_KnightThrowAxe;
+void() BQA_DropChainsaw;
+void() BQA_DropMjolnir;
 #endif
 
 float() Q2M_ModelsOk =
@@ -275,6 +279,7 @@ void(float kind) Q2M_PrecacheKind =
 		precache_sound ("ogre/ogwake.wav");
 		precache_sound ("ogre/ogpain1.wav");
 		precache_sound ("weapons/guncock.wav");
+		precache_sound ("ogre/ogsawatk.wav");
 		precache_sound ("ogre/ogdth.wav");
 	}
 	else if (kind == Q2M_OGRESTR)
@@ -283,6 +288,7 @@ void(float kind) Q2M_PrecacheKind =
 		precache_sound ("ogre/ogwake.wav");
 		precache_sound ("ogre/ogpain1.wav");
 		precache_sound ("weapons/grenade.wav");
+		precache_sound ("ogre/ogsawatk.wav");
 		precache_sound ("ogre/ogdth.wav");
 	}
 	else if (kind == Q2M_FIENDSTR)
@@ -490,7 +496,7 @@ void() Q2M_SetRange =
 		else if (a == Q2M_ANIM_RUN) { self.q2_fstart = 0; self.q2_fend = 44; }
 		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 45; self.q2_fend = 67; self.q2_ffire = 55; self.q2_ffire2 = 55; }
 		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 68; self.q2_fend = 76; }
-		else { self.q2_fstart = 68; self.q2_fend = 84; }
+		else { self.q2_fstart = 77; self.q2_fend = 84; }
 	}
 	else if (k == Q2M_FLOAT)
 	{
@@ -686,7 +692,7 @@ void() Q2M_SetRange =
 		else if (a == Q2M_ANIM_ATK) { self.q2_fstart = 45; self.q2_fend = 67; self.q2_ffire = 55; self.q2_ffire2 = 55; }
 		else if (a == Q2M_ANIM_MELEE) { self.q2_fstart = 45; self.q2_fend = 67; self.q2_ffire = 55; self.q2_ffire2 = 55; }
 		else if (a == Q2M_ANIM_PAIN) { self.q2_fstart = 68; self.q2_fend = 76; }
-		else { self.q2_fstart = 68; self.q2_fend = 84; }
+		else { self.q2_fstart = 77; self.q2_fend = 84; }
 	}
 	else if (k == Q2M_IRONVORE)
 	{
@@ -782,6 +788,8 @@ void() Q2M_FireShot =
 		dir = normalize ((self.enemy.origin + '0 0 16') - org);
 	else
 		dir = v_forward;
+	if (self.bqa_elite)
+		dir = dir * 1.25;
 	if ((self.q2_kind == Q2M_GUNNER || self.q2_kind == Q2M_FISHGUN || self.q2_kind == Q2M_OGRESTR || self.q2_kind == Q2M_ZOMBSTR) && self.q2_alt)
 	{
 		if (self.frame == self.q2_ffire)
@@ -1162,16 +1170,10 @@ float() Q2M_CheckAttack =
 		return FALSE;
 	if (r == RANGE_MELEE)
 	{
-		if (self.q2_kind == Q2M_BERSERK || self.q2_kind == Q2M_BRAIN || self.q2_kind == Q2M_GLADIATOR || self.q2_kind == Q2M_KNTSTROGG || self.q2_kind == Q2M_HBERSTROGG || self.q2_kind == Q2M_HYPERKNT || self.q2_kind == Q2M_SHAMSTR || self.q2_kind == Q2M_SHAMACUD || self.q2_kind == Q2M_OGRE2STR || self.q2_kind == Q2M_OGRESTR || self.q2_kind == Q2M_IRONVORE || self.q2_kind == Q2M_ROTFLYER)
+		if (self.q2_kind == Q2M_BERSERK || self.q2_kind == Q2M_BRAIN || self.q2_kind == Q2M_GLADIATOR || self.q2_kind == Q2M_KNTSTROGG || self.q2_kind == Q2M_HBERSTROGG || self.q2_kind == Q2M_HYPERKNT || self.q2_kind == Q2M_SHAMSTR || self.q2_kind == Q2M_SHAMACUD || self.q2_kind == Q2M_OGRE2STR || self.q2_kind == Q2M_OGRESTR || self.q2_kind == Q2M_IRONVORE || self.q2_kind == Q2M_ROTFLYER || self.q2_kind == Q2M_MUTANT || self.q2_kind == Q2M_FIENDSTR || self.q2_kind == Q2M_MUTSPAWN || self.q2_kind == Q2M_INSANE || self.q2_kind == Q2M_DOGSTROGG)
 		{
 			Q2M_Melee ();
 			SUB_AttackFinished (0.5);
-			return TRUE;
-		}
-		if (self.q2_kind == Q2M_MUTANT || self.q2_kind == Q2M_FIENDSTR || self.q2_kind == Q2M_MUTSPAWN || self.q2_kind == Q2M_INSANE || self.q2_kind == Q2M_DOGSTROGG)
-		{
-			Q2M_Leap ();
-			SUB_AttackFinished (1);
 			return TRUE;
 		}
 		self.q2_alt = 0;
@@ -1195,7 +1197,16 @@ float() Q2M_CheckAttack =
 		SUB_AttackFinished (1);
 		return TRUE;
 	}
-	if (self.q2_kind == Q2M_BERSERK || self.q2_kind == Q2M_BRAIN || self.q2_kind == Q2M_KNTSTROGG || self.q2_kind == Q2M_HBERSTROGG)
+	if (self.q2_kind == Q2M_KNTSTROGG)
+	{
+		BQA_KnightThrowAxe ();
+		if (self.bqa_elite)
+			SUB_AttackFinished (0.7);
+		else
+			SUB_AttackFinished (1);
+		return TRUE;
+	}
+	if (self.q2_kind == Q2M_BERSERK || self.q2_kind == Q2M_BRAIN || self.q2_kind == Q2M_HBERSTROGG)
 		return FALSE;
 	if ((self.q2_kind == Q2M_GLADIATOR || self.q2_kind == Q2M_HYPERKNT) && vlen (self.enemy.origin - self.origin) <= 112)
 	{
@@ -1213,7 +1224,10 @@ float() Q2M_CheckAttack =
 	if (self.q2_kind == Q2M_OGRESTR || self.q2_kind == Q2M_ZOMBSTR)
 		self.q2_alt = 1;
 	Q2M_Missile ();
-	SUB_AttackFinished (0.5 + random ());
+	if (self.bqa_elite)
+		SUB_AttackFinished (0.35 + random () * 0.4);
+	else
+		SUB_AttackFinished (0.5 + random ());
 	return TRUE;
 };
 
@@ -1345,6 +1359,7 @@ void() Q2M_LeapTouch =
 	{
 		T_Damage (other, self, self, 40);
 		Q2_Impact (other.origin, 0);
+		self.touch = SUB_Null;
 	}
 };
 
@@ -1361,6 +1376,10 @@ void() Q2M_LeapThink =
 		}
 		return;
 	}
+	self.angles_x = 0;
+	self.angles_z = 0;
+	if (self.frame < self.q2_fend)
+		self.frame = self.frame + 1;
 	if ((self.flags & FL_ONGROUND) || time > self.attack_finished)
 	{
 		self.touch = SUB_Null;
@@ -1376,8 +1395,6 @@ void() Q2M_LeapThink =
 
 void() Q2M_Leap =
 {
-	local vector d;
-
 	if (self.health <= 0)
 		return;
 	if (self.q2_anim == Q2M_ANIM_DIE)
@@ -1396,9 +1413,15 @@ void() Q2M_Leap =
 		self.q2_anim = Q2M_ANIM_MELEE;
 	Q2M_SetRange ();
 	self.frame = self.q2_fstart;
-	d = normalize (self.enemy.origin - self.origin);
-	self.velocity = d * 420 + '0 0 260';
-	self.movetype = MOVETYPE_TOSS;
+	ai_face ();
+	self.angles_x = 0;
+	self.angles_z = 0;
+	makevectors (self.angles);
+	self.origin_z = self.origin_z + 1;
+	if (self.q2_kind == Q2M_DOGSTROGG)
+		self.velocity = v_forward * 300 + '0 0 200';
+	else
+		self.velocity = v_forward * 600 + '0 0 250';
 	self.flags = self.flags - (self.flags & FL_ONGROUND);
 	self.touch = Q2M_LeapTouch;
 	self.attack_finished = time + 1.2;
@@ -1550,6 +1573,16 @@ void() Q2M_Die =
 		{
 			self.ammo_shells = 5;
 			DropBackpack ();
+		}
+		if (self.q2_kind == Q2M_OGRESTR || self.q2_kind == Q2M_OGRE2STR)
+		{
+			if (random () < 0.45)
+				BQA_DropChainsaw ();
+		}
+		if (self.q2_kind == Q2M_KNTSTROGG || self.q2_kind == Q2M_HYPERKNT || self.q2_kind == Q2M_HBERSTROGG)
+		{
+			if (random () < 0.45)
+				BQA_DropMjolnir ();
 		}
 		return;
 	}
@@ -2118,6 +2151,20 @@ float(float slot) Q2M_TryReplace =
 {
 	if (!Q2M_PoolReplaceOk ())
 		return FALSE;
+	if (self.bqa_nailgrunt)
+	{
+		if (random () >= 0.5)
+			return FALSE;
+		Q2M_Setup (Q2M_GRUNTSTR);
+		return TRUE;
+	}
+	if (self.bqa_defender)
+	{
+		if (random () >= 0.5)
+			return FALSE;
+		Q2M_Setup (Q2M_ENFSTROGG);
+		return TRUE;
+	}
 	if (random () >= 0.5)
 		return FALSE;
 	Q2M_Setup (Q2M_PickKind (slot));
@@ -2204,6 +2251,8 @@ void() Q2M_StartGo =
 		self.th_stand ();
 	}
 	BQA_MaybeElite ();
+	if (self.q2_kind == Q2M_VORESTR || self.q2_kind == Q2M_IRONVORE || self.q2_kind == Q2M_CHICK || self.q2_kind == Q2M_MEDIC)
+		BQA_TryVorelings ();
 	self.nextthink = self.nextthink + random () * 0.5;
 };
 

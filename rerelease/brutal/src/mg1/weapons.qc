@@ -629,7 +629,7 @@ void() W_FireLightning =
 
 void() GrenadeExplode =
 {
-	T_RadiusDamage (self, self.owner, self.dmg, world);
+	T_RadiusDamage (self, self.owner, BQA_CrushRadius (), world);
 
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
@@ -1608,6 +1608,12 @@ void() W_WeaponFrame =
 		self.impulse = 0;
 		if (self.ra_role == 1 || self.ra_role == 4)
 			return;
+	}
+	if (RA_Locked ())
+	{
+		self.button0 = 0;
+		if (self.impulse == 1 || self.impulse == 50 || self.impulse == 22 || self.impulse == 52 || self.impulse == 215)
+			self.impulse = 0;
 	}
 	Q2_Impulse ();
 	if (self.impulse == 1 || self.impulse == 50)

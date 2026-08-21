@@ -242,7 +242,7 @@ void()	knight_dieb11 = [	$deathb11,	knight_dieb11] {};
 void() knight_die =
 {
 	// check for gib
-	if (self.health < -40)
+	if (self.health <= -40)
 	{
 		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
 		ThrowHead ("progs/h_knight.mdl", self.health);

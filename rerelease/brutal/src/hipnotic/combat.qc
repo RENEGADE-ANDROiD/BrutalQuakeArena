@@ -299,6 +299,9 @@ void(entity targ, entity inflictor, entity attacker, float damage) T_Damage=
 		return;
 	}
 
+	if (targ.health > 0)
+		targ.bqa_headshot = 0;
+
 // react to the damage
 	oldself = self;
 	self = targ;

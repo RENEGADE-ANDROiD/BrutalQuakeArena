@@ -260,7 +260,7 @@ void()	knight_dieb11 = [	$deathb11,	knight_dieb11] {};
 void() knight_die =
 {
 // check for gib
-	if (self.health < -40)
+	if (self.health <= -40)
 	{
 		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
 		ThrowHead ("progs/h_knight.mdl", self.health);
@@ -377,6 +377,7 @@ void() monster_knight =
 
 	setsize (self, '-16 -16 -24', '16 16 40');
 	self.health = 75;
+	self.max_health = 75;
 
 	if (self.spawnflags & 2) // statue
 	{

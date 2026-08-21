@@ -13,6 +13,7 @@ void() SUB_Remove;
 void() SUB_Null;
 void() BecomeExplosion;
 void() s_explode1;
+float(entity e) RA_IsGhost;
 void() BQA_ProxTouch;
 void() BQA_ProxThink;
 void() BQA_ProxExplode;
@@ -726,7 +727,7 @@ void() BQA_SetupCorpse =
 		return;
 	if (self.q2_kind)
 		return;
-	if (!((self.flags & FL_MONSTER) || (self.classname == "player")))
+	if (!(self.flags & FL_MONSTER))
 		return;
 
 	BQA_MakePuddle ();
@@ -821,9 +822,17 @@ void() BQA_MeleeDismember =
 	BQA_ThrowViscera (-80);
 };
 
+void() BQA_GibChainThink =
+{
+	if (self.owner != world)
+		T_RadiusDamage (self.owner, self.enemy, 20, self.owner);
+	remove (self);
+};
+
 void() BQA_OnKilledExtra =
 {
 	local entity atk;
+	local entity h;
 
 	SpawnBlood (self.origin, '0 0 90', 55);
 	SpawnBlood (self.origin + '8 0 16', '40 0 40', 35);
@@ -868,7 +877,12 @@ void() BQA_OnKilledExtra =
 		{
 			if (atk == world)
 				atk = self;
-			T_RadiusDamage (self, atk, 20, self);
+			h = spawn ();
+			h.classname = "bqa_gibchain";
+			h.owner = self;
+			h.enemy = atk;
+			h.nextthink = time + 0.01;
+			h.think = BQA_GibChainThink;
 		}
 		BQA_DropCarnageVial ();
 	}
@@ -1007,7 +1021,7 @@ void() BQA_DropChainsaw =
 	saw.touch = BQA_SawTouch;
 	saw.nextthink = time + 60;
 	saw.think = SUB_Remove;
-	setmodel (saw, "progs/g_rock2.mdl");
+	setmodel (saw, "progs/g_shot.mdl");
 	setsize (saw, '-16 -16 0', '16 16 56');
 };
 
@@ -1113,6 +1127,8 @@ void() BQA_ExplosionFX =
 	particle (org, '0 0 40', 225, 50);
 	particle (org, '0 0 120', 0, 60);
 	particle (org + '0 0 12', '20 0 80', 0, 40);
+	particle (org, '0 0 70', 225, 40);
+	particle (org + '0 0 18', '12 0 36', 0, 50);
 
 	i = 0;
 	while (i < 2)
@@ -1186,6 +1202,9 @@ void(entity atk) BQA_BarrelBoom =
 	T_RadiusDamage (self, atk, 160, world);
 	sound (self, CHAN_VOICE, "weapons/r_exp3.wav", 1, ATTN_NORM);
 	particle (self.origin, '0 0 0', 75, 255);
+	particle (self.origin, '0 0 80', 225, 60);
+	particle (self.origin + '0 0 16', '20 0 40', 0, 50);
+	particle (self.origin, '0 0 110', 225, 40);
 	self.origin_z = self.origin_z + 32;
 	self.movetype = MOVETYPE_NONE;
 	self.velocity = '0 0 0';
@@ -1242,14 +1261,18 @@ void() BQA_ProxThink =
 	{
 		e = head;
 		head = head.chain;
-		if (e != self.owner && e.health > 0)
+		if (e != self.owner && e.health > 0 && !RA_IsGhost (e))
 		{
 			if ((e.flags & FL_MONSTER) || (e.flags & FL_CLIENT))
 			{
 				if (vlen (e.origin - self.origin) < 80)
 				{
-					BQA_ProxExplode ();
-					return;
+					traceline (self.origin, e.origin + '0 0 16', TRUE, self);
+					if (trace_fraction == 1 || trace_ent == e)
+					{
+						BQA_ProxExplode ();
+						return;
+					}
 				}
 			}
 		}
@@ -1426,6 +1449,16 @@ float(entity inflictor, entity attacker) BQA_IsCook =
 	if (inflictor.classname == "ogre_grenade")
 		return TRUE;
 	if (inflictor.classname == "proximity_grenade")
+		return TRUE;
+	if (inflictor.classname == "MiniGrenade")
+		return TRUE;
+	if (inflictor.classname == "MultiGrenade")
+		return TRUE;
+	if (inflictor.classname == "MultiRocket")
+		return TRUE;
+	if (inflictor.classname == "plasma")
+		return TRUE;
+	if (inflictor.classname == "hiplaser")
 		return TRUE;
 	if (attacker.weapon == IT_LIGHTNING)
 		return TRUE;

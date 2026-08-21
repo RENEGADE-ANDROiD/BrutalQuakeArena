@@ -73,20 +73,74 @@ $frame pull1 pull2 pull3 pull4 pull5 pull6 pull7 pull8 pull9 pull10 pull11
 OgreFireGrenade
 ================
 */
+void() s_explode1;
+
+void() OgreGrenadeExplode =
+{
+	T_RadiusDamage (self, self.owner, 40, world);
+	sound (self, CHAN_VOICE, "weapons/r_exp3.wav", 1, ATTN_NORM);
+
+	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
+	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
+	WriteCoord (MSG_BROADCAST, self.origin_x);
+	WriteCoord (MSG_BROADCAST, self.origin_y);
+	WriteCoord (MSG_BROADCAST, self.origin_z);
+
+	self.velocity = '0 0 0';
+	self.touch = SUB_Null;
+	setmodel (self, "progs/s_explod.spr");
+	self.solid = SOLID_NOT;
+	s_explode1 ();
+};
+
+void() OgreGrenadeTouch =
+{
+	if (other == self.owner)
+		return;
+
+	if (other.takedamage == DAMAGE_AIM)
+	{
+		OgreGrenadeExplode();
+		return;
+	}
+
+	sound (self, CHAN_VOICE, "weapons/bounce.wav", 1, ATTN_NORM);
+
+	if (self.velocity == '0 0 0')
+		self.avelocity = '0 0 0';
+};
+
 void() OgreFireGrenade =
 {
+	local	entity missile;
+	
 	self.effects = self.effects | EF_MUZZLEFLASH;
-	float damage = 40;
-	vector velocity;
+
+	sound (self, CHAN_WEAPON, "weapons/grenade.wav", 1, ATTN_NORM);
+
+	missile = spawn ();
+	missile.classname = "ogre_grenade";
+	missile.owner = self;
+	missile.movetype = MOVETYPE_BOUNCE;
+	missile.solid = SOLID_BBOX;
+
 	makevectors (self.angles);
 
-	velocity = normalize(self.enemy.origin - self.origin);
-	velocity = velocity * 600;
+	missile.velocity = normalize(self.enemy.origin - self.origin);
+	missile.velocity = missile.velocity * 600;
 	if (self.bqa_elite)
-		velocity = velocity * 1.25;
-	velocity_z = 200;
+		missile.velocity = missile.velocity * 1.25;
+	missile.velocity_z = 200;
 
-	W_FireGrenade(damage, velocity);
+	missile.avelocity = '300 300 300';
+	missile.angles = vectoangles(missile.velocity);
+	missile.touch = OgreGrenadeTouch;
+	missile.nextthink = time + 2.5;
+	missile.think = OgreGrenadeExplode;
+
+	setmodel (missile, "progs/grenade.mdl");
+	setsize (missile, '0 0 0', '0 0 0');
+	setorigin (missile, self.origin);
 };
 
 
@@ -384,7 +438,7 @@ void()	ogre_bdie10	=[	$CORPSEFRAME_OGRE_2,	ogre_bdie10	]
 void() ogre_die =
 {
 // check for gib
-	if (self.health < -80)
+	if (self.health <= -40)
 	{
 		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
 		ThrowHead ("progs/h_ogre.mdl", self.health);

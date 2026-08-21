@@ -13,8 +13,10 @@ Do not replace pak0.pak or pak1.pak (Alkaline content and VHS HUD).
 
 Brutal melee (impulse 50), meathook (impulse 52), and gore work.
 Alkaline monsters and guns are remapped to vanilla/Brutal equivalents
-(nailgrunts, ogres, shamblers, etc.). Instant teleporters and
-breakables still function.
+(nailgrunts, ogres, shamblers, etc.). Mapped nailgrunts keep that role
+if the Q2 mix replaces them. Instant teleporters and breakables still
+function. Breakable spawners are solid brushes (they break and fire
+targets).
 
 Puzzles, ladders, fog, rotating machinery, mapvars, and the VHS CSQC
 HUD will not behave. The pack was not designed for coop. Large maps

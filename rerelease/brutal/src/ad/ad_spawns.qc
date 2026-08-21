@@ -45,7 +45,7 @@ void() ad_as_flyer =
 
 void() ad_as_knight =
 {
-	monster_hell_knight ();
+	monster_knight ();
 };
 
 void() ad_as_ogre =
@@ -61,7 +61,7 @@ void() ad_as_shambler =
 void() ad_as_shambler_hi =
 {
 	monster_shambler ();
-	if (self.health > 0)
+	if (self.health > 0 && !self.q2_kind)
 	{
 		self.health = 1200;
 		self.max_health = 1200;

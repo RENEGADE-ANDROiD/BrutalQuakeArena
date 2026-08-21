@@ -457,7 +457,7 @@ void()	ogre_bdie10	=[	$bdeath10,	ogre_bdie10	] {};
 void() ogre_die =
 {
 // check for gib
-	if (self.health < -80)
+	if (self.health <= -40)
 	{
 		sound (self, CHAN_VOICE, "player/udeath.wav", 1, ATTN_NORM);
 		ThrowHead ("progs/h_ogre.mdl", self.health);
@@ -540,6 +540,7 @@ void() monster_ogre =
 
 	setsize (self, VEC_HULL2_MIN, VEC_HULL2_MAX);
 	self.health = 200;
+	self.max_health = 200;
 
 	self.th_stand = ogre_stand1;
 	self.th_walk = ogre_walk1;

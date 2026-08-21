@@ -13,7 +13,9 @@ Do not replace pak0.pak (AD maps, models, and original QC stay in the pak).
 
 Brutal melee (impulse 50), meathook (impulse 52), and gore work.
 AD monsters and special guns are remapped to vanilla/Brutal equivalents
-(grunts, enforcers, shamblers, lightning, etc.). This is Brutal combat
+(grunts, enforcers, shamblers, lightning, etc.). Mapped nailgrunts and
+defenders keep that role if the Q2 mix replaces them. Breakable spawners
+are solid brushes (they break and fire targets). This is Brutal combat
 on AD geometry, not AD weapons or puzzle QC.
 
 The remaster is not QSS. Large maps (ad_tears, hub) can hitch or crash.

@@ -608,6 +608,16 @@ entity(string class, vector org, vector temp_angles) SpawnMonster =
 	self = monster;
 
 	Q2M_HordeMaybe ();
+	if (self.q2_kind)
+		BQA_MaybeElite ();
+	else
+	{
+		BQA_MaybeElite ();
+		if (self.classname == "monster_army" && random () < 0.25)
+			self.bqa_nailgrunt = 1;
+		if (self.classname == "monster_enforcer" && random () < 0.2)
+			self.bqa_defender = 1;
+	}
 
 	if (!(self.flags & FL_FLY))
 		droptofloor();

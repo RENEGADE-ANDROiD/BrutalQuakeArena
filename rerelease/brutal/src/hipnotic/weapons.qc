@@ -1191,7 +1191,7 @@ void() W_FireLightning =
 
 void() GrenadeExplode =
 {
-	T_RadiusDamage (self, self.owner, 120, world);
+	T_RadiusDamage (self, self.owner, BQA_CrushRadius (), world);
 
 	WriteByte (MSG_BROADCAST, SVC_TEMPENTITY);
 	WriteByte (MSG_BROADCAST, TE_EXPLOSION);
@@ -2440,6 +2440,12 @@ void() W_WeaponFrame =
 		if (self.ra_role == 1 || self.ra_role == 4)
 			return;
 	}
+	if (RA_Locked ())
+	{
+		self.button0 = 0;
+		if (self.impulse == 1 || self.impulse == 50 || self.impulse == 22 || self.impulse == 52 || self.impulse == 215)
+			self.impulse = 0;
+	}
 	Q2_Impulse ();
 	if (self.impulse == 1 || self.impulse == 50)
 	{
@@ -2453,8 +2459,7 @@ void() W_WeaponFrame =
 	}
 	else if (self.impulse == 215)
 	{
-		if (self.ammo_rockets >= 1)
-			W_FireProximityGrenade ();
+		BQA_FireOffhandProx ();
 		self.impulse = 0;
 	}
 

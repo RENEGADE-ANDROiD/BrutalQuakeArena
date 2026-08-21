@@ -136,6 +136,8 @@ void()	player_stand1 =[	$axstnd1,	player_stand1	]
 
 void()	player_run =[	$rockrun1,	player_run	]
 {
+	if (self.melee_active)
+		W_MeleeClear ();
 	if (!self.q2_held)
 		self.weaponframe = 0;
 
@@ -499,6 +501,11 @@ void() DeathSound =
 
 void() PlayerDead =
 {
+	if (self.ra_bot && RA_Active ())
+	{
+		RA_BotOnDied (self);
+		return;
+	}
 	self.nextthink = -1;
 	self.deadflag = DEAD_DEAD;	// allow respawn after a certain time
 };
@@ -608,6 +615,7 @@ void() PlayerDie =
 	
 	self.melee_active = 0;
 	W_MeathookRelease ();
+	BQA_ClearSlowmo ();
 	Q2_PlayerDied ();
 	self.items = self.items - (self.items & ( IT_INVISIBILITY | IT_INVULNERABILITY | IT_SUIT | IT_QUAD ) );
 	self.invisible_finished = 0;	// don't die as eyes
@@ -617,7 +625,7 @@ void() PlayerDie =
 	self.effects = 0;
 	self.modelindex = modelindex_player;	// don't use eyes
 
-	if (deathmatch || coop)
+	if ((deathmatch || coop) && !RA_Active ())
 		DropBackpack();
 	
 	self.weaponmodel = string_null;

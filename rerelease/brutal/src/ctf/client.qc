@@ -485,6 +485,10 @@ void() ClientKill =
     return;
   }
   bprint("$qc_suicides", self.netname);
+  if (RA_Active () && self.ra_role == 2)
+    RA_PlayerDied (world);
+  W_MeathookRelease ();
+  BQA_ClearSlowmo ();
   DropRune();
     TeamCaptureDropFlagOfPlayer(self);
   UnHookPlayer();
@@ -639,8 +643,12 @@ void() PutClientInServer =
   player_stand1 ();
 
   if (self.do_observer) {
-    BecomeObserver(self);
-    return;
+    if (!RA_Active ())
+    {
+      BecomeObserver(self);
+      return;
+    }
+    self.do_observer = 0;
   }
 
   if (deathmatch || coop)
@@ -649,7 +657,8 @@ void() PutClientInServer =
     spawn_tfog (self.origin + v_forward*20);
   }
 
-  spawn_tdeath (self.origin, self);
+  if (RA_WillOccupySpawn ())
+    spawn_tdeath (self.origin, self);
   RA_OnSpawn ();
 };
 
@@ -757,6 +766,9 @@ void() CheckRules =
   local float   timelimit;
   local float   fraglimit;
   local entity    o;
+
+  if (RA_Active ())
+    return;
 
   if (gameover || pregameover)  // someone else quit the game already
     return;

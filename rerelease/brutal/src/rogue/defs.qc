@@ -347,6 +347,7 @@ float	IT_GRAPPLE				= 8388608;		// grapple overload, hope it
 float	IT2_ARMOR1				= 1;			//24
 float	IT2_ARMOR2				= 2;
 float	IT2_ARMOR3				= 4;
+#define BQA_HAS_IT2_ARMOR
 float	IT2_LAVA_NAILS			= 8;
 float	IT2_PLASMA_AMMO			= 16;
 float	IT2_MULTI_ROCKETS		= 32;			//29
@@ -673,14 +674,21 @@ float() BQA_CrushRadius;
 .float		ra_losses;
 .float		ra_qtime;
 .float		ra_bot;
+.float		ra_breaktime;
 void() RA_Init;
 void() RA_OnSpawn;
 void(entity attacker) RA_PlayerDied;
 void() RA_ClientDisconnect;
 float() RA_Impulse;
+float() RA_Active;
+float() RA_Locked;
+float(entity e) RA_IsGhost;
+float() RA_WillOccupySpawn;
+void(entity bot) RA_BotOnDied;
 
 void() W_QuickMelee;
 void() W_MeleeRestore;
+void() W_MeleeClear;
 void(entity ply) W_MeleeHitFeel;
 float(entity targ) W_MeleeIsGlory;
 float(entity targ, float dmg) W_MeleeHitDamage;

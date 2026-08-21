@@ -3,6 +3,8 @@
 // New QuakeC; credit crt / PlanetQuake. Do not paste 1997 RA source.
 
 void() W_SetCurrentAmmo;
+void() W_MeathookRelease;
+void() BQA_ClearSlowmo;
 void() player_stand1;
 void(vector org) spawn_tfog;
 void() RA_BotThink;
@@ -91,7 +93,7 @@ float() RA_PlayerCount =
 	e = find (world, classname, "player");
 	while (e)
 	{
-		if (e.ra_role != 4)
+		if (e.ra_role != 0 && e.ra_role != 4)
 			n = n + 1;
 		e = find (e, classname, "player");
 	}
@@ -136,6 +138,67 @@ entity() RA_NextQueued =
 	return best;
 };
 
+float() RA_Active =
+{
+	if (ra_active)
+		return TRUE;
+	return FALSE;
+};
+
+float() RA_Locked =
+{
+	if (!ra_active)
+		return FALSE;
+	if (ra_state == 2)
+		return TRUE;
+	if (self.pausetime > time)
+		return TRUE;
+	return FALSE;
+};
+
+float(entity e) RA_IsGhost =
+{
+	if (e == world)
+		return FALSE;
+	if (!ra_active)
+		return FALSE;
+	if (e.ra_role == 1 || e.ra_role == 4)
+		return TRUE;
+	if (e.takedamage == DAMAGE_NO && e.movetype == MOVETYPE_NOCLIP)
+		return TRUE;
+	return FALSE;
+};
+
+float() RA_WillOccupySpawn =
+{
+	if (!ra_active)
+		return TRUE;
+	if (self.ra_role == 2 && self.health > 0)
+		return TRUE;
+	if (self.ra_role == 3)
+		return TRUE;
+	if (self.ra_role == 4)
+		return FALSE;
+	if (!deathmatch || RA_PlayerCount () <= 1)
+		return TRUE;
+	return FALSE;
+};
+
+void(entity ply) RA_ClearProx =
+{
+	local entity e;
+	local entity n;
+
+	e = find (world, classname, "proximity_grenade");
+	while (e)
+	{
+		n = find (e, classname, "proximity_grenade");
+		if (e.owner == ply)
+			remove (e);
+		e = n;
+	}
+};
+
 void(entity ply) RA_SetLoadout =
 {
 	local entity prev;
@@ -150,7 +213,14 @@ void(entity ply) RA_SetLoadout =
 	self.ammo_nails = 200;
 	self.ammo_rockets = 100;
 	self.ammo_cells = 100;
+	W_MeathookRelease ();
+	RA_ClearProx (ply);
 	self.items = IT_AXE + IT_SHOTGUN + IT_SUPER_SHOTGUN + IT_NAILGUN + IT_SUPER_NAILGUN + IT_GRENADE_LAUNCHER + IT_ROCKET_LAUNCHER + IT_LIGHTNING + IT_SHELLS + IT_NAILS + IT_ROCKETS + IT_CELLS;
+#ifdef BQA_HAS_IT2_ARMOR
+	self.items2 = (self.items2 - (self.items2 & (IT2_ARMOR1 | IT2_ARMOR2 | IT2_ARMOR3))) + IT2_ARMOR3;
+#else
+	self.items = self.items + IT_ARMOR3;
+#endif
 	self.weapon = IT_ROCKET_LAUNCHER;
 	W_SetCurrentAmmo ();
 	self = prev;
@@ -159,20 +229,61 @@ void(entity ply) RA_SetLoadout =
 void(entity ply) RA_Place =
 {
 	local entity spot;
+	local entity best;
+	local entity avoid;
+	local float n;
+	local float pick;
+	local float i;
+	local float dist;
 
-	spot = find (world, classname, "info_player_deathmatch");
-	if (spot == world)
-		spot = find (world, classname, "info_player_start");
-	if (spot == world)
-		return;
+	avoid = world;
 	if (ply == ra_blue)
+		avoid = ra_red;
+	else if (ply == ra_red)
+		avoid = ra_blue;
+
+	n = 0;
+	spot = find (world, classname, "info_player_deathmatch");
+	while (spot)
 	{
+		dist = 9999;
+		if (avoid != world)
+			dist = vlen (spot.origin - avoid.origin);
+		if (avoid == world || dist > 32)
+			n = n + 1;
 		spot = find (spot, classname, "info_player_deathmatch");
-		if (spot == world)
-			spot = find (world, classname, "info_player_deathmatch");
 	}
-	setorigin (ply, spot.origin + '0 0 1');
-	ply.angles = spot.angles;
+
+	best = world;
+	if (n > 0)
+	{
+		pick = 1 + floor (random () * n);
+		if (pick > n)
+			pick = n;
+		i = 0;
+		spot = find (world, classname, "info_player_deathmatch");
+		while (spot && best == world)
+		{
+			dist = 9999;
+			if (avoid != world)
+				dist = vlen (spot.origin - avoid.origin);
+			if (avoid == world || dist > 32)
+			{
+				i = i + 1;
+				if (i == pick)
+					best = spot;
+			}
+			spot = find (spot, classname, "info_player_deathmatch");
+		}
+	}
+	if (best == world)
+		best = find (world, classname, "info_player_deathmatch");
+	if (best == world)
+		best = find (world, classname, "info_player_start");
+	if (best == world)
+		return;
+	setorigin (ply, best.origin + '0 0 1');
+	ply.angles = best.angles;
 	ply.fixangle = TRUE;
 	ply.velocity = '0 0 0';
 };
@@ -280,6 +391,7 @@ void() RA_TryStart =
 void() RA_Think =
 {
 	local float left;
+	local entity e;
 
 	if (!ra_active)
 		return;
@@ -287,7 +399,7 @@ void() RA_Think =
 	if (ra_state == 2)
 	{
 		left = ra_lockuntil - time;
-		if (left > 2.5 && ra_announced < 1)
+		if (left <= 3.5 && left > 2.5 && ra_announced < 1)
 		{
 			RA_Play ("ra/3.wav");
 			ra_announced = 1;
@@ -322,6 +434,17 @@ void() RA_Think =
 	if (ra_state < 2)
 		RA_TryStart ();
 
+	e = find (world, classname, "player");
+	while (e)
+	{
+		if (e.ra_role == 4 && e.ra_breaktime > 0 && time >= e.ra_breaktime + 120)
+		{
+			centerprint (e, "Still on break. Impulse 70 to return.\n");
+			e.ra_breaktime = 0;
+		}
+		e = find (e, classname, "player");
+	}
+
 	self.nextthink = time + 0.2;
 	self.think = RA_Think;
 };
@@ -354,6 +477,13 @@ void() RA_OnSpawn =
 {
 	if (!ra_active)
 		return;
+
+	if (self.ra_role == 4)
+	{
+		RA_MakeSpectator (self);
+		self.ra_role = 4;
+		return;
+	}
 
 	if (self.ra_role == 2 && self.health > 0)
 	{
@@ -396,7 +526,7 @@ void(entity attacker) RA_PlayerDied =
 	loser.ra_role = 1;
 	loser.ra_qtime = time;
 
-	if (winner != world && winner != loser)
+	if (winner != world && winner != loser && winner.health > 0 && winner.ra_role == 2)
 	{
 		winner.ra_wins = winner.ra_wins + 1;
 		bprint (winner.netname);
@@ -419,23 +549,63 @@ void(entity attacker) RA_PlayerDied =
 
 	ra_state = 1;
 	RA_BotOnDied (loser);
-	RA_TryStart ();
 };
 
 void() RA_ClientDisconnect =
 {
+	local entity opp;
+	local entity e;
+
+	W_MeathookRelease ();
+	BQA_ClearSlowmo ();
+
 	if (!ra_active)
 		return;
+
 	if (self.ra_role == 2)
 	{
 		if (ra_red == self)
-			ra_red = world;
-		if (ra_blue == self)
+			opp = ra_blue;
+		else
+			opp = ra_red;
+		if (opp != world && opp != self && opp.ra_role == 2 && opp.health > 0)
+		{
+			opp.ra_wins = opp.ra_wins + 1;
+			bprint (opp.netname);
+			bprint (" stays.\n");
+			RA_SetLoadout (opp);
+			ra_red = opp;
 			ra_blue = world;
+		}
+		else
+		{
+			ra_red = world;
+			ra_blue = world;
+		}
 		ra_state = 1;
-		RA_TryStart ();
 	}
+	if (ra_red == self)
+		ra_red = world;
+	if (ra_blue == self)
+		ra_blue = world;
 	self.ra_role = 0;
+
+	if (RA_PlayerCount () <= 1)
+	{
+		e = find (world, classname, "player");
+		while (e)
+		{
+			if (e != self && e.ra_role != 0 && e.ra_role != 4)
+			{
+				RA_MakePractice (e);
+				e = world;
+			}
+			else
+				e = find (e, classname, "player");
+		}
+	}
+	else
+		RA_TryStart ();
 };
 
 float() RA_Impulse =
@@ -496,6 +666,7 @@ float() RA_Impulse =
 		{
 			self.ra_role = 1;
 			self.ra_qtime = time;
+			self.ra_breaktime = 0;
 			sprint (self, "Back in line.\n");
 			RA_TryStart ();
 		}
@@ -504,6 +675,7 @@ float() RA_Impulse =
 			self.ra_role = 4;
 			RA_MakeSpectator (self);
 			self.ra_role = 4;
+			self.ra_breaktime = time;
 			sprint (self, "Break. Impulse 70 when you are back.\n");
 		}
 		return TRUE;
