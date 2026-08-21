@@ -478,6 +478,8 @@ void() RA_OnSpawn =
 	if (!ra_active)
 		return;
 
+	stuffcmd (self, "exec default.cfg\n");
+
 	if (self.ra_role == 4)
 	{
 		RA_MakeSpectator (self);

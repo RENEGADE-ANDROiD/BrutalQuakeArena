@@ -11,6 +11,7 @@ void(entity ply, entity targ) W_MeleeAimYaw;
 void(entity ply, entity targ) W_MeleeLungeDash;
 entity() W_MeleeFindLungeTarget;
 float(entity e) RA_IsGhost;
+float() RA_Active;
 
 void(entity ply) W_MeleeHitFeel =
 {
@@ -69,6 +70,8 @@ void(entity ply, entity targ) W_MeleeLungeDash =
 float(entity targ) W_MeleeIsGlory =
 {
 	if (deathmatch)
+		return FALSE;
+	if (RA_Active ())
 		return FALSE;
 	if (targ == world)
 		return FALSE;
