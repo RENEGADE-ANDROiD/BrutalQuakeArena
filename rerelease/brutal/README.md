@@ -18,9 +18,9 @@ Steam achievements: Single Player → **New Game** → official episode. Do not 
 
 **Controls**
 * Axe / F (impulse 1 or 50) — quick melee. Locks on and lunges if a monster or player is in a short forward cone, then swings. Failed lunge still swings. Wounded monsters (40 HP or less) are glory-killed: guaranteed gib, brief slow-mo, and a small health sip.
-* Chainsaw in each campaign, dropped by Ogres (including Q2 replacements).
+* Chainsaw in each campaign, dropped by Ogre's.
 * Grappling Hook / C (impulse 22 or 52) — meathook. Latch onto world or zip to players. In campaign, a monster latch yanks them to you. Tap again to detach.
-* Mjolnir (Hammer) in each campaign, dropped by Knights (including Q2 replacements).
+* Mjolnir (Hammer) in each campaign, dropped by Knights.
 * Impulse 215 / N — offhand proximity grenade (does not switch weapons; uses a rocket)
 * Impulse 68 / I — Rocket Arena wins / losses / skill
 * Impulse 69 / O — Rocket Arena line position (or practice / break)
@@ -37,7 +37,7 @@ Authentic Models +
 **Melee and hook**
 * Quick axe melee with lock-on lunge (128 unit range)
 * Glory kill on wounded campaign monsters: extra gibs, slow-mo, +10 health (not above max)
-* Chainsaw / Mjolnir cycle on the melee key if you have looted them (axe → hammer → saw, skip missing). Works even if the axe is already out. Axe pops extra meat, saw throws more chunks, hammer launches the body.
+* Random Chainsaw \& Mjolnir swing on the melee key if you have looted them. Axe pops extra meat, saw throws more chunks, hammer launches the body.
 * Meathook zips you to world (and to players). In Single Player / Coop it yanks hooked monsters to you. Tap again to detach.
 
 **Visuals**
@@ -51,8 +51,8 @@ Authentic Models +
 * Extra meat chunks on hard hits
 * More gibs that last longer
 * Blood puddles under corpses
-* Shootable monster corpses (melee or rockets explode them; player bodies are not shootable)
-* Head-high shotgun and nail hits do extra damage and always gib that hit
+* Shootable corpses (melee or rockets explode them)
+* Head-high shotgun and nail hits do extra damage and always gib
 * Gibbed monsters can pop nearby wounded ones (console `brutal_nogibchain 1` to turn off)
 * Rockets, grenades, prox, and lightning cook kills into gibs
 
@@ -63,7 +63,7 @@ Authentic Models +
 * Weapon recoil on shotguns, grenades, and rockets
 * Explosion screen shake
 * Bigger explosions with extra fire, smoke, and debris
-* Quad and Pentagram make campaign-monster melee instagib and explosions larger
+* Quad and Pentagram make melee instagib and explosions larger
 * Ammo and health crates stay until you are actually full
 * Unused monster idles: grunt reload, ogre saw-rev, knight kneel
 * Rare Vorelings from a Vore
@@ -74,10 +74,10 @@ Authentic Models +
 
 **Rocket Arena**
 Final Arena 1.20 maps and sounds are included. Every player needs this mod installed. Custom matches do not appear in Find Match / the public browser — invite friends.
-* **Local Play:** Multiplayer → Local Play → Deathmatch → episode **Quake** → Arena maps (ArenaX and the rest). Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Add QC bots with **P**.
-* **Online host:** Multiplayer → Start Match → Deathmatch → episode **Quake** → Arena map → start → invite. Same bot rule. Joiners need this mod.
+* **Local Play:** Multiplayer → Local Play → Deathmatch → episode **Rocket Arena** (next to Quake). Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Add QC bots with **P**.
+* **Online host:** Multiplayer → Start Match → Deathmatch → episode **Rocket Arena** → map → start → invite. Same bot rule. Joiners need this mod.
 * Console: `game brutal` then `exec arena.cfg` (put `arena.cfg` in `Users\<UserName>\Saved Games\Nightdive Studios\Quake\`). Linux / Proton: `steamapps/compatdata/2310/pfx/drive_c/users/steamuser/Saved Games/Nightdive Studios/Quake/`. Fully quit after — New Game only shows Rocket Arena.
-* Deathmatch episode **Quake** — 46 classic arenas in the map list (not New Game)
+* Deathmatch episode **Rocket Arena** — 46 classic arenas in the map list (not New Game)
 * Alone: full loadout practice (100 HP, 200 armor, all guns)
 * Two or more: 1v1, 10-second lock (melee / hook / prox blocked), 3-2-1, FIGHT, winner stays. Suicide or disconnect counts as a loss.
 * Impulse 68 stats, 69 line position, 70 break

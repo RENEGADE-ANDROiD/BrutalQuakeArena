@@ -74,14 +74,15 @@ Authentic Models +
 
 **Rocket Arena**
 Final Arena 1.20 maps and sounds are included. Every player needs this mod installed. Custom matches do not appear in Find Match / the public browser — invite friends.
-* **Local Play:** Multiplayer → Local Play → Deathmatch → episode **Quake** → Arena maps (ArenaX and the rest). Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Add QC bots with **P**.
-* **Online host:** Multiplayer → Start Match → Deathmatch → episode **Quake** → Arena map → start → invite. Same bot rule. Joiners need this mod.
+* **Local Play:** Multiplayer → Local Play → Deathmatch → episode **Rocket Arena** (next to Quake). Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Add QC bots with **P**.
+* **Online host:** Multiplayer → Start Match → Deathmatch → episode **Rocket Arena** → map → start → invite. Same bot rule. Joiners need this mod.
 * Console: `game brutal` then `exec arena.cfg` (put `arena.cfg` in `Users\<UserName>\Saved Games\Nightdive Studios\Quake\`). Linux / Proton: `steamapps/compatdata/2310/pfx/drive_c/users/steamuser/Saved Games/Nightdive Studios/Quake/`. Fully quit after — New Game only shows Rocket Arena.
-* Deathmatch episode **Quake** — 46 classic arenas in the map list (not New Game)
+* Deathmatch episode **Rocket Arena** — 46 classic arenas in the map list (not New Game)
 * Alone: full loadout practice (100 HP, 200 armor, all guns)
-* Two or more: 1v1, 10-second lock, FIGHT, winner stays
+* Two or more: 1v1, 10-second lock (melee / hook / prox blocked), 3-2-1, FIGHT, winner stays. Suicide or disconnect counts as a loss.
 * Impulse 68 stats, 69 line position, 70 break
 * Impulse 71 / **P** adds a mid-to-hard named bot (Crush, Nailer, Bolt, Hopper, Sawbone, Vault, blunt, GrendelKhan, Godavine, Makavelli, Immortal, Thresh, JohnCarmack, JohnRomero, DrDeath, h0s3r, PiLL). Impulse 72 / **K** removes them. None have perfect aim.
+* CTF: impulse 22 is the Brutal meathook. Cycle to the original CTF hook with impulse 10.
 
 See `farena_readme.txt` for the original map list and authors.
 
