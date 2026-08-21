@@ -83,7 +83,7 @@ void() MeatHookSpawnChain =
 		e.solid = SOLID_NOT;
 		e.owner = self;
 		setmodel (e, "progs/bqa_chain.spr");
-		e.scale = 0.4;
+		e.scale = 1;
 		setsize (e, '0 0 0', '0 0 0');
 		if (prev == world)
 			self.goalentity = e;

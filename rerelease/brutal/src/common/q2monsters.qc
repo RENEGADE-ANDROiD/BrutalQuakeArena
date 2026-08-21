@@ -1236,7 +1236,7 @@ void() Q2M_Think =
 	if (self.health <= 0 && self.q2_anim != Q2M_ANIM_DIE)
 	{
 		self.q2_anim = Q2M_ANIM_DIE;
-		Q2M_BecomeCorpse ();
+		Q2M_BeginAnim ();
 		return;
 	}
 	if (self.q2_anim == Q2M_ANIM_DIE)
@@ -1365,15 +1365,20 @@ void() Q2M_LeapTouch =
 
 void() Q2M_LeapThink =
 {
+	if (self.q2_anim == Q2M_ANIM_DIE || !(self.flags & FL_MONSTER))
+	{
+		self.touch = SUB_Null;
+		self.movetype = MOVETYPE_STEP;
+		self.think = Q2M_Think;
+		self.nextthink = time;
+		return;
+	}
 	if (self.health <= 0)
 	{
 		self.touch = SUB_Null;
 		self.movetype = MOVETYPE_STEP;
-		if (self.q2_anim != Q2M_ANIM_DIE)
-		{
-			self.q2_anim = Q2M_ANIM_DIE;
-			Q2M_BecomeCorpse ();
-		}
+		self.q2_anim = Q2M_ANIM_DIE;
+		Q2M_BeginAnim ();
 		return;
 	}
 	self.angles_x = 0;
