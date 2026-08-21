@@ -239,6 +239,63 @@ void(entity g) BQA_TrackGib =
 	bqa_numgibs = bqa_numgibs + 1;
 };
 
+float(entity e) BQA_GibRank =
+{
+	if (e.model == "progs/gib3.mdl")
+		return 4;
+	if (e.model == "progs/gib2.mdl")
+		return 3;
+	if (e.model == "progs/q2gib_arm.mdl")
+		return 3;
+	if (e.model == "progs/gib1.mdl")
+		return 2;
+	if (e.model == "progs/q2gib_sm_meat.mdl")
+		return 2;
+	return 0;
+};
+
+entity(vector org) BQA_BiggestGibNear =
+{
+	local entity e;
+	local entity best;
+	local float rank;
+	local float bestr;
+	local float d;
+	local float bestd;
+
+	best = world;
+	bestr = 0;
+	bestd = 96;
+	e = bqa_gibs;
+	while (e != world)
+	{
+		d = vlen (e.origin - org);
+		if (d < 96)
+		{
+			rank = BQA_GibRank (e);
+			if (rank > 0)
+			{
+				if (rank > bestr)
+				{
+					bestr = rank;
+					bestd = d;
+					best = e;
+				}
+				else if (rank == bestr)
+				{
+					if (d < bestd)
+					{
+						bestd = d;
+						best = e;
+					}
+				}
+			}
+		}
+		e = e.bqa_next;
+	}
+	return best;
+};
+
 void() BQA_SplatExpire =
 {
 	BQA_UnlinkSplat (self);
@@ -247,14 +304,20 @@ void() BQA_SplatExpire =
 
 void() BQA_SplatAnimThink =
 {
+	local float cap;
+
+	cap = self.wait;
+	if (cap < 0.25)
+		cap = 1;
+
 	if (self.delay == 1)
 	{
 		self.cnt = self.cnt + 1;
 		if (self.cnt < 7)
 			self.frame = self.cnt;
 		self.scale = self.scale + 0.08;
-		if (self.scale > 1)
-			self.scale = 1;
+		if (self.scale > cap)
+			self.scale = cap;
 		if (self.cnt >= 10)
 		{
 			self.delay = 0;
@@ -268,9 +331,9 @@ void() BQA_SplatAnimThink =
 	if (self.delay == 2)
 	{
 		self.scale = self.scale + 0.04;
-		if (self.scale >= 1)
+		if (self.scale >= cap)
 		{
-			self.scale = 1;
+			self.scale = cap;
 			self.delay = 0;
 			self.think = BQA_SplatExpire;
 			self.nextthink = time + 89;
@@ -291,6 +354,78 @@ void() BQA_HoleThink =
 void() BQA_DripThink;
 void(vector pos) BQA_SpawnDrip;
 void(vector pos) BQA_PlacePool;
+
+float(vector pos, vector nrm, vector dir, float d) BQA_SplatOnSurf =
+{
+	local vector start;
+	local vector dest;
+	local float dot;
+
+	start = pos + nrm * 4 + dir * d;
+	dest = pos - nrm * 8 + dir * d;
+	traceline (start, dest, TRUE, world);
+	if (trace_fraction >= 1)
+		return FALSE;
+	dot = trace_plane_normal * nrm;
+	if (dot < 0.9)
+		return FALSE;
+	return TRUE;
+};
+
+float(vector pos, vector nrm, vector dir) BQA_SplatReach =
+{
+	if (BQA_SplatOnSurf (pos, nrm, dir, 24))
+		return 24;
+	if (BQA_SplatOnSurf (pos, nrm, dir, 16))
+		return 16;
+	if (BQA_SplatOnSurf (pos, nrm, dir, 8))
+		return 8;
+	return 0;
+};
+
+float(vector pos, vector nrm) BQA_SplatFitScale =
+{
+	local vector flip;
+	local vector right;
+	local vector upn;
+	local float min_d;
+	local float d;
+	local float fit;
+
+	if (vlen (nrm) < 0.1)
+		return 1;
+
+	flip = nrm;
+	flip_x = 0 - flip_x;
+	flip_y = 0 - flip_y;
+	makevectors (vectoangles (flip));
+	right = v_right;
+	upn = v_up;
+
+	min_d = 24;
+	d = BQA_SplatReach (pos, nrm, right);
+	if (d < min_d)
+		min_d = d;
+	d = BQA_SplatReach (pos, nrm, '0 0 0' - right);
+	if (d < min_d)
+		min_d = d;
+	d = BQA_SplatReach (pos, nrm, upn);
+	if (d < min_d)
+		min_d = d;
+	d = BQA_SplatReach (pos, nrm, '0 0 0' - upn);
+	if (d < min_d)
+		min_d = d;
+
+	if (min_d < 6)
+		return 0;
+
+	fit = min_d / 24;
+	if (fit < 0.25)
+		fit = 0.25;
+	if (fit > 1)
+		fit = 1;
+	return fit;
+};
 
 void(entity g) BQA_LinkSplat =
 {
@@ -317,18 +452,25 @@ void(entity g) BQA_LinkSplat =
 void(vector pos) BQA_PlaceSplat =
 {
 	local entity new;
+	local vector plane;
 	local vector norm;
 	local float r;
 	local float nz;
+	local float cap;
 	local string mdl;
+
+	plane = trace_plane_normal;
+	nz = plane_z;
+	if (nz < 0)
+		nz = 0 - nz;
+	cap = BQA_SplatFitScale (pos, plane);
+	if (cap == 0)
+		return;
 
 	new = spawn ();
 	new.movetype = MOVETYPE_NONE;
 	new.solid = SOLID_NOT;
 	new.classname = "bqa_splat";
-	nz = trace_plane_normal_z;
-	if (nz < 0)
-		nz = 0 - nz;
 	r = random ();
 	if (nz > 0.7)
 	{
@@ -366,15 +508,18 @@ void(vector pos) BQA_PlaceSplat =
 	}
 	setmodel (new, mdl);
 	setsize (new, '0 0 0', '0 0 0');
-	norm = trace_plane_normal;
+	norm = plane;
 	norm_x = 0 - norm_x;
 	norm_y = 0 - norm_y;
 	new.angles = vectoangles (norm);
 	makevectors (new.angles);
 	setorigin (new, pos - (v_forward * 0.2));
+	new.wait = cap;
 	if (nz <= 0.7)
 	{
 		new.scale = 0.6;
+		if (new.scale > cap)
+			new.scale = cap;
 		new.delay = 2;
 		new.think = BQA_SplatAnimThink;
 		new.nextthink = time + 0.1;
@@ -383,7 +528,7 @@ void(vector pos) BQA_PlaceSplat =
 	}
 	else
 	{
-		new.scale = 1;
+		new.scale = cap;
 		new.delay = 0;
 		new.think = BQA_SplatExpire;
 		new.nextthink = time + 90;
@@ -438,7 +583,14 @@ void(vector pos) BQA_SpawnDrip =
 void(vector pos) BQA_PlacePool =
 {
 	local entity new;
+	local vector plane;
 	local vector norm;
+	local float cap;
+
+	plane = trace_plane_normal;
+	cap = BQA_SplatFitScale (pos, plane);
+	if (cap == 0)
+		return;
 
 	new = spawn ();
 	new.movetype = MOVETYPE_NONE;
@@ -448,9 +600,12 @@ void(vector pos) BQA_PlacePool =
 	setsize (new, '0 0 0', '0 0 0');
 	new.frame = 0;
 	new.scale = 0.35;
+	if (new.scale > cap)
+		new.scale = cap;
+	new.wait = cap;
 	new.cnt = 0;
 	new.delay = 1;
-	norm = trace_plane_normal;
+	norm = plane;
 	norm_x = 0 - norm_x;
 	norm_y = 0 - norm_y;
 	new.angles = vectoangles (norm);

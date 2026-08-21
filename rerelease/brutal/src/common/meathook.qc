@@ -12,6 +12,7 @@ void() MeatHookSpawnChain;
 void() MeatHookUpdateChain;
 void() MeatHookFreeChain;
 void(entity ply) W_MeleeHitFeel;
+entity(vector org) BQA_BiggestGibNear;
 
 void() MeatHookFreeChain =
 {
@@ -82,7 +83,7 @@ void() MeatHookSpawnChain =
 		e.solid = SOLID_NOT;
 		e.owner = self;
 		setmodel (e, "progs/bqa_chain.spr");
-		e.scale = 0.67;
+		e.scale = 0.4;
 		setsize (e, '0 0 0', '0 0 0');
 		if (prev == world)
 			self.goalentity = e;
@@ -193,6 +194,27 @@ void() MeatHookPull =
 	prey = self.enemy;
 	if (prey != world)
 	{
+		if (prey.classname == "gib")
+		{
+			dir = ply.origin - prey.origin;
+			dist = vlen (dir);
+			if (dist < 64)
+			{
+				W_MeleeHitFeel (ply);
+				MeatHookRemove ();
+				return;
+			}
+
+			dir = normalize (dir);
+			prey.flags = prey.flags - (prey.flags & FL_ONGROUND);
+			prey.velocity = dir * 800;
+			prey.velocity_z = prey.velocity_z + 40;
+			setorigin (self, prey.origin + '0 0 16');
+			MeatHookUpdateChain ();
+			self.nextthink = time + 0.05;
+			self.think = MeatHookPull;
+			return;
+		}
 		if (prey.health <= 0)
 		{
 			MeatHookRemove ();
@@ -246,6 +268,7 @@ void() MeatHookPull =
 void() MeatHookTouch =
 {
 	local entity ply;
+	local entity chunk;
 
 	if (other == self.owner)
 		return;
@@ -282,6 +305,12 @@ void() MeatHookTouch =
 		sound (self, CHAN_WEAPON, "weapons/spike2.wav", 1, ATTN_NORM);
 		SpawnBlood (other.origin, '0 0 0', 20);
 		T_Damage (other, self, ply, 10);
+		if (other.health <= -40)
+		{
+			chunk = BQA_BiggestGibNear (other.origin);
+			if (chunk != world)
+				self.enemy = chunk;
+		}
 		setorigin (self, other.origin + '0 0 16');
 	}
 	else

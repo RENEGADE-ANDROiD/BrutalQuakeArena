@@ -33,6 +33,7 @@ Authentic Models +
 * Bloody Axe, created by PrimeviL
 * Pump Shotgun created by Barnaby.
 * Oscillator replaces Nailgun, created by metroid24242/king0pa1n/Turduckens
+* Hidef armor pickup (green / yellow / red), PrimeviL skins on OriOn’s mesh
 
 **Melee and hook**
 * Quick axe melee with lock-on lunge (128 unit range)
@@ -41,7 +42,7 @@ Authentic Models +
 * Meathook zips you to world (and to players). In Single Player / Coop it yanks hooked monsters to you. Tap again to detach.
 
 **Visuals**
-* Full [Authentic Models](https://github.com/NightFright2k19/quake_authmdl) set (Enhanced Models off): monsters, weapons, player, armor, items, gibs, flames, eyes, teleporter, projectiles
+* Full [Authentic Models](https://github.com/NightFright2k19/quake_authmdl) set (Enhanced Models off): monsters, weapons, player, items, gibs, flames, eyes, teleporter, projectiles (armor pickup is the hidef mesh/skins)
 * Improved ammo, health, and exploding boxes (work with Enhanced Models on)
 * Scourge of Armagon and Dissolution extras (prox, hammer, Rogue guns/boxes)
 
@@ -74,9 +75,8 @@ Authentic Models +
 
 **Rocket Arena**
 Final Arena 1.20 maps and sounds are included. Every player needs this mod installed. Custom matches do not appear in Find Match / the public browser — invite friends.
-* **Local Play:** Multiplayer → Local Play → Deathmatch → episode **Rocket Arena** (next to Quake). Do **not** type `game brutal` in the console or Steam Launch Options. Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Alone is practice until a second fighter. Add a QC bot with **F7**, **P**, or `impulse 71`.
+* **Local Play:** Multiplayer → Local Play → Deathmatch → episode **Rocket Arena** (next to Quake). Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Alone is practice until a second fighter. Add a QC bot with **F7**, **P**, or `impulse 71`.
 * **Online host:** Multiplayer → Start Match → Deathmatch → episode **Rocket Arena** → map → start → invite. Same bot rule. Joiners need this mod.
-* Optional console shortcut only: `game brutal` then `exec arena.cfg` (put `arena.cfg` in `Users\<UserName>\Saved Games\Nightdive Studios\Quake\`). Linux / Proton: `steamapps/compatdata/2310/pfx/drive_c/users/steamuser/Saved Games/Nightdive Studios/Quake/`. Fully quit after — New Game only shows Rocket Arena.
 * Deathmatch episode **Rocket Arena** — 46 classic arenas in the map list (not New Game)
 * Alone: full loadout practice (100 HP, 200 armor, all guns) until a second player or bot joins
 * Two or more: 1v1, 10-second lock (fire / melee / hook / prox blocked), 3-2-1, FIGHT, winner stays. Suicide or disconnect counts as a loss. Quick melee and meathook work after FIGHT. Glory kill is campaign/coop only.
@@ -101,7 +101,7 @@ On Bazzite, show hidden files to see `~/.local`. Typical `rerelease` roots:
 
 **Credit**:
 
-Q1 Monster, weapon, player, and pickup models: [Authentic Models for Quake](https://github.com/NightFright2k19/quake_authmdl) (NightFright and contributors). See `auth_mdl.txt`.
+Q1 Monster, weapon, player, and pickup models: [Authentic Models for Quake](https://github.com/NightFright2k19/quake_authmdl) (NightFright and contributors). See `auth_mdl.txt`. Hidef armor skins and centered armor mesh: PrimeviL and OriOn.
 
 Quake 2 Enemy extras from Quake 2 Rerelease, & Call of the Void (https://www.moddb.com/mods/quake-ii-call-of-the-void) created by Rest in Pixels (00_Zombie_00, Raton and Drugod)
 
