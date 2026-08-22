@@ -343,7 +343,7 @@ void(entity ply) RA_MakePractice =
 	ply.takedamage = DAMAGE_AIM;
 	ply.effects = 0;
 	RA_SetLoadout (ply);
-	centerprint (ply, "Rocket Arena practice\nFull loadout. Invite a friend for 1v1.\n");
+	centerprint (ply, "Rocket Arena practice\nFull loadout. Invite a friend for 1v1.\nAdd bot: F7 or type impulse 71\n");
 };
 
 void() RA_TryStart =
@@ -478,7 +478,12 @@ void() RA_OnSpawn =
 	if (!ra_active)
 		return;
 
-	stuffcmd (self, "exec ra_binds.cfg\n");
+	stuffcmd (self, "bind f7 \"impulse 71\"\n");
+	stuffcmd (self, "bind k \"impulse 72\"\n");
+	stuffcmd (self, "bind i \"impulse 68\"\n");
+	stuffcmd (self, "bind o \"impulse 69\"\n");
+	stuffcmd (self, "bind b \"impulse 70\"\n");
+	stuffcmd (self, "bind n \"impulse 215\"\n");
 
 	if (self.ra_role == 4)
 	{
@@ -608,6 +613,22 @@ void() RA_ClientDisconnect =
 	}
 	else
 		RA_TryStart ();
+};
+
+void() RA_ClientImpulse =
+{
+	if (self.impulse != 71 && self.impulse != 72)
+		return;
+	if (!ra_active)
+	{
+		sprint (self, "Not an Arena map (map=");
+		sprint (self, mapname);
+		sprint (self, ").\n");
+		self.impulse = 0;
+		return;
+	}
+	if (RA_Impulse ())
+		self.impulse = 0;
 };
 
 float() RA_Impulse =

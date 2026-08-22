@@ -510,6 +510,8 @@ float()	DogCheckAttack;
 
 float() CheckAnyAttack =
 {
+	if (self.bqa_fear > time)
+		return FALSE;
 	if (!enemy_visible)
 		return FALSE;
 	if (self.q2_kind)
@@ -650,6 +652,8 @@ void(float dist) ai_run =
 {
 	
 	movedist = dist;
+	if (BQA_TryFear (dist))
+		return;
 // see if the enemy is dead
 	if (self.enemy.health <= 0)
 	{

@@ -21,9 +21,13 @@ void() BQA_ExplosionFX;
 void() BQA_ResetSlowmo;
 void() BQA_ClearSlowmo;
 void(entity atk) BQA_PulseSlowmo;
+void() BQA_GloryFear;
+float(float dist) BQA_TryFear;
+void() W_MeleeGloryUnguard;
 void() BQA_AxeTouch;
 void() BQA_CarnageTouch;
 void() BQA_DropCarnageVial;
+void() XH_Precache;
 
 float() BQA_PackMelee =
 {
@@ -65,6 +69,7 @@ float	bqa_numdnums;
 void() BQA_PrecacheGore =
 {
 	precache_model ("progs/s_bullet.spr");
+	precache_model ("progs/s_shell.mdl");
 	precache_model ("progs/bqa_splat1.spr");
 	precache_model ("progs/bqa_splat2.spr");
 	precache_model ("progs/bqa_splat3.spr");
@@ -91,6 +96,7 @@ void() BQA_PrecacheGore =
 	precache_model ("progs/bqa_heart.spr");
 	precache_model ("progs/bqa_dnum.spr");
 	precache_model ("progs/bqa_chain.spr");
+	XH_Precache ();
 };
 
 void(entity g) BQA_UnlinkGib =
@@ -774,6 +780,12 @@ void() BQA_FleshSplat =
 		return;
 	if (!((self.flags & FL_MONSTER) || (self.flags & FL_CLIENT)))
 		return;
+	if (self.flags & FL_CLIENT)
+	{
+		SpawnBlood (self.origin + '0 0 22', '0 0 40', 20);
+		SpawnBlood (self.origin + '0 0 16', '20 0 20', 12);
+		return;
+	}
 
 	r = random ();
 	if (r < 0.25)
@@ -1006,7 +1018,10 @@ void() BQA_OnKilledExtra =
 
 	atk = self.enemy;
 	if (atk.classname == "player" && atk.melee_glory)
+	{
 		BQA_PulseSlowmo (atk);
+		BQA_GloryFear ();
+	}
 
 	if (self.enemy != world)
 	{
@@ -1450,7 +1465,7 @@ void() BQA_EjectCasing =
 	c.avelocity = '200 400 100';
 	c.nextthink = time + 20;
 	c.think = SUB_Remove;
-	setmodel (c, "progs/s_spike.mdl");
+	setmodel (c, "progs/s_shell.mdl");
 	setsize (c, '0 0 0', '0 0 0');
 	setorigin (c, self.origin + '0 0 16' + v_right * 8 + v_forward * 12);
 };
@@ -1693,7 +1708,40 @@ void() BQA_DropCarnageVial =
 
 void() BQA_ClearSlowmo =
 {
+	W_MeleeGloryUnguard ();
 	stuffcmd (self, "slowmo 1\n");
+};
+
+void() BQA_GloryFear =
+{
+	local entity head;
+	local entity e;
+	local float until;
+
+	until = time + 0.525;
+
+	head = findradius (self.origin, 400);
+	while (head)
+	{
+		e = head;
+		head = head.chain;
+		if (e != self && e.health > 0 && (e.flags & FL_MONSTER))
+		{
+			if (e.classname != "monster_boss" && e.classname != "monster_oldone")
+				e.bqa_fear = until;
+		}
+	}
+};
+
+float(float dist) BQA_TryFear =
+{
+	if (self.bqa_fear <= time)
+		return FALSE;
+	if (self.enemy != world && self.enemy.health > 0)
+		self.ideal_yaw = vectoyaw (self.origin - self.enemy.origin);
+	ChangeYaw ();
+	movetogoal (dist);
+	return TRUE;
 };
 
 void(entity atk) BQA_PulseSlowmo =
@@ -1709,7 +1757,11 @@ void(entity atk) BQA_PulseSlowmo =
 	while (h != world)
 	{
 		if (h.owner == atk)
+		{
+			stuffcmd (atk, "slowmo 0.35\n");
+			h.nextthink = time + 1.05;
 			return;
+		}
 		h = find (h, classname, "bqa_slowmo");
 	}
 
@@ -1717,7 +1769,7 @@ void(entity atk) BQA_PulseSlowmo =
 	h = spawn ();
 	h.classname = "bqa_slowmo";
 	h.owner = atk;
-	h.nextthink = time + 0.25;
+	h.nextthink = time + 1.05;
 	h.think = BQA_ResetSlowmo;
 };
 

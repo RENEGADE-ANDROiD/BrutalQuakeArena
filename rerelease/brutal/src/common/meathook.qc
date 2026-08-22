@@ -177,6 +177,7 @@ void() MeatHookPull =
 	local vector dir;
 	local float dist;
 	local float yank;
+	local float side;
 
 	ply = self.owner;
 	if (ply == world || ply.health <= 0)
@@ -196,6 +197,11 @@ void() MeatHookPull =
 	{
 		if (prey.classname == "gib")
 		{
+			if (prey.model == string_null || time > prey.ltime)
+			{
+				MeatHookRemove ();
+				return;
+			}
 			dir = ply.origin - prey.origin;
 			dist = vlen (dir);
 			if (dist < 64)
@@ -257,12 +263,51 @@ void() MeatHookPull =
 
 		dir = normalize (dir);
 		ply.flags = ply.flags - (ply.flags & FL_ONGROUND);
-		ply.velocity = dir * 800;
+		makevectors (ply.v_angle);
+		side = ply.velocity * v_right;
+		if (side > 200)
+			side = 200;
+		if (side < -200)
+			side = -200;
+		ply.velocity = dir * 800 + v_right * side;
 	}
 
 	MeatHookUpdateChain ();
 	self.nextthink = time + 0.05;
 	self.think = MeatHookPull;
+};
+
+void() MeatHookLatchTug =
+{
+	local entity ply;
+	local entity prey;
+	local vector dir;
+
+	ply = self.owner;
+	if (ply == world)
+		return;
+
+	ply.punchangle_x = ply.punchangle_x - 5;
+	ply.punchangle_z = ply.punchangle_z + (random () - 0.5) * 6;
+	prey = self.enemy;
+	if (prey != world && prey.classname == "gib")
+	{
+		dir = normalize (ply.origin - prey.origin);
+		prey.flags = prey.flags - (prey.flags & FL_ONGROUND);
+		prey.velocity = prey.velocity + dir * 500;
+		return;
+	}
+	if (!deathmatch && MeatHookYankable (prey))
+	{
+		dir = normalize (ply.origin - prey.origin);
+		prey.flags = prey.flags - (prey.flags & FL_ONGROUND);
+		prey.velocity = prey.velocity + dir * 500;
+		return;
+	}
+
+	dir = normalize (self.origin - ply.origin);
+	ply.flags = ply.flags - (ply.flags & FL_ONGROUND);
+	ply.velocity = ply.velocity + dir * 500;
 };
 
 void() MeatHookTouch =
@@ -311,7 +356,7 @@ void() MeatHookTouch =
 			if (chunk != world)
 				self.enemy = chunk;
 		}
-		setorigin (self, other.origin + '0 0 16');
+		setorigin (self, self.enemy.origin + '0 0 16');
 	}
 	else
 	{
@@ -320,6 +365,7 @@ void() MeatHookTouch =
 		setorigin (self, self.origin);
 	}
 
+	MeatHookLatchTug ();
 	MeatHookUpdateChain ();
 };
 

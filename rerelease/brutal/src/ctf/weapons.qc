@@ -121,6 +121,7 @@ void() W_FireAxe =
   {
     self.melee_saw = 0;
     self.melee_hammer = 0;
+    W_MeleeGloryUnguard ();
     self.melee_glory = 0;
     self.melee_style = 0;
     return;
@@ -144,6 +145,7 @@ void() W_FireAxe =
   { // hit wall
     self.melee_saw = 0;
     self.melee_hammer = 0;
+    W_MeleeGloryUnguard ();
     self.melee_glory = 0;
     self.melee_style = 0;
     if (ham)
@@ -1586,7 +1588,7 @@ void() W_WeaponFrame =
     W_QuickMelee ();
     self.impulse = 0;
   }
-  else if (self.impulse == 22 || self.impulse == 52)
+  else if (self.impulse == 52)
   {
     W_FireMeathook ();
     self.impulse = 0;

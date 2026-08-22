@@ -41,6 +41,7 @@ monsters/shub.qc		// registered
 
 bots/bot.qc				// bot support
 ../common/bqa.qc
+../common/crosshair.qc
 ../common/moveplus.qc
 ../common/q2weapons.qc
 ../common/q2monsters.qc

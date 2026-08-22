@@ -945,6 +945,8 @@ float()  ArmagonCheckAttack;
 
 float() CheckAnyAttack =
 {
+	if (self.bqa_fear > time)
+		return FALSE;
 	if (!enemy_vis)
 		return;
    if (self.q2_kind)
@@ -1106,6 +1108,8 @@ void(float dist) ai_run =
 	local	float	direct, ang_rint, ang_floor, ang_ceil;
 
 	movedist = dist;
+	if (BQA_TryFear (dist))
+		return;
 // see if the enemy is dead
    if (self.enemy.health <= 0 || (self.charmed && (self.charmer == self.enemy)))
 	{

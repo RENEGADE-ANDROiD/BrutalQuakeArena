@@ -651,6 +651,7 @@ void() W_FireAxe =
 	{
 		self.melee_saw = 0;
 		self.melee_hammer = 0;
+		W_MeleeGloryUnguard ();
 		self.melee_glory = 0;
 		self.melee_style = 0;
 		return;
@@ -674,6 +675,7 @@ void() W_FireAxe =
 	{	// hit wall
 		self.melee_saw = 0;
 		self.melee_hammer = 0;
+		W_MeleeGloryUnguard ();
 		self.melee_glory = 0;
 		self.melee_style = 0;
 		if (ham)

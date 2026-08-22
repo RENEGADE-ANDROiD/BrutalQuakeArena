@@ -1291,6 +1291,8 @@ void() PlayerPreThink =
 	if (self.view_ofs == '0 0 0')
 		return;		// intermission or finale
 
+	RA_ClientImpulse ();
+
 //JIM
    // Kill player on Edge of Oblivion
    if ( ( self.origin_z < -1300 ) && (world.model == "maps/hipdm1.bsp") &&
@@ -1633,6 +1635,7 @@ void() PlayerPostThink =
 
 	if (self.view_ofs == '0 0 0')
       {
+      XH_Hide ();
       earthquake_postthink();
       return;     // intermission or finale
       }
@@ -1658,11 +1661,15 @@ void() PlayerPostThink =
 //      }
 
 	if (self.deadflag)
+	{
+		XH_Hide ();
 		return;
+	}
 
 // do weapon stuff
 
 	W_WeaponFrame ();
+	XH_Update ();
 
 // check to see if player landed and play landing sound
 	if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) && (self.health > 0))

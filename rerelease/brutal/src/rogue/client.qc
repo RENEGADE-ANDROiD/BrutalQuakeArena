@@ -1324,6 +1324,8 @@ void() PlayerPreThink =
 	if (self.view_ofs == '0 0 0')
 		return;		// intermission or finale
 
+	RA_ClientImpulse ();
+
 	if (earthquake_active)
 	{
 		if ( self.flags & FL_ONGROUND )
@@ -1616,9 +1618,15 @@ void() PlayerPostThink =
 	local	float	r;
 	
 	if (self.view_ofs == '0 0 0')
+	{
+		XH_Hide ();
 		return;		// intermission or finale
+	}
 	if (self.deadflag)
+	{
+		XH_Hide ();
 		return;
+	}
 		
 	if (cutscene_running)
 	{
@@ -1628,6 +1636,7 @@ void() PlayerPostThink =
 // do weapon stuff
 
 	W_WeaponFrame ();
+	XH_Update ();
 
 // check to see if player landed and play landing sound	
 	if ((self.jump_flag < -300) && 

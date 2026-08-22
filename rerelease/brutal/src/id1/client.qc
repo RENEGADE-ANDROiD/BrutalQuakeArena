@@ -1207,6 +1207,8 @@ void() PlayerPreThink =
 	if (self.view_ofs == '0 0 0')
 		return;		// intermission or finale
 
+	RA_ClientImpulse ();
+
 	makevectors (self.v_angle);		// is this still used
 
 	if (deathmatch || coop)
@@ -1437,14 +1439,17 @@ Called every frame after physics are run
 void() PlayerPostThink =
 {
 	if ( self.view_ofs == '0 0 0') {
+		XH_Hide ();
 		return;		// intermission or finale
 	}
 
 	if ( self.deadflag ) {
+		XH_Hide ();
 		return;
 	}
 		
 	W_WeaponFrame (); // do weapon stuff
+	XH_Update ();
 
 	// check to see if player landed and play landing sound	
 	if ((self.jump_flag < -300) && (self.flags & FL_ONGROUND) && (self.health > 0))

@@ -42,6 +42,7 @@ _gen/client.qc
 
 ../id1/bots/bot.qc
 ../common/bqa.qc
+../common/crosshair.qc
 ../common/moveplus.qc
 ../common/q2weapons.qc
 ../common/q2monsters.qc

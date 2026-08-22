@@ -76,7 +76,6 @@ Authentic Models +
 Final Arena 1.20 maps and sounds are included. Every player needs this mod installed. Custom matches do not appear in Find Match / the public browser — invite friends.
 * **Local Play:** Multiplayer → Local Play → Deathmatch → episode **Rocket Arena** (next to Quake). Do **not** type `game brutal` in the console or Steam Launch Options. Set **Number of Bots** to 0 (remaster bots need `.nav` files these maps do not have). Alone is practice until a second fighter. Add a QC bot with **F7**, **P**, or `impulse 71`.
 * **Online host:** Multiplayer → Start Match → Deathmatch → episode **Rocket Arena** → map → start → invite. Same bot rule. Joiners need this mod.
-* Optional console shortcut only: `game brutal` then `exec arena.cfg` (put `arena.cfg` in `Users\<UserName>\Saved Games\Nightdive Studios\Quake\`). Linux / Proton: `steamapps/compatdata/2310/pfx/drive_c/users/steamuser/Saved Games/Nightdive Studios/Quake/`. Fully quit after — New Game only shows Rocket Arena.
 * Deathmatch episode **Rocket Arena** — 46 classic arenas in the map list (not New Game)
 * Alone: full loadout practice (100 HP, 200 armor, all guns) until a second player or bot joins
 * Two or more: 1v1, 10-second lock (fire / melee / hook / prox blocked), 3-2-1, FIGHT, winner stays. Suicide or disconnect counts as a loss. Quick melee and meathook work after FIGHT. Glory kill is campaign/coop only.
@@ -88,8 +87,6 @@ See `farena_readme.txt` for the original map list and authors.
 
 **INSTALLATION**
 Be sure the contents in the 'rerelease' folder are copied to your 'rerelease' folder!  Not in Quake\id1
-
-Copy the arena.cfg to:
 
 Steam → Quake → Properties → Installed Files → Browse → open `rerelease`. 
 On SteamOS, copy files in Desktop Mode. 

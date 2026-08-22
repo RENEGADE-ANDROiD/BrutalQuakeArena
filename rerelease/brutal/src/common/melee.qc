@@ -34,8 +34,11 @@ void(entity ply, entity targ) W_MeleeAimYaw =
 	if (vlen (dir) < 1)
 		return;
 
-	ply.angles_y = vectoyaw (dir);
-	ply.v_angle_y = ply.angles_y;
+	ply.v_angle_y = vectoyaw (dir);
+	ply.v_angle_z = 0;
+	ply.angles_y = ply.v_angle_y;
+	ply.angles_x = ply.v_angle_x;
+	ply.angles_z = 0;
 	ply.fixangle = TRUE;
 };
 
@@ -117,11 +120,39 @@ float(entity targ, float dmg) W_MeleeHitDamage =
 	return dmg;
 };
 
+void() W_MeleeGloryGuard =
+{
+	if (self.melee_guard)
+		return;
+	self.melee_savedmg = self.takedamage;
+	if (self.melee_savedmg < 1)
+		self.melee_savedmg = DAMAGE_AIM;
+	self.takedamage = DAMAGE_NO;
+	self.melee_guard = 1;
+};
+
+void() W_MeleeGloryUnguard =
+{
+	if (!self.melee_guard)
+		return;
+	if (self.health > 0 && !self.deadflag)
+	{
+		self.takedamage = self.melee_savedmg;
+		if (self.takedamage < 1)
+			self.takedamage = DAMAGE_AIM;
+	}
+	self.melee_guard = 0;
+};
+
 void() W_MeleeClear =
 {
 	if (!self.melee_active)
 		return;
 
+	W_MeleeGloryUnguard ();
+	self.angles_z = 0;
+	self.v_angle_z = 0;
+	self.punchangle_z = 0;
 	self.melee_active = 0;
 	self.melee_lunge = 0;
 	self.melee_target = world;
@@ -156,7 +187,10 @@ void() W_MeleeDoSwing =
 	self.melee_saw = 0;
 	self.melee_hammer = 0;
 	if (W_MeleeIsGlory (self.melee_target))
+	{
 		self.melee_glory = 1;
+		W_MeleeGloryGuard ();
+	}
 	else
 		self.melee_glory = 0;
 #ifdef BQA_HAS_IT_MJOLNIR
@@ -384,7 +418,10 @@ void() W_QuickMelee =
 	if (targ != world)
 	{
 		if (W_MeleeIsGlory (targ))
+		{
 			self.melee_glory = 1;
+			W_MeleeGloryGuard ();
+		}
 		else
 			self.melee_glory = 0;
 		W_MeleeStartLunge (targ);
